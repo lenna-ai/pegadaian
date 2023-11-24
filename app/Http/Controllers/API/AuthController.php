@@ -27,7 +27,7 @@ class AuthController extends Controller
     /**
     *    @OA\Post(
     *       path="/api/auth/register",
-    *       tags={"Register User"},
+    *       tags={"Authenticate User"},
     *       operationId="Register User",
     *       summary="Register User",
     *       description="Untuk Register User",
@@ -87,7 +87,7 @@ class AuthController extends Controller
     /**
     *    @OA\Post(
     *       path="/api/auth/login",
-    *       tags={"login User"},
+    *       tags={"Authenticate User"},
     *       operationId="login User",
     *       summary="login User",
     *       description="Untuk login User",
@@ -140,7 +140,7 @@ class AuthController extends Controller
     /**
     *    @OA\Post(
     *       path="/api/auth/me",
-    *       tags={"current User"},
+    *       tags={"Authenticate User"},
     *       operationId="current User",
     *       summary="current User",
     *       description="current User",
@@ -171,7 +171,7 @@ class AuthController extends Controller
     /**
     *    @OA\Post(
     *       path="/api/auth/logout",
-    *       tags={"logout User"},
+    *       tags={"Authenticate User"},
     *       operationId="logout User",
     *       summary="logout User",
     *       description="Untuk logout User",
@@ -193,28 +193,33 @@ class AuthController extends Controller
     }
 
     /**
-     * Refresh a token.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function refresh()
+    *    @OA\Post(
+    *       path="/api/auth/refresh",
+    *       tags={"Authenticate User"},
+    *       operationId="Refresh User",
+    *       summary="Refresh User",
+    *       description="Untuk Refresh User",
+    *       @OA\Response(
+    *           response="202",
+    *           description="Ok",
+    *           @OA\JsonContent
+    *           (example={
+    *               "data": {
+    *                   {
+    *                   "name": "string",
+    *                   "email": "string",
+    *                   "access_token": "token",
+    *                   "token_type": "bearer"
+    *                  }
+    *              }
+    *          }),
+    *      ),
+    *  )
+    */
+    public function refresh(): ResourcesUser
     {
-        return $this->respondWithToken(auth()->refresh());
-    }
-
-    /**
-     * Get the token array structure.
-     *
-     * @param  string $token
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    protected function respondWithToken($token)
-    {
-        return response()->json([
-            'access_token' => $token,
-            'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60
-        ]);
+        $user = auth()->user();
+        $user['token'] = auth()->refresh();
+        return new ResourcesUser($user);
     }
 }

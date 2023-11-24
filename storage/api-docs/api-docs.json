@@ -22,7 +22,7 @@
         "/api/auth/register": {
             "post": {
                 "tags": [
-                    "Register User"
+                    "Authenticate User"
                 ],
                 "summary": "Register User",
                 "description": "Untuk Register User",
@@ -77,7 +77,7 @@
         "/api/auth/login": {
             "post": {
                 "tags": [
-                    "login User"
+                    "Authenticate User"
                 ],
                 "summary": "login User",
                 "description": "Untuk login User",
@@ -104,7 +104,7 @@
                     }
                 },
                 "responses": {
-                    "200": {
+                    "202": {
                         "description": "Ok",
                         "content": {
                             "application/json": {
@@ -118,6 +118,61 @@
                                             "token_type": "bearer"
                                         }
                                     ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/auth/me": {
+            "post": {
+                "tags": [
+                    "Authenticate User"
+                ],
+                "summary": "current User",
+                "description": "current User",
+                "operationId": "current User",
+                "responses": {
+                    "202": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "data": [
+                                        {
+                                            "id": 10,
+                                            "name": "arifin",
+                                            "email": "ssarifin@gmails.scoma",
+                                            "email_verified_at": null,
+                                            "created_at": "2023-11-24T15:14:25.000000Z",
+                                            "updated_at": "2023-11-24T15:14:25.000000Z"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/auth/logout": {
+            "post": {
+                "tags": [
+                    "Authenticate User"
+                ],
+                "summary": "logout User",
+                "description": "Untuk logout User",
+                "operationId": "logout User",
+                "responses": {
+                    "204": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "message": "Successfully logged out"
                                 }
                             }
                         }
