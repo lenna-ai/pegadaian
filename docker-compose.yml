@@ -1,0 +1,95 @@
+version: "3.8"
+
+services:
+    webserver:
+        image: nginx:alpine
+        container_name: webserver
+        restart: unless-stopped
+        tty: true
+        ports:
+            - "80:80"
+            - "443:443"
+        volumes:
+            - ./:/var/www/pegadaian
+            - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
+        networks:
+            - app-network
+        extra_hosts:
+            - "host.docker.internal:host-gateway"
+        links:
+            - php-fpm
+
+    php-fpm:
+        container_name: php-fpm-pegadaian
+        build:
+            context: ./docker/php/8.2
+            dockerfile: Dockerfile
+        volumes:
+            - .:/var/www/pegadaian
+            - ./docker/php/8.2/php.ini:/usr/local/etc/php/php.ini-production
+            - ./docker/php/8.2/php.ini:/usr/local/etc/php/php.ini-development
+            - ./docker/php/8.2/php.ini:/usr/local/etc/php/conf.d/fpm.ini
+        environment:
+            - PHP_DATE_TIMEZONE=Asia/Jakarta
+            - PHP_DISPLAY_ERRORS=On
+            - PHP_MEMORY_LIMIT=2560M
+            - PHP_MAX_EXECUTION_TIME=600
+            - PHP_POST_MAX_SIZE=500M
+            - PHP_UPLOAD_MAX_FILESIZE=500M
+            - REDIS_HOST=cache
+            - REDIS_PORT=63791
+            - REDIS_PASSWORD=password
+        networks:
+            - app-network
+        links:
+            - cache
+            - rabbitmq
+
+    cache:
+        image: redis:6.2-alpine
+        container_name: cache
+        restart: unless-stopped
+        ports:
+            - "63791:6379"
+        volumes:
+            - ./docker/cache:/data
+        command: redis-server --save 20 1 --loglevel warning --requirepass password
+        networks:
+            - app-network
+
+    supervisor:
+        container_name: supervisor
+        build:
+            context: ./docker/supervisor # Direktori tempat Dockerfile Supervisor berada
+            dockerfile: supervisor.Dockerfile # Nama Dockerfile Supervisor yang berbeda
+        volumes:
+            - ./docker/supervisor:/etc/supervisor/conf.d/
+            - .:/var/www/pegadaian
+        links:
+            - php-fpm
+        networks:
+            - app-network
+
+    rabbitmq:
+        container_name: rabbitmq
+        image: rabbitmq:3-management-alpine
+        hostname: rabbitmq
+        restart: unless-stopped
+        ports:
+            - 5679:5672
+            - 15679:15672
+        volumes:
+            - ./docker/rabbitmq/data:/var/lib/rabbitmq/
+            - ./docker/rabbitmq/log:/var/log/rabbitmq/
+        environment:
+            - RABBITMQ_DEFAULT_USER=admin
+            - RABBITMQ_DEFAULT_PASS=password
+            - RABBITMQ_DEFAULT_VHOST=/
+        networks:
+            - app-network
+
+networks:
+    app-network:
+        external: true
+        name: app-network
+        driver: bridge
