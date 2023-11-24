@@ -1,0 +1,129 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Dokumentasi API Pegadaian",
+        "description": "created by nur arifin",
+        "contact": {
+            "email": "arifin@lenna.ai"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://pegadaian.test",
+            "description": "Demo API Server"
+        }
+    ],
+    "paths": {
+        "/api/auth/register": {
+            "post": {
+                "tags": [
+                    "Register User"
+                ],
+                "summary": "Register User",
+                "description": "Untuk Register User",
+                "operationId": "Register User",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "name": "arifin",
+                                    "email": "arifin@lenna.ai",
+                                    "password": "password"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "data": [
+                                        {
+                                            "name": "string",
+                                            "email": "string",
+                                            "access_token": "token",
+                                            "token_type": "bearer"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/auth/login": {
+            "post": {
+                "tags": [
+                    "login User"
+                ],
+                "summary": "login User",
+                "description": "Untuk login User",
+                "operationId": "login User",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "email": "arifin@lenna.ai",
+                                    "password": "password"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "data": [
+                                        {
+                                            "name": "string",
+                                            "email": "string",
+                                            "access_token": "token",
+                                            "token_type": "bearer"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
