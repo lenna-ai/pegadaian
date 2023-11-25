@@ -32,24 +32,13 @@ class AuthController extends Controller
     *       summary="Register User",
     *       description="Untuk Register User",
     *    @OA\RequestBody(
-    *         @OA\MediaType(
-    *             mediaType="application/json",
-    *             @OA\Schema(
-    *                 @OA\Property(
-    *                     property="name",
-    *                     type="string"
-    *                 ),
-    *                 @OA\Property(
-    *                     property="email",
-    *                     type="string"
-    *                 ),
-    *                 @OA\Property(
-    *                     property="password",
-    *                     type="string"
-    *                 ),
-    *                 example={"name": "arifin", "email": "arifin@lenna.ai", "password": "password"}
-    *             )
-    *         )
+    *         required=true,
+    *         @OA\JsonContent(
+    *            required={"name", "email", "password"},
+    *            @OA\Property(property="name", type="string", format="string", example="name"),
+    *            @OA\Property(property="email", type="string", format="string", example="email@gmail.com"),
+    *            @OA\Property(property="password", type="string", format="string", example="password"),
+    *         ),
     *     ),
     *       @OA\Response(
     *           response="200",

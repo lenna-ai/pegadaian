@@ -28,26 +28,33 @@
                 "description": "Untuk Register User",
                 "operationId": "Register User",
                 "requestBody": {
+                    "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "password"
+                                ],
                                 "properties": {
                                     "name": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "format": "string",
+                                        "example": "name"
                                     },
                                     "email": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "format": "string",
+                                        "example": "email@gmail.com"
                                     },
                                     "password": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "format": "string",
+                                        "example": "password"
                                     }
                                 },
-                                "type": "object",
-                                "example": {
-                                    "name": "arifin",
-                                    "email": "arifin@lenna.ai",
-                                    "password": "password"
-                                }
+                                "type": "object"
                             }
                         }
                     }
@@ -173,6 +180,36 @@
                                 "schema": {},
                                 "example": {
                                     "message": "Successfully logged out"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/auth/refresh": {
+            "post": {
+                "tags": [
+                    "Authenticate User"
+                ],
+                "summary": "Refresh User",
+                "description": "Untuk Refresh User",
+                "operationId": "Refresh User",
+                "responses": {
+                    "202": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "data": [
+                                        {
+                                            "name": "string",
+                                            "email": "string",
+                                            "access_token": "token",
+                                            "token_type": "bearer"
+                                        }
+                                    ]
                                 }
                             }
                         }
