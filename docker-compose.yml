@@ -36,9 +36,9 @@ services:
             - PHP_MAX_EXECUTION_TIME=600
             - PHP_POST_MAX_SIZE=500M
             - PHP_UPLOAD_MAX_FILESIZE=500M
-            - REDIS_HOST=cache
-            - REDIS_PORT=63791
-            - REDIS_PASSWORD=password
+            # - REDIS_HOST=cache
+            # - REDIS_PORT=63791
+            # - REDIS_PASSWORD=password
         networks:
             - app-network
         links:

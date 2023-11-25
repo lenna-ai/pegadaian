@@ -29,5 +29,5 @@ Route::group(['middleware' => 'api','prefix' => 'auth'],function () {
 });
 
 Route::group(['middleware' => 'auth:api'],function (): void {
-    Route::get('dashboard', [DashboardController::class, 'index']);
+    Route::get('dashboard', [DashboardController::class, 'index'])->middleware(['can:admin','throttle:login']);
 });
