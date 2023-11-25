@@ -7,8 +7,8 @@ use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
-    public function index(): void
+    public function index(): string
     {
-        # code...
+        return 'ok';
     }
 }

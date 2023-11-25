@@ -6,11 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Resources\DataMessage\Message;
 use App\Http\Resources\User as ResourcesUser;
+use App\Models\Role;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class AuthController extends Controller
 {
@@ -105,6 +108,25 @@ class AuthController extends Controller
     *                   {
     *                   "name": "string",
     *                   "email": "string",
+    *                   "roles": {
+    *                       {
+    *                           "name": "admin",
+    *                           "permissions": {
+    *                               {
+    *                                   "name": "create_user"
+    *                               },
+    *                               {
+    *                                   "name": "update_user"
+    *                               },
+    *                               {
+    *                                   "name": "read_user"
+    *                               },
+    *                               {
+    *                                   "name": "delete_user"
+    *                               }
+    *                           }
+    *                       }
+    *                   },
     *                   "access_token": "token",
     *                   "token_type": "bearer"
     *                  }
@@ -120,9 +142,9 @@ class AuthController extends Controller
         if (!$token = auth()->attempt($credentials)) {
             throw new Exception(Message::TextMessage(['error' => 'Unauthorized'], 401));
         }
-        $user = auth()->user();
+        $user = Auth::user();
         $user['token'] = $token;
-
+        $user['role'] = $user->Role;
         return new ResourcesUser($user);
     }
 

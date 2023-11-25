@@ -121,6 +121,25 @@
                                         {
                                             "name": "string",
                                             "email": "string",
+                                            "roles": [
+                                                {
+                                                    "name": "admin",
+                                                    "permissions": [
+                                                        {
+                                                            "name": "create_user"
+                                                        },
+                                                        {
+                                                            "name": "update_user"
+                                                        },
+                                                        {
+                                                            "name": "read_user"
+                                                        },
+                                                        {
+                                                            "name": "delete_user"
+                                                        }
+                                                    ]
+                                                }
+                                            ],
                                             "access_token": "token",
                                             "token_type": "bearer"
                                         }
