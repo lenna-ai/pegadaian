@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Resources\DataMessage\Message;
 use App\Http\Resources\User as ResourcesUser;
 use App\Models\Role;
 use App\Models\User;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -135,16 +137,28 @@ class AuthController extends Controller
     *      ),
     *  )
     */
-    public function login(Request $request): ResourcesUser
+    public function login(LoginRequest $request): ResourcesUser
     {
-        $credentials = $request->all();
+        $credentials = [
+            'email'=>$request['email'],
+            'password'=>$request['password']
+        ];
 
         if (!$token = auth()->attempt($credentials)) {
             throw new Exception(Message::TextMessage(['error' => 'Unauthorized'], 401));
         }
+        //update
+        $user = User::find(auth()->user()->id);
+        $user->login_at = Carbon::now()->toDateTimeString();
+        $user->save();
+        //akhir update
+
+
         $user = Auth::user();
         $user['token'] = $token;
         $user['role'] = $user->Role;
+        $user['login_at'] = Carbon::now()->toDateTimeString();
+
         return new ResourcesUser($user);
     }
 
@@ -199,6 +213,12 @@ class AuthController extends Controller
     public function logout(): JsonResponse
     {
         auth()->logout();
+
+        //update
+        $user = User::find(auth()->user()->id);
+        $user->logout_at = Carbon::now()->toDateTimeString();
+        $user->save();
+        //akhir update
 
         return response()->json(['message' => 'Successfully logged out'],204);
     }

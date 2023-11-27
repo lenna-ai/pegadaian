@@ -24,6 +24,8 @@ class User extends JsonResource
             'email'=>$this->email,
             'roles'=>RolePermission::collection($this->Role),
             'access_token' => $this->whenNotNull($this->token),
+            'login_at' => $this->login_at,
+            'logout_at' => $this->logout_at,
             'token_type' => $this->when(isset($this->token), function () {
                 return 'bearer';
             }),
