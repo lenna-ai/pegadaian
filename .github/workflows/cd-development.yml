@@ -21,12 +21,12 @@ jobs:
           key: ${{ secrets.PLATFORM_PRODUCTION_RSA_KEY }}
           port: ${{ secrets.SSH_PORT_PROD }}
           script: |
-            cd /var/www/v3
-            sudo chown -R admin:admin backend
             cd /var/www/pegadaian
-            git checkout v3
+            sudo chown -R admin:admin pegadaian
+            cd /var/www/pegadaian
+            git checkout master
             git fetch
-            git pull origin v3
+            git pull origin master
             exit
 
       - name: Install Dependencies and clear cach artisan
@@ -50,8 +50,8 @@ jobs:
           key: ${{ secrets.PLATFORM_PRODUCTION_RSA_KEY }}
           port: ${{ secrets.SSH_PORT_PROD }}
           script: |
-            cd /var/www/v3
-            sudo chown -R www-data:www-data backend
+            cd /var/www/pegadaian
+            sudo chown -R 82:82 pegadaian
             cd /var/www/pegadaian
             sudo chmod -R ug+rwx storage bootstrap/cache
             exit
