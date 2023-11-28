@@ -39,8 +39,9 @@ RUN docker-php-ext-install \
     && docker-php-ext-enable \
         # gd pdo pdo_pgsql pdo_mysql zip sockets grpc bcmath opcache
         gd pdo pdo_pgsql pdo_mysql zip sockets bcmath opcache
-RUN groupmod -o -g 82 www-data && \
-    usermod -o -u 82 -g www-data www-data
+
+RUN groupadd -g 82 www-data
+RUN useradd -d /home/admin -s /bin/bash -u 82 -g 82 www-data
 ENV COMPOSER_ALLOW_SUPERUSER=1
 RUN usermod -u 1000 www-data
 RUN rm -rf /var/cache/apk/*
