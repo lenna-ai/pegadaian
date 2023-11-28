@@ -7,8 +7,8 @@ services:
         restart: unless-stopped
         tty: true
         ports:
-            - "81:80"
-            - "4431:443"
+            - "8012:80"
+            - "8014:443"
         volumes:
             - ./:/var/www/pegadaian
             - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
@@ -50,7 +50,7 @@ services:
         container_name: cache
         restart: unless-stopped
         ports:
-            - "63791:6379"
+            - "6011:6379"
         volumes:
             - ./docker/cache:/data
         command: redis-server --save 20 1 --loglevel warning --requirepass password
@@ -76,8 +76,8 @@ services:
         hostname: rabbitmq
         restart: unless-stopped
         ports:
-            - 5679:5672
-            - 15679:15672
+            - 54320:5672
+            - 15672:15672
         volumes:
             - ./docker/rabbitmq/data:/var/lib/rabbitmq/
             - ./docker/rabbitmq/log:/var/log/rabbitmq/
