@@ -42,6 +42,7 @@ class AuthController extends Controller
     *            required={"name", "email", "password"},
     *            @OA\Property(property="name", type="string", format="string", example="name"),
     *            @OA\Property(property="email", type="string", format="string", example="email@gmail.com"),
+    *            @OA\Property(property="roles", type="integer", format="integer", example="1"),
     *            @OA\Property(property="password", type="string", format="string", example="password"),
     *         ),
     *     ),
@@ -68,6 +69,7 @@ class AuthController extends Controller
         DB::beginTransaction();
         try {
             $user = User::create($data);
+            $user->Role()->attach($request->roles);
             DB::commit();
         } catch (Exception $e) {
             DB::rollBack();
@@ -212,13 +214,15 @@ class AuthController extends Controller
     */
     public function logout(): JsonResponse
     {
-        auth()->logout();
 
         //update
         $user = User::find(auth()->user()->id);
         $user->logout_at = Carbon::now()->toDateTimeString();
         $user->save();
         //akhir update
+
+
+        auth()->logout();
 
         return response()->json(['message' => 'Successfully logged out'],204);
     }
