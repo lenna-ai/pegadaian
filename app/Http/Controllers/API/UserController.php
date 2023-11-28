@@ -286,9 +286,6 @@ class UserController extends Controller
     *          description="identity",
     *          required=true,
     *          in="query",
-    *          @OA\Schema(
-    *              type="integer"
-    *          )
     *     ),
     *       @OA\Response(
     *           response="202",
