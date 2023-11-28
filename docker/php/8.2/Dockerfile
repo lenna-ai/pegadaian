@@ -42,6 +42,8 @@ RUN docker-php-ext-install \
 
 # RUN delgroup www-data \
 #     groupadd -g 1000 www-data
+RUN addgroup -g 1000
+RUN adduser -G www-data --system -D -s /bin/sh -u 1000 www-data
 ENV COMPOSER_ALLOW_SUPERUSER=1
 RUN usermod -u 1000 www-data
 RUN rm -rf /var/cache/apk/*
