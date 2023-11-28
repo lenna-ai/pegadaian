@@ -29,19 +29,6 @@ jobs:
             git pull origin master
             exit
 
-      - name: Install Dependencies and clear cach artisan
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SSH_HOST_DEV }}
-          username: ${{ secrets.SSH_USERNAME_ADMIN }}
-          key: ${{ secrets.PLATFORM_PRODUCTION_RSA_KEY }}
-          port: ${{ secrets.SSH_PORT_PROD }}
-          script: |
-            cd /var/www/pegadaian
-            composer install
-            php artisan optimize:clear
-            exit
-
       - name: Change permission folder and file on instance
         uses: appleboy/ssh-action@master
         with:
