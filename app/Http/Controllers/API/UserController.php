@@ -282,10 +282,13 @@ class UserController extends Controller
     *       summary="delete User",
     *       description="delete User",
     *     @OA\Parameter(
-    *          name="id",
-    *          description="identity",
-    *          required=true,
-    *          in="query",
+    *         name="page",
+    *         description="Specify page number",
+    *         in="query",
+    *         required=false
+    *          @OA\Schema(
+    *              type="integer"
+    *          )
     *     ),
     *       @OA\Response(
     *           response="202",
