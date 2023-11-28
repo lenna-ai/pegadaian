@@ -44,7 +44,7 @@ RUN docker-php-ext-install \
 #     groupadd -g 1000 www-data
 # RUN groupadd -g 1000 www-data
 RUN usermod -aG www-data www-data
-RUN useradd -ms /bin/bash -u 1000 -g www-data www-data
+# RUN useradd -ms /bin/bash -u 1000 -g www-data www-data
 ENV COMPOSER_ALLOW_SUPERUSER=1
 RUN usermod -u 1000 www-data
 RUN rm -rf /var/cache/apk/*
