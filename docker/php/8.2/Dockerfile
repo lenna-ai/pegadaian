@@ -40,7 +40,8 @@ RUN docker-php-ext-install \
         # gd pdo pdo_pgsql pdo_mysql zip sockets grpc bcmath opcache
         gd pdo pdo_pgsql pdo_mysql zip sockets bcmath opcache
 
-RUN groupadd -g 1000 www-data
+RUN (delgroup www-data || true) \
+    groupadd -g 1000 www-data
 RUN useradd -d /home/admin -s /bin/bash -u 1000 -g 1000 www-data
 ENV COMPOSER_ALLOW_SUPERUSER=1
 RUN usermod -u 1000 www-data
