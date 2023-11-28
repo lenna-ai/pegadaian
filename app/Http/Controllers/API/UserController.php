@@ -21,30 +21,6 @@ class UserController extends Controller
     *       operationId="get all User",
     *       summary="get all User",
     *       description="get all User",
-    *    @OA\RequestBody(
-    *         @OA\MediaType(
-    *             mediaType="application/json",
-    *             @OA\Schema(
-    *                 @OA\Property(
-    *                     property="name",
-    *                     type="string"
-    *                 ),
-    *                 @OA\Property(
-    *                     property="email",
-    *                     type="string"
-    *                 ),
-    *                 @OA\Property(
-    *                     property="roles",
-    *                     type="integer"
-    *                 ),
-    *                 @OA\Property(
-    *                     property="password",
-    *                     type="string"
-    *                 ),
-    *                 example={"name": "hai","email": "prod@gmail.com","roles": 1,"password": "password"}
-    *             )
-    *         )
-    *     ),
     *       @OA\Response(
     *           response="200",
     *           description="Ok",
@@ -99,6 +75,7 @@ class UserController extends Controller
     *         @OA\MediaType(
     *             mediaType="application/json",
     *             @OA\Schema(
+    *               required={"name","email","roles","password"},
     *                 @OA\Property(
     *                     property="name",
     *                     type="string"
@@ -192,9 +169,11 @@ class UserController extends Controller
     *         @OA\Examples(example="uuid", value="0006faf6-7a61-426c-9034-579f2cfcfa83", summary="An UUID value."),
     *     ),
     *    @OA\RequestBody(
+    *       required=true,
     *         @OA\MediaType(
     *             mediaType="application/json",
     *             @OA\Schema(
+    *               required={"name","email","roles","password"},
     *                 @OA\Property(
     *                     property="name",
     *                     type="string"
@@ -211,7 +190,12 @@ class UserController extends Controller
     *                     property="password",
     *                     type="string"
     *                 ),
-    *                 example={"name": "hai","email": "prod@gmail.com","roles": 1,"password": "password"}
+    *                 @OA\Property(
+    *                     property="status",
+    *                     type="string",
+    *                     description="optional if you want it changes must be enum value ['login','break','offline']"
+    *                 ),
+    *                 example={"name": "hai","email": "prod@gmail.com","roles": 1,"password": "password","status": "offline"}
     *             )
     *         )
     *     ),

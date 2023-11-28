@@ -14,7 +14,7 @@
     },
     "servers": [
         {
-            "url": "http://pegadaian.test",
+            "url": "http://13.250.184.82:8012",
             "description": "Demo API Server"
         }
     ],
@@ -249,35 +249,6 @@
                 "summary": "get all User",
                 "description": "get all User",
                 "operationId": "get all User",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "properties": {
-                                    "name": {
-                                        "type": "string"
-                                    },
-                                    "email": {
-                                        "type": "string"
-                                    },
-                                    "roles": {
-                                        "type": "integer"
-                                    },
-                                    "password": {
-                                        "type": "string"
-                                    }
-                                },
-                                "type": "object",
-                                "example": {
-                                    "name": "hai",
-                                    "email": "prod@gmail.com",
-                                    "roles": 1,
-                                    "password": "password"
-                                }
-                            }
-                        }
-                    }
-                },
                 "responses": {
                     "200": {
                         "description": "Ok",
@@ -329,6 +300,12 @@
                     "content": {
                         "application/json": {
                             "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "roles",
+                                    "password"
+                                ],
                                 "properties": {
                                     "name": {
                                         "type": "string"
@@ -406,18 +383,35 @@
                 "parameters": [
                     {
                         "name": "id",
-                        "in": "query",
-                        "description": "identity",
+                        "in": "path",
+                        "description": "Parameter with mutliple examples",
                         "required": true,
                         "schema": {
-                            "type": "integer"
+                            "type": "string"
+                        },
+                        "examples": {
+                            "int": {
+                                "summary": "An int value.",
+                                "value": "1"
+                            },
+                            "uuid": {
+                                "summary": "An UUID value.",
+                                "value": "0006faf6-7a61-426c-9034-579f2cfcfa83"
+                            }
                         }
                     }
                 ],
                 "requestBody": {
+                    "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "roles",
+                                    "password"
+                                ],
                                 "properties": {
                                     "name": {
                                         "type": "string"
@@ -430,6 +424,10 @@
                                     },
                                     "password": {
                                         "type": "string"
+                                    },
+                                    "status": {
+                                        "description": "optional if you want it changes must be enum value ['login','break','offline']",
+                                        "type": "string"
                                     }
                                 },
                                 "type": "object",
@@ -437,7 +435,8 @@
                                     "name": "hai",
                                     "email": "prod@gmail.com",
                                     "roles": 1,
-                                    "password": "password"
+                                    "password": "password",
+                                    "status": "offline"
                                 }
                             }
                         }
@@ -502,7 +501,7 @@
                     }
                 ],
                 "responses": {
-                    "202": {
+                    "200": {
                         "description": "Ok",
                         "content": {
                             "application/json": {

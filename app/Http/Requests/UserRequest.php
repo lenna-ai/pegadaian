@@ -25,7 +25,8 @@ class UserRequest extends FormRequest
             'name'=>'string|required|min:3',
             'email'=>'required', $this->method() == 'get' ? '' : '|unique:users,email,'.$this->get('id'),
             'roles'=>'required|numeric',
-            'password'=>'required'
+            'password'=>'required',
+            'status'=>'in:login,break,offline'
         ];
         return $data;
     }
