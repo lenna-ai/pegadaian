@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\DashboardController;
+use App\Http\Controllers\API\OperatorController;
 use App\Http\Controllers\API\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -37,5 +38,10 @@ Route::group(['middleware' => 'auth:api'],function (): void {
         Route::get('/', [UserController::class, 'index'])->middleware(['can:admin']);
         Route::put('/{id}', [UserController::class, 'update'])->middleware(['can:admin']);
         Route::delete('/{id}', [UserController::class, 'delete'])->middleware(['can:admin']);
+    });
+
+    Route::group(['prefix' => 'operator'],function () {
+        Route::post('/', [OperatorController::class, 'create']);
+        Route::get('/', [OperatorController::class, 'index']);
     });
 });

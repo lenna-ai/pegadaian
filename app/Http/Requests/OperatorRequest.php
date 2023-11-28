@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UserRequest extends FormRequest
+class OperatorRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,19 +21,18 @@ class UserRequest extends FormRequest
      */
     public function rules(): array
     {
-        $nameEmail = 'required|string|min:3';
+        $nameCustomer = 'required|string|min:3';
         if ($this->method() == 'POST') {
-            $nameEmail .= '|unique:users,email';
+            $nameCustomer .= '|unique:operators,name_customer';
         }elseif ($this->method() == 'POST') {
-            $nameEmail .= '|unique:users,email,'.$this->get('id');
+            $nameCustomer .= '|unique:operators,name_customer,'.$this->get('id');
         }
-        $data = [
-            'name'=>'string|required|min:3',
-            'email'=>$nameEmail,
-            'roles'=>'required|numeric',
-            'password'=>'required',
-            'status'=>'in:login,break,offline'
+        return [
+            'name_agent' => 'required|string|exists:users,name',
+            'name_customer'=>$nameCustomer,
+            'date_to_call'=>'required|date_format:d/m/Y',
+            'call_duration'=>'required|numeric',
+            'result_call'=>'required',
         ];
-        return $data;
     }
 }

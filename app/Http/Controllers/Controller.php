@@ -10,7 +10,7 @@ use Illuminate\Routing\Controller as BaseController;
 * @OA\Info(
 *      version="1.0.0",
 *      title="Dokumentasi API Pegadaian",
-*      description="created by nur arifin",
+*      description="created by nur arifin. Please you can use all api but you must be remove Content-fuckin-type/Content-Type in header",
 *      @OA\Contact(
 *          email="arifin@lenna.ai"
 *      ),
