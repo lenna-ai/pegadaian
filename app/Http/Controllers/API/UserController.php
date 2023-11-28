@@ -176,7 +176,7 @@ class UserController extends Controller
     }
 
     /**
-    *    @OA\PUT(
+    *    @OA\Put(
     *       path="/api/user/{id}",
     *       tags={"User"},
     *       operationId="update User",
