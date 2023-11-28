@@ -10,6 +10,7 @@ use Tests\TestCase;
 
 class AuthTest extends TestCase
 {
+    // php artisan test --filter UserTest::test_create_user
     private $response;
     public function setUp(): void
     {
