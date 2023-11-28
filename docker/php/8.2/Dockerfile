@@ -39,6 +39,8 @@ RUN docker-php-ext-install \
     && docker-php-ext-enable \
         # gd pdo pdo_pgsql pdo_mysql zip sockets grpc bcmath opcache
         gd pdo pdo_pgsql pdo_mysql zip sockets bcmath opcache
+RUN groupmod -o -g 82 www-data && \
+    usermod -o -u 82 -g www-data www-data
 RUN set -x ; \
     addgroup -g 82 -S www-data ; \
     adduser -u 82 -D -S -G www-data www-data && exit 0 ; exit 1
