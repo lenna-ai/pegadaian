@@ -48,6 +48,11 @@
                                         "format": "string",
                                         "example": "email@gmail.com"
                                     },
+                                    "roles": {
+                                        "type": "integer",
+                                        "format": "integer",
+                                        "example": "1"
+                                    },
                                     "password": {
                                         "type": "string",
                                         "format": "string",

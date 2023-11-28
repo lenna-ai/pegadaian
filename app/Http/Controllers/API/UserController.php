@@ -216,7 +216,7 @@ class UserController extends Controller
     *         )
     *     ),
     *       @OA\Response(
-    *           response="200",
+    *           response="204",
     *           description="Ok",
     *           @OA\JsonContent
     *           (example={
@@ -291,7 +291,7 @@ class UserController extends Controller
     *          )
     *     ),
     *       @OA\Response(
-    *           response="200",
+    *           response="202",
     *           description="Ok",
     *           @OA\JsonContent
     *           (example={
