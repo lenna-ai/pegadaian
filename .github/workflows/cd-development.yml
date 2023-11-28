@@ -21,7 +21,7 @@ jobs:
           key: ${{ secrets.PLATFORM_PRODUCTION_RSA_KEY }}
           port: ${{ secrets.SSH_PORT_PROD }}
           script: |
-            cd /var/www/pegadaian
+            cd /var/www
             sudo chown -R admin:admin pegadaian
             cd /var/www/pegadaian
             git checkout master
@@ -50,7 +50,7 @@ jobs:
           key: ${{ secrets.PLATFORM_PRODUCTION_RSA_KEY }}
           port: ${{ secrets.SSH_PORT_PROD }}
           script: |
-            cd /var/www/pegadaian
+            cd /var/www
             sudo chown -R 82:82 pegadaian
             cd /var/www/pegadaian
             sudo chmod -R ug+rwx storage bootstrap/cache
