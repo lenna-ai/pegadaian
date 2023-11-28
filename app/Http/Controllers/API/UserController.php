@@ -275,7 +275,7 @@ class UserController extends Controller
     }
 
     /**
-    *    @OA\DELETE(
+    *    @OA\Delete(
     *       path="/api/user/{id}",
     *       tags={"User"},
     *       operationId="delete User",

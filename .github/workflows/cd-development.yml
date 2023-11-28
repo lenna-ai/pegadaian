@@ -38,7 +38,7 @@ jobs:
           port: ${{ secrets.SSH_PORT_PROD }}
           script: |
             cd /var/www
-            sudo chown -R 1000:32 pegadaian
+            sudo chown -R 1000:33 pegadaian
             cd /var/www/pegadaian
             sudo chmod -R ug+rwx storage bootstrap/cache
             exit
