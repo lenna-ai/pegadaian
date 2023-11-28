@@ -41,8 +41,6 @@ RUN docker-php-ext-install \
         gd pdo pdo_pgsql pdo_mysql zip sockets bcmath opcache
 RUN groupmod -o -g 82 www-data && \
     usermod -o -u 82 -g www-data www-data
-RUN set -x ; \
-    adduser -u 82 -D -S -G www-data www-data && exit 0 ; exit 1
 ENV COMPOSER_ALLOW_SUPERUSER=1
 RUN usermod -u 1000 www-data
 RUN rm -rf /var/cache/apk/*
