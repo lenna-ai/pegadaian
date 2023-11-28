@@ -285,7 +285,7 @@ class UserController extends Controller
     *         name="page",
     *         description="Specify page number",
     *         in="query",
-    *         required=false
+    *         required=false,
     *          @OA\Schema(
     *              type="integer"
     *          )
