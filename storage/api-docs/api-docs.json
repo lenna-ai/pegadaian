@@ -444,7 +444,7 @@
                     }
                 },
                 "responses": {
-                    "200": {
+                    "204": {
                         "description": "Ok",
                         "content": {
                             "application/json": {
@@ -492,17 +492,17 @@
                 "operationId": "delete User",
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "page",
                         "in": "query",
-                        "description": "identity",
-                        "required": true,
+                        "description": "Specify page number",
+                        "required": false,
                         "schema": {
                             "type": "integer"
                         }
                     }
                 ],
                 "responses": {
-                    "200": {
+                    "202": {
                         "description": "Ok",
                         "content": {
                             "application/json": {
