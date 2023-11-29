@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\DashboardController;
+use App\Http\Controllers\API\HelpDeskController;
 use App\Http\Controllers\API\OperatorController;
 use App\Http\Controllers\API\UserController;
 use Illuminate\Http\Request;
@@ -43,5 +44,10 @@ Route::group(['middleware' => 'auth:api'],function (): void {
     Route::group(['prefix' => 'operator'],function () {
         Route::post('/', [OperatorController::class, 'create']);
         Route::get('/', [OperatorController::class, 'index']);
+    });
+
+    Route::group(['prefix' => 'helpdesk'],function () {
+        Route::post('/', [HelpDeskController::class, 'create']);
+        Route::get('/', [HelpDeskController::class, 'index']);
     });
 });
