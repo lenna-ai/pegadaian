@@ -28,6 +28,7 @@ class UserController extends Controller
     *           (example={
     *               "data": {
     *                   {
+    *                   "id": "integer",
     *                   "name": "string",
     *                   "email": "string",
     *                   "roles": {
@@ -103,6 +104,7 @@ class UserController extends Controller
     *           (example={
     *               "data": {
     *                   {
+    *                   "id": "integer",
     *                   "name": "string",
     *                   "email": "string",
     *                   "roles": {
@@ -206,6 +208,7 @@ class UserController extends Controller
     *           (example={
     *               "data": {
     *                   {
+    *                   "id": "integer",
     *                   "name": "string",
     *                   "email": "string",
     *                   "roles": {
@@ -281,6 +284,7 @@ class UserController extends Controller
     *           (example={
     *               "data": {
     *                   {
+    *                   "id": "integer",
     *                   "name": "null",
     *                   "email": "null",
     *                   "roles": {},
