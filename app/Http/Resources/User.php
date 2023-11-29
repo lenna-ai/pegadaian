@@ -28,6 +28,8 @@ class User extends JsonResource
             'status' => $this->whenNotNull($this->status),
             'login_at' => $this->login_at,
             'logout_at' => $this->logout_at,
+            'phone_number' => $this->phone_number,
+            'notes' => $this->notes,
             'token_type' => $this->when(isset($this->token), function () {
                 return 'bearer';
             }),

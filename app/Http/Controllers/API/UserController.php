@@ -52,6 +52,8 @@ class UserController extends Controller
     *                   },
     *                   "login_at": "string",
     *                   "logout_at": "string",
+    *                   "phone_number": "string",
+    *                   "notes": "string",
     *                  }
     *              }
     *          }),
@@ -61,7 +63,8 @@ class UserController extends Controller
     public function index():AnonymousResourceCollection
     {
         $this->authorize('read', User::class);
-        $user = ModelsUser::all();
+        $user = ModelsUser::paginate(10);
+
         return User::collection($user);
     }
 
@@ -93,7 +96,15 @@ class UserController extends Controller
     *                     property="password",
     *                     type="string"
     *                 ),
-    *                 example={"name": "hai","email": "prod@gmail.com","roles": 1,"password": "password"}
+    *                 @OA\Property(
+    *                     property="phone_number",
+    *                     type="string"
+    *                 ),
+    *                 @OA\Property(
+    *                     property="notes",
+    *                     type="string"
+    *                 ),
+    *                 example={"name": "hai","email": "prod@gmail.com","roles": 1,"password": "password","phone_number":"027272333333","notes":"hasil"}
     *             )
     *         )
     *     ),
@@ -128,6 +139,8 @@ class UserController extends Controller
     *                   },
     *                   "login_at": "string",
     *                   "logout_at": "string",
+    *                   "phone_number": "string",
+    *                   "notes": "string",
     *                  }
     *              }
     *          }),
@@ -197,7 +210,15 @@ class UserController extends Controller
     *                     type="string",
     *                     description="optional if you want it changes must be enum value ['login','break','offline']"
     *                 ),
-    *                 example={"name": "hai","email": "prod@gmail.com","roles": 1,"password": "password","status": "offline"}
+    *                 @OA\Property(
+    *                     property="phone_number",
+    *                     type="string"
+    *                 ),
+    *                 @OA\Property(
+    *                     property="notes",
+    *                     type="string"
+    *                 ),
+    *                 example={"name": "hai","email": "prod@gmail.com","roles": 1,"password": "password","status": "offline","phone_number":"027272333333","notes":"hasil"}
     *             )
     *         )
     *     ),
@@ -232,6 +253,8 @@ class UserController extends Controller
     *                   },
     *                   "login_at": "string",
     *                   "logout_at": "string",
+    *                   "phone_number": "string",
+    *                   "notes": "string",
     *                  }
     *              }
     *          }),

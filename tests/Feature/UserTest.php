@@ -46,6 +46,8 @@ class UserTest extends TestCase
                     ],
                     "login_at",
                     "logout_at",
+                    "phone_number",
+                    "notes",
                 ]
             ]
         ]);
@@ -87,6 +89,8 @@ class UserTest extends TestCase
                 ],
                 "login_at",
                 "logout_at",
+                "phone_number",
+                "notes",
             ]
         ]);
     }
@@ -140,6 +144,8 @@ class UserTest extends TestCase
                 "status",
                 "login_at",
                 "logout_at",
+                "phone_number",
+                "notes",
             ]
         ]);
     }
