@@ -42,12 +42,12 @@ Route::group(['middleware' => 'auth:api'],function (): void {
     });
 
     Route::group(['prefix' => 'operator'],function () {
-        Route::post('/', [OperatorController::class, 'create'])->middleware(['can:agent']);
-        Route::get('/', [OperatorController::class, 'index'])->middleware(['can:agent']);
+        Route::post('/', [OperatorController::class, 'create'])->middleware(['can:operator']);
+        Route::get('/', [OperatorController::class, 'index'])->middleware(['can:operator']);
     });
 
     Route::group(['prefix' => 'helpdesk'],function () {
-        Route::post('/', [HelpDeskController::class, 'create'])->middleware(['can:agent']);
-        Route::get('/', [HelpDeskController::class, 'index'])->middleware(['can:agent']);
+        Route::post('/', [HelpDeskController::class, 'create'])->middleware(['can:help_desk']);
+        Route::get('/', [HelpDeskController::class, 'index'])->middleware(['can:help_desk']);
     });
 });

@@ -73,6 +73,7 @@ class OperatorController extends Controller
     */
     public function create(OperatorRequest $operatorRequest): OperatorResource
     {
+        $this->authorize('create',Operator::class);
         $data = $operatorRequest->all();
         $operator = Operator::create($data);
         return new OperatorResource($operator);

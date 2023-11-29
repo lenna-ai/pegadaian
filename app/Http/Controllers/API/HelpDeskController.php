@@ -108,6 +108,7 @@ class HelpDeskController extends Controller
     */
     public function create(HelpdeskRequest $helpdeskRequest)
     {
+        $this->authorize('create',HelpDesk::class);
         $data = $helpdeskRequest->all();
         $filenameWithExt = $data['input_voice_call']->getClientOriginalName();
         $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);

@@ -24,5 +24,25 @@ class UserSeeder extends Seeder
             'notes' => str::random(10),
             'phone_number' => str::random(10),
         ]);
+
+        User::create([
+            'name'=>'operator',
+            'email' => 'operator@lenna.ai',
+            'email_verified_at' => now(),
+            'password' => Hash::make('secret'),
+            'remember_token' => str::random(10),
+            'notes' => str::random(10),
+            'phone_number' => str::random(10),
+        ]);
+
+        User::create([
+            'name'=>'helpdesk',
+            'email' => 'helpdesk@lenna.ai',
+            'email_verified_at' => now(),
+            'password' => Hash::make('secret'),
+            'remember_token' => str::random(10),
+            'notes' => str::random(10),
+            'phone_number' => str::random(10),
+        ]);
     }
 }

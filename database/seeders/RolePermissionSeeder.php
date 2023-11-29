@@ -37,12 +37,12 @@ class RolePermissionSeeder extends Seeder
             //operator
             [
                 'role_id' => Role::where('name','operator')->first()->id,
-                'permission_id' => Permission::where('name','insert_operator')->first()->id
+                'permission_id' => Permission::where('name','create_operator')->first()->id
             ],
             //helpdesk
             [
                 'role_id' => Role::where('name','help_desk')->first()->id,
-                'permission_id' => Permission::where('name','insert_helpdesk')->first()->id
+                'permission_id' => Permission::where('name','create_helpdesk')->first()->id
             ],
         ];
 

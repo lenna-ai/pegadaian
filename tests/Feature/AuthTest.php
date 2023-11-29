@@ -17,7 +17,7 @@ class AuthTest extends TestCase
         parent::setUp();
         $data = [
             "email"=>"admin@lenna.ai",
-            "password"=>"password",
+            "password"=>"secret",
             "name"=>"hai"
         ];
         $this->response = $this->post('/api/auth/login',$data);

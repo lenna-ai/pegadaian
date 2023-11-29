@@ -16,6 +16,8 @@ return new class extends Migration
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('role_id');
             $table->timestamps();
+
+            $table->unique(['user_id','role_id']);
         });
     }
 
