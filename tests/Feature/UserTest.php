@@ -9,7 +9,7 @@ use Tests\TestCase;
 
 class UserTest extends TestCase
 {
-    // php artisan test --filter UserTest::test_create_user
+    // php artisan test --filter UserTest::test_index_user
     private $response;
     public function setUp(): void
     {
@@ -33,6 +33,7 @@ class UserTest extends TestCase
         $response->assertJsonStructure([
             'data' => [
                 '*' => [
+                    'id',
                     'name',
                     "email",
                     "roles"=> [
@@ -73,6 +74,7 @@ class UserTest extends TestCase
         $this->assertEquals(count($user), 1);
         $response->assertJsonStructure([
             'data' => [
+                'id',
                 'name',
                 "email",
                 "roles"=> [
@@ -124,6 +126,7 @@ class UserTest extends TestCase
         $this->assertEquals($response['data']['status'], 'login');
         $response->assertJsonStructure([
             'data' => [
+                'id',
                 'name',
                 "email",
                 "roles"=> [
@@ -167,6 +170,7 @@ class UserTest extends TestCase
         $this->assertEquals(count($user), 0);
         $response->assertJsonStructure([
             'data' => [
+                'id',
                 'name',
                 "email",
                 "roles",

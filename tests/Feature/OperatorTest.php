@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Operator;
 use DateTime;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -47,5 +48,19 @@ class OperatorTest extends TestCase
                 "result_call",
             ]
         ]);
+    }
+
+    public function tearDown(): void
+    {
+        $user = Operator::where([
+            'name_agent' => 'admin',
+            'name_customer'=>'required'
+        ])->get();
+        if (count($user) > 0) {
+            Operator::where([
+                'name_agent' => 'admin',
+                'name_customer'=>'required'
+            ])->delete();
+        }
     }
 }
