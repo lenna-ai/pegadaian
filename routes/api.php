@@ -37,7 +37,7 @@ Route::group(['middleware' => 'auth:api'],function (): void {
     Route::group(['prefix' => 'user'],function () {
         Route::post('/', [UserController::class, 'create'])->middleware(['can:admin']);
         Route::get('/', [UserController::class, 'index'])->middleware(['can:admin']);
-        Route::put('/{id}', [UserController::class, 'update'])->middleware(['can:admin']);
+        Route::put('/{id}', [UserController::class, 'update']);
         Route::delete('/{id}', [UserController::class, 'delete'])->middleware(['can:admin']);
     });
 
