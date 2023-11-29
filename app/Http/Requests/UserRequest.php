@@ -22,16 +22,18 @@ class UserRequest extends FormRequest
     public function rules(): array
     {
         $nameEmail = 'required|string|min:3';
+        $password = "";
         if ($this->method() == 'POST') {
+            $password .= "required";
             $nameEmail .= '|unique:users,email';
-        }elseif ($this->method() == 'POST') {
+        }elseif ($this->method() == 'PUT') {
             $nameEmail .= '|unique:users,email,'.$this->get('id');
         }
         $data = [
             'name'=>'string|required|min:3',
             'email'=>$nameEmail,
             'roles'=>'required|numeric',
-            'password'=>'required',
+            'password'=>$password,
             'notes'=>'string',
             'phone_number'=>'string',
             'status'=>'in:login,break,offline'
