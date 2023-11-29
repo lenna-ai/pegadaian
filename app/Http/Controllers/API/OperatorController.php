@@ -26,7 +26,7 @@ class OperatorController extends Controller
     *         @OA\MediaType(
     *             mediaType="application/json",
     *             @OA\Schema(
-    *               required={"name_agent","name_customer","date_to_call","call_duration","result_call"},
+    *               required={"name_customer","date_to_call","call_duration","result_call"},
     *                 @OA\Property(
     *                     property="name_agent",
     *                     type="string",
@@ -49,7 +49,7 @@ class OperatorController extends Controller
     *                     property="result_call",
     *                     type="string"
     *                 ),
-    *                 example={"name_agent": "hai","name_customer": "prod@gmail.com","date_to_call": "22/11/2023","call_duration": 22,"result_call":"anything"}
+    *                 example={"name_agent": "CURRENT USER","name_customer": "prod@gmail.com","date_to_call": "22/11/2023","call_duration": 22,"result_call":"anything"}
     *             )
     *         )
     *     ),
@@ -75,6 +75,7 @@ class OperatorController extends Controller
     {
         $this->authorize('create',Operator::class);
         $data = $operatorRequest->all();
+        $data['name_agent'] = auth()->user()->name;
         $operator = Operator::create($data);
         return new OperatorResource($operator);
     }

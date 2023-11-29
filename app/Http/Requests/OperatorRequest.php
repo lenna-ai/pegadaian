@@ -28,7 +28,7 @@ class OperatorRequest extends FormRequest
             $nameCustomer .= '|unique:operators,name_customer,'.$this->get('id');
         }
         return [
-            'name_agent' => 'required|string|exists:users,name',
+            'name_agent' => 'string|exists:users,name',
             'name_customer'=>$nameCustomer,
             'date_to_call'=>'required|date_format:d/m/Y',
             'call_duration'=>'required|numeric',
