@@ -89,14 +89,18 @@ class HelpDeskController extends Controller
     *           description="Ok",
     *           @OA\JsonContent
     *           (example={
-    *               "data": {
-    *                   {
-    *                   "name_agent": "string",
-    *                   "name_customer": "string",
-    *                   "date_to_call": "string",
-    *                   "call_duration": "string",
-    *                   "result_call": "string",
-    *                  }
+    *             "data": {
+    *                {
+    *                    "branch_code": "string",
+    *                    "branch_name": "string",
+    *                    "branch_name_staff": "string",
+    *                    "branch_phone_number": "string",
+    *                    "date_to_call": "string",
+    *                    "call_duration": "string",
+    *                    "result_call": "string",
+    *                    "name_agent": "string",
+    *                    "input_voice_call": "string",
+    *               }
     *              }
     *          }),
     *      ),
