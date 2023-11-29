@@ -34,14 +34,15 @@ class RolePermissionSeeder extends Seeder
                 'permission_id' => Permission::where('name','delete_user')->first()->id
             ],
 
-            //agent
+            //operator
             [
-                'role_id' => Role::where('name','agent')->first()->id,
-                'permission_id' => Permission::where('name','read_user')->first()->id
+                'role_id' => Role::where('name','operator')->first()->id,
+                'permission_id' => Permission::where('name','insert_operator')->first()->id
             ],
+            //helpdesk
             [
-                'role_id' => Role::where('name','agent')->first()->id,
-                'permission_id' => Permission::where('name','delete_user')->first()->id
+                'role_id' => Role::where('name','help_desk')->first()->id,
+                'permission_id' => Permission::where('name','insert_helpdesk')->first()->id
             ],
         ];
 

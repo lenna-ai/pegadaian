@@ -13,7 +13,19 @@ class PermissionSeeder extends Seeder
      */
     public function run(): void
     {
-        $data = ['create_user','update_user','read_user','delete_user'];
+        $data = [
+            //user
+            'create_user',
+            'update_user',
+            'read_user',
+            'delete_user',
+
+            //operator
+            'insert_operator',
+
+            //helpdesk
+            'insert_helpdesk'
+        ];
         foreach ($data as $key => $value) {
             Permission::create([
                 'name'=> $value
