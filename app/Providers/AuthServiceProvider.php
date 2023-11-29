@@ -37,5 +37,16 @@ class AuthServiceProvider extends ServiceProvider
             }
             return $result ? Response::allow() : Response::deny('You must be an admin.');;
         });
+
+        Gate::define('agent',function (User $user): Response {
+            $result = false;
+            foreach ($user->role as $role) {
+                if ($role->name == 'agent') {
+                    $result = true;
+                    break;
+                }
+            }
+            return $result ? Response::allow() : Response::deny('You must be an agent.');;
+        });
     }
 }
