@@ -187,6 +187,7 @@ class DashboardController extends Controller
     *       description="total_agent",
     *   @OA\Response(
     *           response="200",
+    *       ),
     *  )
     */
     public function total_agent()
