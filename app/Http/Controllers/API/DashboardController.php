@@ -166,7 +166,8 @@ class DashboardController extends Controller
     *       summary="performance_hourly_today",
     *       description="performance_hourly_today",
     *   @OA\Response(
-    *           response="200"
+    *           response="200",
+    *           description="Ok"
     *      ),
     *  )
     */
@@ -187,6 +188,7 @@ class DashboardController extends Controller
     *       description="total_agent",
     *   @OA\Response(
     *           response="200",
+    *           description="Ok"
     *       ),
     *  )
     */
