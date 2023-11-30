@@ -19,16 +19,6 @@ class HelpDeskController extends Controller
         //
     }
 
-    // 'branch_code',
-    //     'branch_name',
-    //     'branch_name_staff',
-    //     'branch_phone_number',
-    //     'date_to_call',
-    //     'call_duration',
-    //     'result_call',
-    //     'name_agent',
-    //     'input_voice_call',
-
     /**
     *    @OA\POST(
     *       path="/api/helpdesk",
