@@ -165,6 +165,9 @@ class DashboardController extends Controller
     *       operationId="performance_hourly_today",
     *       summary="performance_hourly_today",
     *       description="performance_hourly_today",
+    *   @OA\Response(
+    *           response="200"
+    *      ),
     *  )
     */
     public function performance_hourly_today()
@@ -182,6 +185,8 @@ class DashboardController extends Controller
     *       operationId="total_agent",
     *       summary="total_agent",
     *       description="total_agent",
+    *   @OA\Response(
+    *           response="200",
     *  )
     */
     public function total_agent()
