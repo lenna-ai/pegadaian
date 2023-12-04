@@ -24,8 +24,8 @@ class OperatorRequest extends FormRequest
         $nameCustomer = 'required|string|min:3';
         if ($this->method() == 'POST') {
             $nameCustomer .= '|unique:operators,name_customer';
-        }elseif ($this->method() == 'POST') {
-            $nameCustomer .= '|unique:operators,name_customer,'.$this->get('id');
+        }elseif ($this->method() == 'PUT') {
+            $nameCustomer .= '|unique:operators,name_customer,'.$this->route('id');
         }
         return [
             'name_agent' => 'string|exists:users,name',
