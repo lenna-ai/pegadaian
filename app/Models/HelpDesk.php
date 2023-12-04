@@ -20,4 +20,8 @@ class HelpDesk extends Model
         'input_voice_call',
         'agent_id'
     ];
+
+    protected $cast = [
+        'date_to_call' => 'timestamp'
+    ];
 }
