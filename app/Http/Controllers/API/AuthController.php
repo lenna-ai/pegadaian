@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Helpers\StatusHelper;
+use App\Http\Requests\ChangeStatusRequest;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Resources\DataMessage\Message;
@@ -11,6 +13,7 @@ use App\Models\Role;
 use App\Models\User;
 use Carbon\Carbon;
 use Exception;
+use Illuminate\Database\Eloquent\Casts\Json;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -27,6 +30,7 @@ class AuthController extends Controller
     public function __construct()
     {
         $this->middleware('auth:api', ['except' => ['login','register']]);
+        // $this->middleware('auth:api')->except(['login','register']);
     }
 
     /**
@@ -139,7 +143,7 @@ class AuthController extends Controller
     *      ),
     *  )
     */
-    public function login(LoginRequest $request): ResourcesUser
+    public function login(LoginRequest $request): JsonResponse
     {
         $credentials = [
             'email'=>$request['email'],
@@ -147,7 +151,11 @@ class AuthController extends Controller
         ];
 
         if (!$token = auth()->attempt($credentials)) {
-            throw new Exception(Message::TextMessage(['error' => 'Unauthorized'], 401));
+            // throw new Exception(Message::TextMessage(['error' => 'Unauthorized'], 401));
+            return response()->json([
+                'message' => "email atau password salah",
+                'status' => false
+            ]);
         }
         //update
         $user = User::find(auth()->user()->id);
@@ -162,7 +170,9 @@ class AuthController extends Controller
         $user['status'] = 'online';
         $user['login_at'] = Carbon::now()->toDateTimeString();
 
-        return new ResourcesUser($user);
+        StatusHelper::changeStatus($user->id, 'online');
+        // return new ResourcesUser($user);
+        return response()->json([ 'data' => new ResourcesUser($user)]);
     }
 
     /**
@@ -223,6 +233,7 @@ class AuthController extends Controller
         $user->save();
         //akhir update
 
+        StatusHelper::changeStatus($user->id, 'offline');
 
         auth()->logout();
 
@@ -258,5 +269,48 @@ class AuthController extends Controller
         $user = auth()->user();
         $user['token'] = auth()->refresh();
         return new ResourcesUser($user);
+    }
+
+    /**
+    *    @OA\Post(
+    *       path="/api/auth/change-status",
+    *       tags={"Authenticate User"},
+    *       operationId="Change status user",
+    *       summary="change status",
+    *       description="Untuk mengubah status",
+    *    @OA\RequestBody(
+    *         @OA\MediaType(
+    *             mediaType="application/json",
+    *             @OA\Schema(
+    *                 @OA\Property(
+    *                     property="user_id",
+    *                     type="integer"
+    *                 ),
+    *                 @OA\Property(
+    *                     property="status",
+    *                     type="string"
+    *                 ),
+    *                 example={"user_id": "0", "password": "online"}
+    *             )
+    *         )
+    *     ),
+    *       @OA\Response(
+    *           response="200",
+    *           description="Ok",
+    *           @OA\JsonContent
+    *           (example={
+    *             "status": true,
+    *          }),
+    *      ),
+    *  )
+    */
+
+    public function change_status(ChangeStatusRequest $request): JsonResponse
+    {
+        StatusHelper::changeStatus($request->user_id, $request->status);
+
+        return response()->json([
+            'status' => true
+        ]);
     }
 }

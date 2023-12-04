@@ -4,14 +4,16 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Dashboard\DashboardResource;
+use App\Http\Resources\Helpdesk\HelpDeskResource;
 use App\Http\Resources\Operator\OperatorResource;
+use App\Models\HelpDesk;
 use App\Models\Operator;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class DashboardController extends Controller
+class DashboardHepldeskController extends Controller
 {
     public function index(): string
     {
@@ -21,7 +23,7 @@ class DashboardController extends Controller
 
     /**
     *    @OA\Get(
-    *       path="/api/dashboard/operator/total_call/{start_date}/{end_date}",
+    *       path="/api/dashboard/helpdesk/total_call/{start_date}/{end_date}",
     *       tags={"Dashboard"},
     *       operationId="total_call",
     *       summary="total_call",
@@ -49,7 +51,7 @@ class DashboardController extends Controller
     *           (example={
     *               "data": {
     *                   {
-    *                   "count_operator": "integer",
+    *                   "count_helpdesk": "integer",
     *                  }
     *              }
     *          }),
@@ -58,14 +60,14 @@ class DashboardController extends Controller
     */
     public function total_call($start_date,$end_date)
     {
-        $operator = Operator::whereBetween('created_at',[date($start_date), date($end_date)])->get();
-        $result_operator['count_operator'] = count($operator);
-        return new DashboardResource((object)$result_operator);
+        $helpdesk = HelpDesk::whereBetween('created_at',[date($start_date), date($end_date)])->get();
+        $result_helpdesk['count_helpdesk'] = count($helpdesk);
+        return new DashboardResource((object)$result_helpdesk);
     }
 
     /**
     *    @OA\Get(
-    *       path="/api/dashboard/operator/average_call_time/{start_date}/{end_date}",
+    *       path="/api/dashboard/helpdesk/average_call_time/{start_date}/{end_date}",
     *       tags={"Dashboard"},
     *       operationId="average_call_time",
     *       summary="average_call_time",
@@ -102,18 +104,18 @@ class DashboardController extends Controller
     */
     public function average_call_time($start_date,$end_date)
     {
-        $operator = Operator::whereBetween('created_at',[date($start_date), date($end_date)])->get();
-        $count_operator = count($operator);
-        $sumOperator = $operator->sum('call_duration');
-        $result_operator = [
-            'average_call_time' => $sumOperator / $count_operator
+        $helpdesk = HelpDesk::whereBetween('created_at',[date($start_date), date($end_date)])->get();
+        $count_helpdesk = count($helpdesk);
+        $sumHelpdesk = $helpdesk->sum('call_duration');
+        $result_helpdesk = [
+            'average_call_time' => $sumHelpdesk / $count_helpdesk
         ];
-        return new DashboardResource((object)$result_operator);
+        return new DashboardResource((object)$result_helpdesk);
     }
 
     /**
     *    @OA\Get(
-    *       path="/api/dashboard/operator/current_call_session_detail_information/{start_date}/{end_date}",
+    *       path="/api/dashboard/helpdesk/current_call_session_detail_information/{start_date}/{end_date}",
     *       tags={"Dashboard"},
     *       operationId="current_call_session_detail_information",
     *       summary="current_call_session_detail_information",
@@ -154,14 +156,13 @@ class DashboardController extends Controller
     */
     public function current_call_session_detail_information($start_date,$end_date)
     {
-        $operator = Operator::whereBetween('created_at',[date($start_date), date($end_date)])
-        ->where(['name_agent'=>auth()->user()->name])->get();
-        return OperatorResource::collection($operator);
+        $helpdesk = HelpDesk::whereBetween('created_at',[date($start_date), date($end_date)])->where(['name_agent'=>auth()->user()->name])->get();
+        return HelpDeskResource::collection($helpdesk);
     }
 
     /**
     *    @OA\Get(
-    *       path="/api/dashboard/operator/performance_hourly_today/{start_date}/{end_date}",
+    *       path="/api/dashboard/helpdesk/performance_hourly_today/{start_date}/{end_date}",
     *       tags={"Dashboard"},
     *       operationId="performance_hourly_today",
     *       summary="performance_hourly_today",
@@ -174,7 +175,7 @@ class DashboardController extends Controller
     */
     public function performance_hourly_today()
     {
-        $data = Operator::where('date_to_call', '>=', Carbon::yesterday()->subDay())->get()->groupBy(function($date) {
+        $data = HelpDesk::where('date_to_call', '>=', Carbon::yesterday()->subDay())->get()->groupBy(function($date) {
             return Carbon::parse($date->date_to_call)->format('H');
         });
         return response()->json(['data'=>$data]);
@@ -182,7 +183,7 @@ class DashboardController extends Controller
 
     /**
     *    @OA\Get(
-    *       path="/api/dashboard/operator/total_agent",
+    *       path="/api/dashboard/helpdesk/total_agent",
     *       tags={"Dashboard"},
     *       operationId="total_agent",
     *       summary="total_agent",
@@ -207,5 +208,16 @@ class DashboardController extends Controller
             $dataUser[$key]['duration_logout'] = $durationLogout;
         }
         return $dataUser;
+    }
+
+    public function list_helpdesk($start_date,$end_date)
+    {
+        $data = HelpDesk::where('date_to_call', '>=', $start_date)
+        ->where('date_to_call', '<=', $end_date)
+        ->get();
+
+        return response()->json([
+            'data' => $data
+        ]);
     }
 }

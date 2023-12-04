@@ -81,6 +81,7 @@ class HelpDeskController extends Controller
     *           (example={
     *             "data": {
     *                {
+    *                    "agent_id": "integer"
     *                    "branch_code": "string",
     *                    "branch_name": "string",
     *                    "branch_name_staff": "string",

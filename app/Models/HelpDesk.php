@@ -18,5 +18,6 @@ class HelpDesk extends Model
         'result_call',
         'name_agent',
         'input_voice_call',
+        'agent_id'
     ];
 }

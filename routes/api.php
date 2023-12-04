@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\DashboardController;
+use App\Http\Controllers\API\DashboardHepldeskController;
 use App\Http\Controllers\API\HelpDeskController;
 use App\Http\Controllers\API\OperatorController;
 use App\Http\Controllers\API\UserController;
@@ -29,15 +30,28 @@ Route::group(['middleware' => 'api','prefix' => 'auth'],function () {
     Route::post('logout', [AuthController::class, 'logout']);
     Route::post('refresh', [AuthController::class, 'refresh']);
     Route::post('me', [AuthController::class, 'me']);
+    Route::post('change-status', [AuthController::class, 'change_status']);
 });
 
 Route::group(['middleware' => 'auth:api'],function (): void {
     Route::group(['prefix'=>'dashboard'],function () {
-        Route::get('total_call/{start_date}/{end_date}', [DashboardController::class, 'total_call'])->middleware(['can:admin']);
-        Route::get('average_call_time/{start_date}/{end_date}', [DashboardController::class, 'average_call_time'])->middleware(['can:admin']);
-        Route::get('current_call_session_detail_information/{start_date}/{end_date}', [DashboardController::class, 'current_call_session_detail_information'])->middleware(['can:admin']);
-        Route::get('performance_hourly_today', [DashboardController::class, 'performance_hourly_today'])->middleware(['can:admin']);
-        Route::get('total_agent', [DashboardController::class, 'total_agent'])->middleware(['can:admin']);
+        
+        Route::group(['prefix'=>'operator'],function () {
+            Route::get('total_call/{start_date}/{end_date}', [DashboardController::class, 'total_call'])->middleware(['can:admin']);
+            Route::get('average_call_time/{start_date}/{end_date}', [DashboardController::class, 'average_call_time'])->middleware(['can:admin']);
+            Route::get('current_call_session_detail_information/{start_date}/{end_date}', [DashboardController::class, 'current_call_session_detail_information'])->middleware(['can:admin']);
+            Route::get('performance_hourly_today', [DashboardController::class, 'performance_hourly_today'])->middleware(['can:admin']);
+            Route::get('total_agent', [DashboardController::class, 'total_agent'])->middleware(['can:admin']);
+        });
+
+        Route::group(['prefix'=>'helpdesk'],function () {
+            Route::get('total_call/{start_date}/{end_date}', [DashboardHepldeskController::class, 'total_call'])->middleware(['can:admin']);
+            Route::get('average_call_time/{start_date}/{end_date}', [DashboardHepldeskController::class, 'average_call_time'])->middleware(['can:admin']);
+            Route::get('current_call_session_detail_information/{start_date}/{end_date}', [DashboardHepldeskController::class, 'current_call_session_detail_information'])->middleware(['can:admin']);
+            Route::get('performance_hourly_today', [DashboardHepldeskController::class, 'performance_hourly_today'])->middleware(['can:admin']);
+            Route::get('total_agent', [DashboardHepldeskController::class, 'total_agent'])->middleware(['can:admin']);
+            Route::get('list_helpdesk', [DashboardHepldeskController::class, 'list_helpdesk'])->middleware(['can:admin']);
+        });
     });
     Route::get('dashboard', [DashboardController::class, 'index'])->middleware(['can:admin','throttle:login']);
 
