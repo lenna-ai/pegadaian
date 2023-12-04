@@ -27,7 +27,7 @@ class UserRequest extends FormRequest
             $password .= "required";
             $nameEmail .= '|unique:users,email';
         }elseif ($this->method() == 'PUT') {
-            $nameEmail .= '|unique:users,email,'.$this->get('id');
+            $nameEmail .= '|unique:users,email,'.$this->route('id');
         }
         $data = [
             'name'=>'string|required|min:3',

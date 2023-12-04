@@ -53,12 +53,12 @@ class OperatorTest extends TestCase
     public function tearDown(): void
     {
         $user = Operator::where([
-            'name_agent' => 'admin',
+            'name_agent' => 'operator',
             'name_customer'=>'required'
         ])->get();
         if (count($user) > 0) {
             Operator::where([
-                'name_agent' => 'admin',
+                'name_agent' => 'operator',
                 'name_customer'=>'required'
             ])->delete();
         }
