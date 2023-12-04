@@ -30,8 +30,8 @@ class OperatorRequest extends FormRequest
         return [
             'name_agent' => 'string|exists:users,name',
             'name_customer'=>$nameCustomer,
-            'date_to_call'=>'required|date_format:d/m/Y',
-            'call_duration'=>'required',
+            'date_to_call'=>'required',
+            'call_duration'=>'required|numeric',
             'result_call'=>'required',
         ];
     }
