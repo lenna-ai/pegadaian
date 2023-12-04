@@ -67,7 +67,7 @@ class AuthController extends Controller
     *      ),
     *  )
     */
-    public function register(RegisterRequest $request)
+    public function register(RegisterRequest $request):ResourcesUser
     {
         $data = $request->all();
         DB::beginTransaction();
