@@ -102,11 +102,21 @@ class DashboardController extends Controller
     */
     public function average_call_time($start_date,$end_date)
     {
-        $operator = Operator::whereBetween('created_at',[date($start_date), date($end_date)])->get();
-        $count_operator = count($operator);
-        $sumOperator = $operator->sum('call_duration');
+        // $operator = Operator::whereBetween('created_at',[date($start_date), date($end_date)])->get();
+        $operator = Operator::whereDate('created_at', '>=', date($start_date))
+        ->whereDate('created_at', '<=', date($end_date))
+        ->get();
+        
+        if (!count($operator)) {
+            $result = 0;
+        } else {
+            $count_operator = count($operator);
+            $sumOperator = $operator->sum('call_duration');
+    
+            $result = $sumOperator / $count_operator;
+        }
         $result_operator = [
-            'average_call_time' => $sumOperator / $count_operator
+            'average_call_time' => $result
         ];
         return new DashboardResource((object)$result_operator);
     }
