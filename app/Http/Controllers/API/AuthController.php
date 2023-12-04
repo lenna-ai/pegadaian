@@ -143,7 +143,7 @@ class AuthController extends Controller
     *      ),
     *  )
     */
-    public function login(LoginRequest $request): JsonResponse
+    public function login(LoginRequest $request): ResourcesUser
     {
         $credentials = [
             'email'=>$request['email'],
@@ -171,8 +171,8 @@ class AuthController extends Controller
         $user['login_at'] = Carbon::now()->toDateTimeString();
 
         StatusHelper::changeStatus($user->id, 'online');
-        // return new ResourcesUser($user);
-        return response()->json([ 'data' => new ResourcesUser($user)]);
+        return new ResourcesUser($user);
+        // return response()->json([ 'data' => new ResourcesUser($user)]);
     }
 
     /**
