@@ -13,7 +13,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class DashboardHepldeskController extends Controller
+class DashboardHelpdeskController extends Controller
 {
     public function index(): string
     {
@@ -24,8 +24,8 @@ class DashboardHepldeskController extends Controller
     /**
     *    @OA\Get(
     *       path="/api/dashboard/helpdesk/total_call/{start_date}/{end_date}",
-    *       tags={"Dashboard"},
-    *       operationId="total_call",
+    *       tags={"Dashboard Helpdesk"},
+    *       operationId="total_call_Helpdesk",
     *       summary="total_call",
     *       description="total_call",
     *     @OA\Parameter(
@@ -68,8 +68,8 @@ class DashboardHepldeskController extends Controller
     /**
     *    @OA\Get(
     *       path="/api/dashboard/helpdesk/average_call_time/{start_date}/{end_date}",
-    *       tags={"Dashboard"},
-    *       operationId="average_call_time",
+    *       tags={"Dashboard Helpdesk"},
+    *       operationId="average_call_time_Helpdesk",
     *       summary="average_call_time",
     *       description="average_call_time for minutes",
     *     @OA\Parameter(
@@ -117,7 +117,7 @@ class DashboardHepldeskController extends Controller
     *    @OA\Get(
     *       path="/api/dashboard/helpdesk/current_call_session_detail_information/{start_date}/{end_date}",
     *       tags={"Dashboard"},
-    *       operationId="current_call_session_detail_information",
+    *       operationId="current_call_session_detail_information_Helpdesk",
     *       summary="current_call_session_detail_information",
     *       description="it is API for 2 Api Current Call Session & Dashboard Detail Information",
     *     @OA\Parameter(
@@ -164,7 +164,7 @@ class DashboardHepldeskController extends Controller
     *    @OA\Get(
     *       path="/api/dashboard/helpdesk/performance_hourly_today/{start_date}/{end_date}",
     *       tags={"Dashboard"},
-    *       operationId="performance_hourly_today",
+    *       operationId="performance_hourly_today_Helpdesk",
     *       summary="performance_hourly_today",
     *       description="performance_hourly_today",
     *   @OA\Response(
@@ -185,7 +185,7 @@ class DashboardHepldeskController extends Controller
     *    @OA\Get(
     *       path="/api/dashboard/helpdesk/total_agent",
     *       tags={"Dashboard"},
-    *       operationId="total_agent",
+    *       operationId="total_agent_Helpdesk",
     *       summary="total_agent",
     *       description="total_agent",
     *   @OA\Response(
