@@ -171,7 +171,7 @@ class DashboardHelpdeskController extends Controller
         // $helpdesk = HelpDesk::whereBetween('created_at',[date($start_date), date($end_date)])->where(['name_agent'=>auth()->user()->name])->get();
         $helpdesk = HelpDesk::whereDate('created_at', '>=', date($start_date))
         ->whereDate('created_at', '<=', date($end_date))
-        ->where(['name_agent'=>auth()->user()->name])
+        // ->where(['name_agent'=>auth()->user()->name])
         ->get();
         return HelpDeskResource::collection($helpdesk);
     }

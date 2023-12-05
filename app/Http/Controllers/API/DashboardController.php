@@ -169,7 +169,8 @@ class DashboardController extends Controller
         // $operator = Operator::whereBetween('created_at',[date($start_date), date($end_date)])
         $operator = Operator::whereDate('created_at', '>=', date($start_date))
         ->whereDate('created_at', '<=', date($end_date))
-        ->where(['name_agent'=>auth()->user()->name])->get();
+        // ->where(['name_agent'=>auth()->user()->name])
+        ->get();
         return OperatorResource::collection($operator);
     }
 
