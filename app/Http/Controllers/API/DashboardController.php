@@ -58,7 +58,9 @@ class DashboardController extends Controller
     */
     public function total_call($start_date,$end_date)
     {
-        $operator = Operator::whereBetween('created_at',[date($start_date), date($end_date)])->get();
+        // $operator = Operator::whereBetween('created_at',[date($start_date), date($end_date)])->get();
+        $operator = Operator::whereDate('created_at', '>=', date($start_date))
+        ->whereDate('created_at', '<=', date($end_date))->get();
         $result_operator['count_operator'] = count($operator);
         return new DashboardResource((object)$result_operator);
     }
@@ -164,7 +166,9 @@ class DashboardController extends Controller
     */
     public function current_call_session_detail_information($start_date,$end_date)
     {
-        $operator = Operator::whereBetween('created_at',[date($start_date), date($end_date)])
+        // $operator = Operator::whereBetween('created_at',[date($start_date), date($end_date)])
+        $operator = Operator::whereDate('created_at', '>=', date($start_date))
+        ->whereDate('created_at', '<=', date($end_date))
         ->where(['name_agent'=>auth()->user()->name])->get();
         return OperatorResource::collection($operator);
     }
