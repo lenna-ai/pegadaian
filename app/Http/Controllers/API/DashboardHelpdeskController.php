@@ -104,11 +104,21 @@ class DashboardHelpdeskController extends Controller
     */
     public function average_call_time($start_date,$end_date)
     {
-        $helpdesk = HelpDesk::whereBetween('created_at',[date($start_date), date($end_date)])->get();
-        $count_helpdesk = count($helpdesk);
-        $sumHelpdesk = $helpdesk->sum('call_duration');
+        // $helpdesk = HelpDesk::whereBetween('created_at',[date($start_date), date($end_date)])->get();
+        $helpdesk = HelpDesk::whereDate('created_at', '>=', date($start_date))
+        ->whereDate('created_at', '<=', date($end_date))
+        ->get();
+        
+        if (!count($helpdesk)) {
+            $result = 0;
+        } else {
+            $count_helpdesk = count($helpdesk);
+            $sumHelpdesk = $helpdesk->sum('call_duration');
+    
+            $result = $sumHelpdesk / $count_helpdesk;
+        }
         $result_helpdesk = [
-            'average_call_time' => $sumHelpdesk / $count_helpdesk
+            'average_call_time' => $result
         ];
         return new DashboardResource((object)$result_helpdesk);
     }
