@@ -228,8 +228,8 @@ class DashboardHelpdeskController extends Controller
 
     public function list_helpdesk($start_date,$end_date)
     {
-        $data = HelpDesk::where('date_to_call', '>=', $start_date)
-        ->where('date_to_call', '<=', $end_date)
+        $data = HelpDesk::whereDate('date_to_call', '>=', $start_date)
+        ->whereDate('date_to_call', '<=', $end_date)
         ->get();
 
         return response()->json([
