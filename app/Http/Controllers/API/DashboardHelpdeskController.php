@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\Dashboard\DashboardResource;
+use App\Http\Resources\Dashboard\DashboardHelpdeskResource;
 use App\Http\Resources\Helpdesk\HelpDeskResource;
 use App\Http\Resources\Operator\OperatorResource;
 use App\Models\HelpDesk;
@@ -64,7 +64,7 @@ class DashboardHelpdeskController extends Controller
         $helpdesk = HelpDesk::whereDate('created_at', '>=', date($start_date))
         ->whereDate('created_at', '<=', date($end_date))->get();
         $result_helpdesk['count_helpdesk'] = count($helpdesk);
-        return new DashboardResource((object)$result_helpdesk);
+        return new DashboardHelpdeskResource((object)$result_helpdesk);
     }
 
     /**
@@ -122,7 +122,7 @@ class DashboardHelpdeskController extends Controller
         $result_helpdesk = [
             'average_call_time' => $result
         ];
-        return new DashboardResource((object)$result_helpdesk);
+        return new DashboardHelpdeskResource((object)$result_helpdesk);
     }
 
     /**
