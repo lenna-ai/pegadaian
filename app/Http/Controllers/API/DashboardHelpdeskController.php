@@ -62,7 +62,7 @@ class DashboardHelpdeskController extends Controller
     {
         // $helpdesk = HelpDesk::whereBetween('created_at',[date($start_date), date($end_date)])->get();
         $helpdesk = HelpDesk::whereDate('created_at', '>=', date($start_date))
-        ->whereDate('created_at', '<=', date($end_date))->get();
+        ->whereDate('created_at', '<=', date($end_date))->orderBy('id','DESC')->get();
         $result_helpdesk['count_helpdesk'] = count($helpdesk);
         return new DashboardHelpdeskResource((object)$result_helpdesk);
     }
@@ -108,15 +108,15 @@ class DashboardHelpdeskController extends Controller
     {
         // $helpdesk = HelpDesk::whereBetween('created_at',[date($start_date), date($end_date)])->get();
         $helpdesk = HelpDesk::whereDate('created_at', '>=', date($start_date))
-        ->whereDate('created_at', '<=', date($end_date))
+        ->whereDate('created_at', '<=', date($end_date))->orderBy('id','DESC')
         ->get();
-        
+
         if (!count($helpdesk)) {
             $result = 0;
         } else {
             $count_helpdesk = count($helpdesk);
             $sumHelpdesk = $helpdesk->sum('call_duration');
-    
+
             $result = $sumHelpdesk / $count_helpdesk;
         }
         $result_helpdesk = [
@@ -170,7 +170,7 @@ class DashboardHelpdeskController extends Controller
     {
         // $helpdesk = HelpDesk::whereBetween('created_at',[date($start_date), date($end_date)])->where(['name_agent'=>auth()->user()->name])->get();
         $helpdesk = HelpDesk::whereDate('created_at', '>=', date($start_date))
-        ->whereDate('created_at', '<=', date($end_date))
+        ->whereDate('created_at', '<=', date($end_date))->orderBy('id','DESC')
         // ->where(['name_agent'=>auth()->user()->name])
         ->get();
         return HelpDeskResource::collection($helpdesk);
@@ -213,7 +213,7 @@ class DashboardHelpdeskController extends Controller
     public function total_agent()
     {
         $dataUser = [];
-        $users = User::all();
+        $users = User::orderBy('id', 'DESC')->get();
         foreach ($users as $key => $user) {
             $start = Carbon::parse($user->login_at);
             $end = Carbon::parse($user->logout_at);

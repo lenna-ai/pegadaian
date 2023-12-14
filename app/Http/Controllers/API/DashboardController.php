@@ -60,7 +60,7 @@ class DashboardController extends Controller
     {
         // $operator = Operator::whereBetween('created_at',[date($start_date), date($end_date)])->get();
         $operator = Operator::whereDate('created_at', '>=', date($start_date))
-        ->whereDate('created_at', '<=', date($end_date))->get();
+        ->whereDate('created_at', '<=', date($end_date))->orderBy('id','DESC')->get();
         $result_operator['count_operator'] = count($operator);
         return new DashboardResource((object)$result_operator);
     }
@@ -106,15 +106,15 @@ class DashboardController extends Controller
     {
         // $operator = Operator::whereBetween('created_at',[date($start_date), date($end_date)])->get();
         $operator = Operator::whereDate('created_at', '>=', date($start_date))
-        ->whereDate('created_at', '<=', date($end_date))
+        ->whereDate('created_at', '<=', date($end_date))->orderBy('id','DESC')
         ->get();
-        
+
         if (!count($operator)) {
             $result = 0;
         } else {
             $count_operator = count($operator);
             $sumOperator = $operator->sum('call_duration');
-    
+
             $result = $sumOperator / $count_operator;
         }
         $result_operator = [
@@ -168,7 +168,7 @@ class DashboardController extends Controller
     {
         // $operator = Operator::whereBetween('created_at',[date($start_date), date($end_date)])
         $operator = Operator::whereDate('created_at', '>=', date($start_date))
-        ->whereDate('created_at', '<=', date($end_date))
+        ->whereDate('created_at', '<=', date($end_date))->orderBy('id','DESC')
         // ->where(['name_agent'=>auth()->user()->name])
         ->get();
         return OperatorResource::collection($operator);
@@ -211,7 +211,7 @@ class DashboardController extends Controller
     public function total_agent()
     {
         $dataUser = [];
-        $users = User::all();
+        $users = User::orderBy('id', 'DESC')->get();
         foreach ($users as $key => $user) {
             $start = Carbon::parse($user->login_at);
             $end = Carbon::parse($user->logout_at);
