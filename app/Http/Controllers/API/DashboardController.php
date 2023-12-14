@@ -211,7 +211,11 @@ class DashboardController extends Controller
     public function total_agent()
     {
         $dataUser = [];
-        $users = User::orderBy('id', 'DESC')->get();
+
+        // $users = User::with(['role'])->orderBy('id', 'DESC')->get();
+        $users = User::with(['role'])->orderBy('id', 'DESC')->whereHas('Role', function($userRole){
+            $userRole->where('name', 'operator');
+        })->get();
         foreach ($users as $key => $user) {
             $start = Carbon::parse($user->login_at);
             $end = Carbon::parse($user->logout_at);
