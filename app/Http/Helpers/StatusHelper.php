@@ -3,6 +3,7 @@
 namespace App\Http\Helpers;
 
 use App\Models\StatusActivityLog;
+use Carbon\Carbon;
 
 class StatusHelper
 {
@@ -14,15 +15,17 @@ class StatusHelper
         ->first();
 
         if ($prev) {
-            $prev->duration = round(abs(time() - strtotime($prev->created_at)) / 60,2);
+            $start = Carbon::parse($prev->created_at);
+            $end = Carbon::parse(now());
+            $prev->duration = $start->diffInMinutes($end); //duration by a minutes
             $prev->change_at = date('Y-m-d H:i:s');
             $prev->save();
         }
-
-        StatusActivityLog::insert([
+        $data = [
             'user_id' => $user_id,
             'status' => $status
-        ]);
+        ];
+        StatusActivityLog::create($data);
 
 
     }

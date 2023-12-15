@@ -10,5 +10,5 @@ class StatusActivityLog extends Model
     use HasFactory;
 
     protected $table = 'status_activity_log';
-    protected $fillable = ['*'];
+    protected $guarded = [];
 }

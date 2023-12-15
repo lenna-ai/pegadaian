@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\Dashboard\DashboardResource;
 use App\Http\Resources\Operator\OperatorResource;
 use App\Models\Operator;
+use App\Models\StatusActivityLog;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -217,14 +218,14 @@ class DashboardController extends Controller
             $userRole->where('name', 'operator');
         })->get();
         foreach ($users as $key => $user) {
-            $start = Carbon::parse($user->login_at);
-            $end = Carbon::parse($user->logout_at);
-            $durationLogin = $end->diffForHumans($start);
-            $durationLogout = $start->diffForHumans($end);
+            $login = StatusActivityLog::where('status','=', 'online')->orderBy('id', 'DESC')->get();
+            $logout = StatusActivityLog::where('status','=', 'offline')->orderBy('id', 'DESC')->get();
+            $break = StatusActivityLog::where('status','=', 'break')->orderBy('id', 'DESC')->get();
             $dataUser[] = $user;
-            $dataUser[$key]['duration_login'] = $durationLogin;
-            $dataUser[$key]['duration_logout'] = $durationLogout;
+            $dataUser[$key]['duration_login'] = isset($login[0]) ? $login[0]->duration : 0;
+            $dataUser[$key]['duration_logout'] = isset($logout[0]) ? $logout[0]->duration : 0;
+            $dataUser[$key]['duration_break'] = isset($break[0]) ? $break[0]->duration : 0;
         }
-        return $dataUser;
+        return response()->json(['data'=>$dataUser]);
     }
 }
