@@ -7,12 +7,41 @@ use App\Http\Requests\OperatorRequest;
 use App\Http\Resources\Operator\OperatorResource;
 use App\Models\Operator;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Facades\Auth;
 
 class OperatorController extends Controller
 {
-    public function index(): void
+     /**
+    *    @OA\Get(
+    *       path="api/operator",
+    *       tags={"Operator"},
+    *       operationId="read operator",
+    *       summary="read operator",
+    *       description="read operator",
+    *       @OA\Response(
+    *           response="200",
+    *           description="Ok",
+    *           @OA\JsonContent
+    *           (example={
+    *               "data": {
+    *                   {
+    *                   "name_agent": "integer",
+    *                   "name_customer": "string",
+    *                   "date_to_call": "string",
+    *                   "call_duration": "string",
+    *                   "result_call": "string",
+    *                  }
+    *              }
+    *          }),
+    *      ),
+    *  )
+    */
+    public function index(): AnonymousResourceCollection
     {
-
+        $this->authorize('read',Operator::class);
+        $data = Operator::where('agent_id', Auth::user()->id)->get();
+        return OperatorResource::collection($data);
     }
 
     /**

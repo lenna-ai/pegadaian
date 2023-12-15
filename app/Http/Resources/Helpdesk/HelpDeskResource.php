@@ -4,6 +4,7 @@ namespace App\Http\Resources\Helpdesk;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Storage;
 
 class HelpDeskResource extends JsonResource
 {
@@ -23,7 +24,7 @@ class HelpDeskResource extends JsonResource
             'call_duration'=> $this->call_duration,
             'result_call'=> $this->result_call,
             'name_agent'=> $this->name_agent,
-            'input_voice_call'=> $this->input_voice_call,
+            'input_voice_call'=> asset(Storage::disk('local')->url($this->input_voice_call)),
         ];
     }
 }

@@ -7,16 +7,46 @@ use App\Http\Requests\HelpdeskRequest;
 use App\Http\Resources\Helpdesk\HelpDeskResource;
 use App\Models\HelpDesk;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class HelpDeskController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    *    @OA\Get(
+    *       path="api/helpdesk",
+    *       tags={"Helpdesk"},
+    *       operationId="read helpdesk",
+    *       summary="read helpdesk",
+    *       description="read helpdesk",
+    *       @OA\Response(
+    *           response="200",
+    *           description="Ok",
+    *           @OA\JsonContent
+    *           (example={
+    *               "data": {
+    *                   {
+    *                   "branch_code": "integer",
+    *                   "branch_name": "string",
+    *                   "branch_name_staff": "string",
+    *                   "branch_phone_number": "string",
+    *                   "date_to_call": "string",
+    *                   "call_duration": "integer",
+    *                   "result_call": "string",
+    *                   "name_agent": "string",
+    *                   "resulinput_voice_callt_call": "string",
+    *                  }
+    *              }
+    *          }),
+    *      ),
+    *  )
+    */
+    public function index(): AnonymousResourceCollection
     {
-        //
+        $this->authorize('read',HelpDesk::class);
+        $data = HelpDesk::where('agent_id', Auth::user()->id)->get();
+        return HelpDeskResource::collection($data);
     }
 
     /**
@@ -50,7 +80,7 @@ class HelpDeskController extends Controller
     *                 @OA\Property(
     *                     property="date_to_call",
     *                     type="string",
-    *                     description="date_to_call must be dd/mm/yyyy example 22/10/2023"
+    *                     description="date_to_call must be Y-m-d H:i example 2023-10-22 10:11"
     *                 ),
     *                 @OA\Property(
     *                     property="call_duration",
@@ -70,7 +100,7 @@ class HelpDeskController extends Controller
     *                     type="file",
     *                     description="required | must be file | mimes:mpga,wav,m4a,wma,aac,mp3,mp4"
     *                 ),
-    *                 example={"branch_code": 202,"branch_name": "prod","branch_name_staff": "production","branch_phone_number": "0886622891027","date_to_call":"22/10/2023","call_duration": 16,"result_call": "anything","name_agent":"kukuh","input_voice_call":"PLEASE INPUT FILE AUDIO"}
+    *                 example={"branch_code": 202,"branch_name": "prod","branch_name_staff": "production","branch_phone_number": "0886622891027","date_to_call":"2023-10-22 10:11","call_duration": 16,"result_call": "anything","name_agent":"kukuh","input_voice_call":"PLEASE INPUT FILE AUDIO"}
     *             )
     *         )
     *     ),
@@ -108,6 +138,7 @@ class HelpDeskController extends Controller
         $helpdeskRequest->file('input_voice_call')->storeAs('public/input_voice_call',$resultFilename);
 
         $data['input_voice_call'] = 'public/input_voice_call/'.$resultFilename;
+        $data['agent_id'] = Auth::user()->id;
         $helpDesk = HelpDesk::create($data);
         return new HelpDeskResource($helpDesk);
     }

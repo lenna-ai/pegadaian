@@ -26,7 +26,7 @@ class HelpdeskRequest extends FormRequest
             'branch_name' => 'required|string',
             'branch_name_staff' => 'required|string',
             'branch_phone_number' => 'required|numeric',
-            'date_to_call' => 'required',
+            'date_to_call' => 'required|date_format:Y-m-d H:i',
             'call_duration' => 'required|numeric',
             'result_call' => 'required|string',
             'name_agent' => 'required|string',

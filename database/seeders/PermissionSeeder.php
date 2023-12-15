@@ -21,10 +21,16 @@ class PermissionSeeder extends Seeder
             'delete_user',
 
             //operator
+            'read_operator',
             'create_operator',
+            'update_operator',
+            'delete_operator',
 
             //helpdesk
-            'create_helpdesk'
+            'read_helpdesk',
+            'create_helpdesk',
+            'update_helpdesk',
+            'delete_helpdesk',
         ];
         foreach ($data as $key => $value) {
             Permission::create([

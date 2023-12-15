@@ -35,7 +35,7 @@ Route::group(['middleware' => 'api','prefix' => 'auth'],function () {
 
 Route::group(['middleware' => 'auth:api'],function (): void {
     Route::group(['prefix'=>'dashboard'],function () {
-        
+
         Route::group(['prefix'=>'operator'],function () {
             Route::get('total_call/{start_date}/{end_date}', [DashboardController::class, 'total_call'])->middleware(['can:admin']);
             Route::get('average_call_time/{start_date}/{end_date}', [DashboardController::class, 'average_call_time'])->middleware(['can:admin']);

@@ -26,4 +26,17 @@ class OperatorPolicy
         }
         return $result;
     }
+
+    public function read(User $user): bool
+    {
+        $result = false;
+        foreach ($user->Role as $key => $value) {
+            foreach ($value->permissions as $item) {
+                if ($item->name == 'read_operator') {
+                    $result = true;
+                }
+            }
+        }
+        return $result;
+    }
 }
