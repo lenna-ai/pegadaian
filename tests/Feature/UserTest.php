@@ -63,8 +63,7 @@ class UserTest extends TestCase
             'name'=>'string',
             'email'=>'required@gmail.com',
             'roles'=>2,
-            'password'=>'password',
-            'status'=>'offline'
+            'password'=>'password'
         ];
 
         $response = $this->withHeaders([
@@ -104,7 +103,6 @@ class UserTest extends TestCase
                 'email'=>'required@gmail.com',
                 'roles'=>2,
                 'password'=>'password',
-                'status'=>'offline'
             ];
 
             $response = $this->withHeaders([
@@ -116,8 +114,7 @@ class UserTest extends TestCase
             'name'=>'string',
             'email'=>'required@gmail.com',
             'roles'=>2,
-            'password'=>'password',
-            'status'=>'login'
+            'password'=>'password'
         ];
 
         $response = $this->withHeaders([
@@ -127,7 +124,6 @@ class UserTest extends TestCase
 
         $response->assertStatus(200);
         $this->assertEquals(count($user), 1);
-        $this->assertEquals($response['data']['status'], 'login');
         $response->assertJsonStructure([
             'data' => [
                 'id',
@@ -141,7 +137,6 @@ class UserTest extends TestCase
                         ]
                     ]
                 ],
-                "status",
                 "login_at",
                 "logout_at",
                 "phone_number",
@@ -158,8 +153,7 @@ class UserTest extends TestCase
                 'name'=>'string',
                 'email'=>'required@gmail.com',
                 'roles'=>2,
-                'password'=>'password',
-                'status'=>'offline'
+                'password'=>'password'
             ];
 
             $response = $this->withHeaders([

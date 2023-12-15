@@ -35,8 +35,7 @@ class UserRequest extends FormRequest
             'roles'=>'required|numeric',
             'password'=>$password,
             'notes'=>'string',
-            'phone_number'=>'string',
-            'status'=>'in:online,break,offline'
+            'phone_number'=>'string'
         ];
         return $data;
     }

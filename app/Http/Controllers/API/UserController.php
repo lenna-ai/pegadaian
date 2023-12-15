@@ -206,11 +206,6 @@ class UserController extends Controller
     *                     type="string"
     *                 ),
     *                 @OA\Property(
-    *                     property="status",
-    *                     type="string",
-    *                     description="optional if you want it changes must be enum value ['login','break','offline']"
-    *                 ),
-    *                 @OA\Property(
     *                     property="phone_number",
     *                     type="string"
     *                 ),
@@ -218,7 +213,7 @@ class UserController extends Controller
     *                     property="notes",
     *                     type="string"
     *                 ),
-    *                 example={"name": "hai","email": "prod@gmail.com","roles": 1,"password": "password","status": "offline","phone_number":"027272333333","notes":"hasil"}
+    *                 example={"name": "hai","email": "prod@gmail.com","roles": 1,"password": "password","phone_number":"027272333333","notes":"hasil"}
     *             )
     *         )
     *     ),

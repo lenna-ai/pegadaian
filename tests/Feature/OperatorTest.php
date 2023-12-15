@@ -10,7 +10,7 @@ use Tests\TestCase;
 
 class OperatorTest extends TestCase
 {
-    // php artisan test --filter OperatorTest::test_create_operator
+    // php artisan test --filter OperatorTest::test_index_operator
     private $response;
     public function setUp(): void
     {
@@ -21,6 +21,29 @@ class OperatorTest extends TestCase
             "name"=>"hai"
         ];
         $this->response = $this->post('/api/auth/login',$data);
+    }
+
+    public function test_index_operator(): void
+    {
+
+
+        $response = $this->withHeaders([
+            'Authorization' => "Bearer {$this->response['data']['access_token']}",
+            'Accept'=>'application/json'
+        ])->get('/api/operator');
+
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'data' => [
+                '*'=>[
+                    'name_agent',
+                    "name_customer",
+                    "date_to_call",
+                    "call_duration",
+                    "result_call",
+                ]
+            ]
+        ]);
     }
 
     public function test_create_operator(): void

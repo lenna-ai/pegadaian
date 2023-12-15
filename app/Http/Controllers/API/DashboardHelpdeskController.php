@@ -8,6 +8,7 @@ use App\Http\Resources\Helpdesk\HelpDeskResource;
 use App\Http\Resources\Operator\OperatorResource;
 use App\Models\HelpDesk;
 use App\Models\Operator;
+use App\Models\StatusActivityLog;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -218,13 +219,22 @@ class DashboardHelpdeskController extends Controller
             $userRole->where('name', 'help_desk');
         })->get();
         foreach ($users as $key => $user) {
-            $start = Carbon::parse($user->login_at);
-            $end = Carbon::parse($user->logout_at);
-            $durationLogin = $end->diffForHumans($start);
-            $durationLogout = $start->diffForHumans($end);
+            $login = StatusActivityLog::where([
+                ['status','=', 'online'],
+                ['user_id','=', $user->id]
+                ])->orderBy('id', 'DESC')->get();
+            $logout = StatusActivityLog::where([
+                ['status','=', 'offline'],
+                ['user_id','=', $user->id]
+                ])->orderBy('id', 'DESC')->get();
+            $break = StatusActivityLog::where([
+                ['status','=', 'break'],
+                ['user_id','=', $user->id]
+                ])->orderBy('id', 'DESC')->get();
             $dataUser[] = $user;
-            $dataUser[$key]['duration_login'] = $durationLogin;
-            $dataUser[$key]['duration_logout'] = $durationLogout;
+            $dataUser[$key]['duration_login'] = isset($login[0]) ? $login[0]->duration : 0;
+            $dataUser[$key]['duration_logout'] = isset($logout[0]) ? $logout[0]->duration : 0;
+            $dataUser[$key]['duration_break'] = isset($break[0]) ? $break[0]->duration : 0;
         }
         return $dataUser;
     }

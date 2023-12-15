@@ -167,7 +167,6 @@ class AuthController extends Controller
         $user = Auth::user();
         $user['token'] = $token;
         $user['role'] = $user->Role;
-        $user['status'] = 'online';
         $user['login_at'] = Carbon::now()->toDateTimeString();
 
         StatusHelper::changeStatus($user->id, 'online');
@@ -228,7 +227,6 @@ class AuthController extends Controller
 
         //update
         $user = User::find(auth()->user()->id);
-        $user['status'] = 'offline';
         $user->logout_at = Carbon::now()->toDateTimeString();
         $user->save();
         //akhir update
