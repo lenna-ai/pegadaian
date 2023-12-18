@@ -19,7 +19,12 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['*'],
+    'allowed_origins' => [
+        'pegadaian.lenna.ai',
+        '*.pegadaian.lenna.ai',
+        'localhost',
+        '*.localhost',
+    ],
 
     'allowed_origins_patterns' => [],
 
