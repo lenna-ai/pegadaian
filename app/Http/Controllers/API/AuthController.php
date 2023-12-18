@@ -19,6 +19,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class AuthController extends Controller
 {
@@ -77,9 +78,10 @@ class AuthController extends Controller
             DB::commit();
         } catch (Exception $e) {
             DB::rollBack();
-            throw new Exception(response()->json([
-                'message'=>$e->getMessage()
-            ]));
+            // throw new Exception(response()->json([
+            //     'message'=>$e->getMessage()
+            // ]));
+            throw new HttpException(406,$e->getMessage());
         }
         return new ResourcesUser($user);
     }
@@ -151,11 +153,8 @@ class AuthController extends Controller
         ];
 
         if (!$token = auth()->attempt($credentials)) {
-            // throw new Exception(Message::TextMessage(['error' => 'Unauthorized'], 401));
-            return response()->json([
-                'message' => "email atau password salah",
-                'status' => false
-            ]);
+            throw new HttpException(401,"Email atau Password salah");
+            // throw new Exception("Email atau Password salah",401);
         }
         //update
         $user = User::find(auth()->user()->id);

@@ -11,6 +11,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class UserController extends Controller
 {
@@ -160,9 +161,10 @@ class UserController extends Controller
             });
         } catch (\Throwable $e) {
             DB::rollBack();
-            throw new Exception(response()->json([
-                'message'=>$e->getMessage()
-            ]));
+            // throw new Exception(response()->json([
+            //     'message'=>$e->getMessage()
+            // ]));
+            throw new HttpException(406,$e->getMessage());
         }
         return new User($user);
     }
@@ -272,9 +274,10 @@ class UserController extends Controller
             $user = ModelsUser::findOrFail($id);
         } catch (\Throwable $e) {
             DB::rollBack();
-            throw new Exception(response()->json([
-                'message'=>$e->getMessage()
-            ]));
+            // throw new Exception(response()->json([
+            //     'message'=>$e->getMessage()
+            // ]));
+            throw new HttpException(406,$e->getMessage());
         }
         return new User($user);
     }
@@ -325,9 +328,10 @@ class UserController extends Controller
             DB::commit();
         } catch (\Throwable $e) {
             DB::rollBack();
-            throw new Exception(response()->json([
-                'message'=>$e->getMessage()
-            ]));
+            // throw new Exception(response()->json([
+            //     'message'=>$e->getMessage()
+            // ]));
+            throw new HttpException(406,$e->getMessage());
         }
         $user = new ModelsUser;
         return new User($user);
