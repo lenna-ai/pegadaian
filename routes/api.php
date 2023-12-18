@@ -54,8 +54,6 @@ Route::group(['middleware' => 'auth:api'],function (): void {
         });
     });
 
-    Route::get('dashboard', [DashboardController::class, 'index'])->middleware(['can:admin','throttle:login']);
-
     Route::group(['prefix' => 'user'],function () {
         Route::post('/', [UserController::class, 'create'])->middleware(['can:admin']);
         Route::get('/', [UserController::class, 'index'])->middleware(['can:admin']);
@@ -77,6 +75,11 @@ Route::group(['middleware' => 'auth:api'],function (): void {
             Route::get('/parent_branch', [HelpDeskController::class, 'parent_branch'])->middleware(['can:help_desk']);
             Route::get('/outlet_name', [HelpDeskController::class, 'outlet_name'])->middleware(['can:help_desk']);
             Route::get('/branch_code', [HelpDeskController::class, 'branch_code'])->middleware(['can:help_desk']);
+
         });
     });
+
+    Route::get('dashboard', [DashboardController::class, 'index'])->middleware(['can:admin','throttle:login']);
+    Route::get('outlet/category', [HelpDeskController::class, 'category'])->middleware(['can:help_desk,operator']);
+    Route::get('outlet/tag', [HelpDeskController::class, 'tag'])->middleware(['can:help_desk,operator']);
 });

@@ -5,8 +5,10 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\HelpdeskRequest;
 use App\Http\Resources\Helpdesk\HelpDeskResource;
+use App\Models\Category;
 use App\Models\HelpDesk;
 use App\Models\HelpDeskOutlet;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Auth;
@@ -319,6 +321,60 @@ class HelpDeskController extends Controller
             ['parent_branch', $request->parent_branch],
             ['outlet_name', $request->outlet_name]
         ])->get(['branch_code']);
+        return response()->json(['data'=>$data]);
+    }
+
+    /**
+    *    @OA\Get(
+    *       path="api/outlet/category",
+    *       tags={"Outlet"},
+    *       operationId="read category",
+    *       summary="read category",
+    *       description="read category",
+    *       @OA\Response(
+    *           response="200",
+    *           description="Ok",
+    *           @OA\JsonContent
+    *           (example={
+    *               "data": {
+    *                   {
+    *                   "name": "string",
+    *                  }
+    *              }
+    *          }),
+    *      ),
+    *  )
+    */
+    public function category()
+    {
+        $data = Category::all();
+        return response()->json(['data'=>$data]);
+    }
+
+    /**
+    *    @OA\Get(
+    *       path="api/outlet/tag",
+    *       tags={"Outlet"},
+    *       operationId="read tag",
+    *       summary="read tag",
+    *       description="read tag",
+    *       @OA\Response(
+    *           response="200",
+    *           description="Ok",
+    *           @OA\JsonContent
+    *           (example={
+    *               "data": {
+    *                   {
+    *                   "name": "string",
+    *                  }
+    *              }
+    *          }),
+    *      ),
+    *  )
+    */
+    public function tag()
+    {
+        $data = Tag::all();
         return response()->json(['data'=>$data]);
     }
 }
