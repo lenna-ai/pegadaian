@@ -27,7 +27,9 @@ return [
         'localhost:3002',
         'https://pegadaian.lenna.ai',
         'pegadaian.lenna.ai',
-        'https://pegadaian.lenna.ai'
+        'https://pegadaian.lenna.ai',
+        'https://pegadaian.lenna.ai',
+        'https://pegadaian.lenna.ai:8012',
     ],
 
     'allowed_origins_patterns' => [],
