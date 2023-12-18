@@ -21,6 +21,7 @@ return [
 
     'allowed_origins' => [
         'pegadaian.lenna.ai',
+        'https://pegadaian.lenna.ai',
         '*.lenna.ai',
         '*.pegadaian.lenna.ai',
         'localhost',
