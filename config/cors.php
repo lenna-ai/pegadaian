@@ -20,12 +20,14 @@ return [
     'allowed_methods' => ['*'],
 
     'allowed_origins' => [
-        'pegadaian.lenna.ai',
+        'localhost:3000',
+        'localhost:*',
+        'http://localhost:3000',
+        'http://localhost:3002',
+        'localhost:3002',
         'https://pegadaian.lenna.ai',
-        '*.lenna.ai',
-        '*.pegadaian.lenna.ai',
-        'localhost',
-        '*.localhost',
+        'pegadaian.lenna.ai',
+        'https://pegadaian.lenna.ai'
     ],
 
     'allowed_origins_patterns' => [],
