@@ -80,6 +80,6 @@ Route::group(['middleware' => 'auth:api'],function (): void {
     });
 
     Route::get('dashboard', [DashboardController::class, 'index'])->middleware(['can:admin','throttle:login']);
-    Route::get('outlet/category', [HelpDeskController::class, 'category'])->middleware(['can:help_desk','can:operator']);
-    Route::get('outlet/tag', [HelpDeskController::class, 'tag'])->middleware(['can:help_desk','can:operator']);
+    Route::get('outlet/category', [HelpDeskController::class, 'category']);
+    Route::get('outlet/tag', [HelpDeskController::class, 'tag']);
 });
