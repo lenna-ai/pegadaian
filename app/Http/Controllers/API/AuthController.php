@@ -157,7 +157,7 @@ class AuthController extends Controller
             // throw new Exception("Email atau Password salah",401);
         }
         //update
-        $user = User::find(auth()->user()->id);
+        $user = User::with(['Role','Status'])->find(auth()->user()->id);
         $user->login_at = Carbon::now()->toDateTimeString();
         $user->save();
         //akhir update
@@ -166,6 +166,7 @@ class AuthController extends Controller
         $user = Auth::user();
         $user['token'] = $token;
         $user['role'] = $user->Role;
+        $user['status'] = $user->Status->status;
         $user['login_at'] = Carbon::now()->toDateTimeString();
 
         StatusHelper::changeStatus($user->id, 'online');
@@ -201,7 +202,9 @@ class AuthController extends Controller
     */
     public function me(): JsonResponse
     {
-        return Message::TextMessage(['data' => auth()->user(),202]);
+        $user = User::with(['Role','Status'])->find(auth()->user()->id);
+        $user['status'] = $user->Status->status;
+        return Message::TextMessage(['data' => $user]);
     }
 
     /**
