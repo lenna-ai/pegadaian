@@ -20,6 +20,7 @@ return [
     'allowed_methods' => ['*'],
 
     'allowed_origins' => [
+        'https://pegadaian.lenna.ai',
         'localhost:3000',
         'localhost:*',
         'http://localhost:3000',
@@ -31,6 +32,7 @@ return [
         'https://pegadaian.lenna.ai',
         'https://pegadaian.lenna.ai',
         'https://pegadaian.lenna.ai:8012',
+        'http://localhost:5173'
     ],
 
     'allowed_origins_patterns' => [],
