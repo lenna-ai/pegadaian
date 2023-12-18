@@ -215,7 +215,7 @@ class DashboardHelpdeskController extends Controller
     {
         $dataUser = [];
         // $users = User::orderBy('id', 'DESC')->get();
-        $users = User::with(['role'])->orderBy('id', 'DESC')->whereHas('Role', function($userRole){
+        $users = User::with(['Role','Status'])->orderBy('id', 'DESC')->whereHas('Role', function($userRole){
             $userRole->where('name', 'help_desk');
         })->get();
         foreach ($users as $key => $user) {
