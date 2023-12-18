@@ -27,6 +27,7 @@ return [
         'localhost:3002',
         'https://pegadaian.lenna.ai',
         'pegadaian.lenna.ai',
+        'pegadaian-api.lenna.ai',
         'https://pegadaian.lenna.ai',
         'https://pegadaian.lenna.ai',
         'https://pegadaian.lenna.ai:8012',
