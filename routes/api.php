@@ -53,6 +53,7 @@ Route::group(['middleware' => 'auth:api'],function (): void {
             Route::get('list_helpdesk/{start_date}/{end_date}', [DashboardHelpdeskController::class, 'list_helpdesk'])->middleware(['can:admin']);
         });
     });
+
     Route::get('dashboard', [DashboardController::class, 'index'])->middleware(['can:admin','throttle:login']);
 
     Route::group(['prefix' => 'user'],function () {
@@ -70,5 +71,12 @@ Route::group(['middleware' => 'auth:api'],function (): void {
     Route::group(['prefix' => 'helpdesk'],function () {
         Route::post('/', [HelpDeskController::class, 'create'])->middleware(['can:help_desk']);
         Route::get('/', [HelpDeskController::class, 'index'])->middleware(['can:help_desk']);
+
+        Route::group(['prefix' => 'outlet'],function () {
+            Route::get('/status', [HelpDeskController::class, 'status'])->middleware(['can:help_desk']);
+            Route::get('/parent_branch', [HelpDeskController::class, 'parent_branch'])->middleware(['can:help_desk']);
+            Route::get('/outlet_name', [HelpDeskController::class, 'outlet_name'])->middleware(['can:help_desk']);
+            Route::get('/branch_code', [HelpDeskController::class, 'branch_code'])->middleware(['can:help_desk']);
+        });
     });
 });

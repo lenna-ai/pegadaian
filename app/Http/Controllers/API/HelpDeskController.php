@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\HelpdeskRequest;
 use App\Http\Resources\Helpdesk\HelpDeskResource;
 use App\Models\HelpDesk;
+use App\Models\HelpDeskOutlet;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Auth;
@@ -141,5 +142,183 @@ class HelpDeskController extends Controller
         $data['agent_id'] = Auth::user()->id;
         $helpDesk = HelpDesk::create($data);
         return new HelpDeskResource($helpDesk);
+    }
+
+    /**
+    *    @OA\Get(
+    *       path="api/helpdesk/outlet/status",
+    *       tags={"Helpdesk"},
+    *       operationId="read helpdesk outlet status",
+    *       summary="read helpdesk",
+    *       description="read helpdesk outlet status",
+    *       @OA\Response(
+    *           response="200",
+    *           description="Ok",
+    *           @OA\JsonContent
+    *           (example={
+    *               "data": {
+    *                   {
+    *                   "status": "string",
+    *                  }
+    *              }
+    *          }),
+    *      ),
+    *  )
+    */
+    public function status()
+    {
+        $data = HelpDeskOutlet::distinct()->get(['status']);
+        return response()->json(['data'=>$data]);
+    }
+
+    /**
+    *    @OA\Get(
+    *       path="api/helpdesk/outlet/parent_branch",
+    *       tags={"Helpdesk"},
+    *       operationId="read helpdesk outlet parent_branch",
+    *       summary="read helpdesk",
+    *       description="read helpdesk outlet parent_branch",
+    *    @OA\RequestBody(
+    *         @OA\MediaType(
+    *             mediaType="application/json",
+    *             @OA\Schema(
+    *               required={"status"},
+    *                 @OA\Property(
+    *                     property="status",
+    *                     type="string"
+    *                 ),
+    *                 example={"status": "UPC"}
+    *             )
+    *         )
+    *     ),
+    *       @OA\Response(
+    *           response="200",
+    *           description="Ok",
+    *           @OA\JsonContent
+    *           (example={
+    *               "data": {
+    *                   {
+    *                   "parent_branch": "string",
+    *                  }
+    *              }
+    *          }),
+    *      ),
+    *  )
+    */
+    public function parent_branch(Request $request)
+    {
+        $request->validate([
+            'status' => 'required',
+        ]);
+        $data = HelpDeskOutlet::distinct()->where('status', $request->status)->get(['parent_branch']);
+        return response()->json(['data'=>$data]);
+    }
+
+    /**
+    *    @OA\Get(
+    *       path="api/helpdesk/outlet/outlet_name",
+    *       tags={"Helpdesk"},
+    *       operationId="read helpdesk outlet outlet_name",
+    *       summary="read helpdesk",
+    *       description="read helpdesk outlet outlet_name",
+    *    @OA\RequestBody(
+    *         @OA\MediaType(
+    *             mediaType="application/json",
+    *             @OA\Schema(
+    *               required={"status","parent_branch"},
+    *                 @OA\Property(
+    *                     property="status",
+    *                     type="string"
+    *                 ),
+    *                 @OA\Property(
+    *                     property="parent_branch",
+    *                     type="string"
+    *                 ),
+    *                 example={"status": "UPC","parent_branch": "CP MEDAN UTAMA"}
+    *             )
+    *         )
+    *     ),
+    *       @OA\Response(
+    *           response="200",
+    *           description="Ok",
+    *           @OA\JsonContent
+    *           (example={
+    *               "data": {
+    *                   {
+    *                   "outlet_name": "string",
+    *                  }
+    *              }
+    *          }),
+    *      ),
+    *  )
+    */
+    public function outlet_name(Request $request)
+    {
+        $request->validate([
+            'status' => 'required',
+            'parent_branch' => 'required',
+        ]);
+        $data = HelpDeskOutlet::distinct()->where([
+            ['status', $request->status],
+            ['parent_branch', $request->parent_branch]
+        ])->get(['outlet_name']);
+        return response()->json(['data'=>$data]);
+    }
+
+    /**
+    *    @OA\Get(
+    *       path="api/helpdesk/outlet/branch_code",
+    *       tags={"Helpdesk"},
+    *       operationId="read helpdesk outlet branch_code",
+    *       summary="read helpdesk",
+    *       description="read helpdesk outlet branch_code",
+    *    @OA\RequestBody(
+    *         @OA\MediaType(
+    *             mediaType="application/json",
+    *             @OA\Schema(
+    *               required={"status","parent_branch","branch_code"},
+    *                 @OA\Property(
+    *                     property="status",
+    *                     type="string"
+    *                 ),
+    *                 @OA\Property(
+    *                     property="parent_branch",
+    *                     type="string"
+    *                 ),
+    *                 @OA\Property(
+    *                     property="outlet_name",
+    *                     type="string"
+    *                 ),
+    *                 example={"status": "UPC","parent_branch": "CP MEDAN UTAMA","outlet_name":"UPC GAJAHMADA"}
+    *             )
+    *         )
+    *     ),
+    *       @OA\Response(
+    *           response="200",
+    *           description="Ok",
+    *           @OA\JsonContent
+    *           (example={
+    *               "data": {
+    *                   {
+    *                   "branch_code": "string",
+    *                  }
+    *              }
+    *          }),
+    *      ),
+    *  )
+    */
+    public function branch_code(Request $request)
+    {
+        $request->validate([
+            'status' => 'required',
+            'parent_branch' => 'required',
+            'outlet_name' => 'required',
+        ]);
+        $data = HelpDeskOutlet::distinct()->where([
+            ['status', $request->status],
+            ['parent_branch', $request->parent_branch],
+            ['outlet_name', $request->outlet_name]
+        ])->get(['branch_code']);
+        return response()->json(['data'=>$data]);
     }
 }
