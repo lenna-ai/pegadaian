@@ -19,21 +19,6 @@ return [
 
     'allowed_methods' => ['*'],
 
-    // 'allowed_origins' => [
-    //     'https://pegadaian.lenna.ai',
-    //     'localhost:3000',
-    //     'localhost:*',
-    //     'http://localhost:3000',
-    //     'http://localhost:3002',
-    //     'localhost:3002',
-    //     'https://pegadaian.lenna.ai',
-    //     'pegadaian.lenna.ai',
-    //     'pegadaian-api.lenna.ai',
-    //     'https://pegadaian.lenna.ai',
-    //     'https://pegadaian.lenna.ai',
-    //     'https://pegadaian.lenna.ai:8012',
-    //     'http://localhost:5173'
-    // ],
     'allowed_origins' => ['*'],
 
     'allowed_origins_patterns' => [],

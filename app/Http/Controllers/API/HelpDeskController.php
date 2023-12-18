@@ -45,7 +45,8 @@ class HelpDeskController extends Controller
     public function index(): AnonymousResourceCollection
     {
         $this->authorize('read',HelpDesk::class);
-        $data = HelpDesk::where('agent_id', Auth::user()->id)->get();
+        $data = HelpDesk::with(['Status'])->where('agent_id', Auth::user()->id)->get();
+        $data['status'] = $data->Status->status;
         return HelpDeskResource::collection($data);
     }
 
