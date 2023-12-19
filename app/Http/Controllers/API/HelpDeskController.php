@@ -111,6 +111,16 @@ class HelpDeskController extends Controller
     *                     description="must being exist in parent_branch api"
     *                 ),
     *                 @OA\Property(
+    *                     property="category",
+    *                     type="string",
+    *                     description="must being exist in category api"
+    *                 ),
+    *                 @OA\Property(
+    *                     property="tag",
+    *                     type="string",
+    *                     description="must being exist in tag api"
+    *                 ),
+    *                 @OA\Property(
     *                     property="input_voice_call",
     *                     type="file",
     *                     description="required | must be file | mimes:mpga,wav,m4a,wma,aac,mp3,mp4"
@@ -135,6 +145,8 @@ class HelpDeskController extends Controller
     *                    "call_duration": "string",
     *                    "result_call": "string",
     *                    "name_agent": "string",
+    *                    "category": "string",
+    *                    "tag": "string",
     *                    "input_voice_call": "string",
     *               }
     *              }

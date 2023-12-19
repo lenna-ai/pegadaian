@@ -20,6 +20,8 @@ class HelpDesk extends Model
         'input_voice_call',
         'agent_id',
         'status',
+        'category',
+        'tag',
         'parent_branch'
     ];
 
