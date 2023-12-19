@@ -34,7 +34,7 @@ class HelpdeskRequest extends FormRequest
             'parent_branch'=>'required|exists:help_desk_outlets,parent_branch',
             'category'=>'required|exists:categories,name',
             'tag'=>'required|exists:tags,name',
-            'input_voice_call' => 'required|file|mimes:mpga,wav,m4a,wma,aac,mp3,mp4'
+            'input_voice_call' => 'required|file|mimes:mpga,wav,m4a,wma,aac,mp3,mp4|max:5000'
         ];
     }
 }
