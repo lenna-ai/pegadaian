@@ -245,8 +245,6 @@ class DashboardHelpdeskController extends Controller
         ->whereDate('date_to_call', '<=', $end_date)
         ->get();
 
-        return response()->json([
-            'data' => $data
-        ]);
+        return HelpDeskResource::collection($data);
     }
 }
