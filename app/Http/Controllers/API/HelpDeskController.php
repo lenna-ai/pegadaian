@@ -372,7 +372,7 @@ class HelpDeskController extends Controller
     */
     public function category()
     {
-        $data = Category::all();
+        $data = Category::where('owned','helpdesk')->orderBy('id','asc')->get(['name']);
         return response()->json(['data'=>$data]);
     }
 
