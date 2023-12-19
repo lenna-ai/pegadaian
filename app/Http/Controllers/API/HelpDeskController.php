@@ -372,7 +372,6 @@ class HelpDeskController extends Controller
     */
     public function category()
     {
-        $this->authorize('read',HelpDesk::class) || $this->authorize('read',Operator::class);
         $data = Category::all();
         return response()->json(['data'=>$data]);
     }
@@ -400,7 +399,6 @@ class HelpDeskController extends Controller
     */
     public function tag()
     {
-        $this->authorize('read',HelpDesk::class) || $this->authorize('read',Operator::class);
         $data = Tag::all();
         return response()->json(['data'=>$data]);
     }
