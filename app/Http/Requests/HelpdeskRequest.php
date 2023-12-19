@@ -30,6 +30,8 @@ class HelpdeskRequest extends FormRequest
             'call_duration' => 'required|numeric',
             'result_call' => 'required|string',
             'name_agent' => 'required|string',
+            'status'=>'required|exists:help_desk_outlets,status',
+            'parent_branch'=>'required|exists:help_desk_outlets,parent_branch',
             'input_voice_call' => 'required|file|mimes:mpga,wav,m4a,wma,aac,mp3,mp4'
         ];
     }

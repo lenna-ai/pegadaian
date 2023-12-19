@@ -24,6 +24,8 @@ class HelpDeskResource extends JsonResource
             'call_duration'=> $this->call_duration,
             'result_call'=> $this->result_call,
             'name_agent'=> $this->name_agent,
+            'status'=> $this->status,
+            'parent_branch'=> $this->parent_branch,
             'input_voice_call'=> env('APP_URL','https://pegadaian-api.lenna.ai').Storage::disk('local')->url($this->input_voice_call),
         ];
     }

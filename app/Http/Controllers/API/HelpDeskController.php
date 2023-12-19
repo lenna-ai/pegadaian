@@ -63,14 +63,16 @@ class HelpDeskController extends Controller
     *         @OA\MediaType(
     *             mediaType="application/json",
     *             @OA\Schema(
-    *               required={"branch_code","branch_name","branch_name_staff","branch_phone_number","date_to_call","call_duration","result_call","name_agent","input_voice_call"},
+    *               required={"branch_code","branch_name","branch_name_staff","branch_phone_number","date_to_call","call_duration","result_call","name_agent","input_voice_call","status","parent_branch"},
     *                 @OA\Property(
     *                     property="branch_code",
     *                     type="integer",
+    *                     description="must being exist in branch_code api"
     *                 ),
     *                 @OA\Property(
     *                     property="branch_name",
     *                     type="string",
+    *                     description="must being exist in branch_name api"
     *                 ),
     *                 @OA\Property(
     *                     property="branch_name_staff",
@@ -99,11 +101,21 @@ class HelpDeskController extends Controller
     *                     type="string",
     *                 ),
     *                 @OA\Property(
+    *                     property="status",
+    *                     type="string",
+    *                     description="must being exist in status api"
+    *                 ),
+    *                 @OA\Property(
+    *                     property="parent_branch",
+    *                     type="string",
+    *                     description="must being exist in parent_branch api"
+    *                 ),
+    *                 @OA\Property(
     *                     property="input_voice_call",
     *                     type="file",
     *                     description="required | must be file | mimes:mpga,wav,m4a,wma,aac,mp3,mp4"
     *                 ),
-    *                 example={"branch_code": 202,"branch_name": "prod","branch_name_staff": "production","branch_phone_number": "0886622891027","date_to_call":"2023-10-22 10:11","call_duration": 16,"result_call": "anything","name_agent":"kukuh","input_voice_call":"PLEASE INPUT FILE AUDIO"}
+    *                 example={"branch_code": 202,"branch_name": "prod","branch_name_staff": "production","branch_phone_number": "0886622891027","date_to_call":"2023-10-22 10:11","call_duration": 16,"status": "UPC","name_agent":"kukuh","result_call": "anything","parent_branch":"CP MEDAN UTAMA","input_voice_call":"PLEASE INPUT FILE AUDIO"}
     *             )
     *         )
     *     ),
