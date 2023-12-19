@@ -351,33 +351,6 @@ class HelpDeskController extends Controller
 
     /**
     *    @OA\Get(
-    *       path="api/outlet/category",
-    *       tags={"Outlet"},
-    *       operationId="read category",
-    *       summary="read category",
-    *       description="read category",
-    *       @OA\Response(
-    *           response="200",
-    *           description="Ok",
-    *           @OA\JsonContent
-    *           (example={
-    *               "data": {
-    *                   {
-    *                   "name": "string",
-    *                  }
-    *              }
-    *          }),
-    *      ),
-    *  )
-    */
-    public function category()
-    {
-        $data = Category::where('owned','helpdesk')->orderBy('id','asc')->get(['name']);
-        return response()->json(['data'=>$data]);
-    }
-
-    /**
-    *    @OA\Get(
     *       path="api/outlet/tag",
     *       tags={"Outlet"},
     *       operationId="read tag",

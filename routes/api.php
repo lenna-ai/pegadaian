@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\CategoryController;
 use App\Http\Controllers\API\DashboardController;
 use App\Http\Controllers\API\DashboardHelpdeskController;
 use App\Http\Controllers\API\HelpDeskController;
@@ -79,7 +80,16 @@ Route::group(['middleware' => 'auth:api'],function (): void {
         });
     });
 
+    Route::group(['prefix' => 'outlet'],function () {
+        Route::group(['prefix' => 'category'],function () {
+            Route::get('/helpdesk', [CategoryController::class, 'helpdesk']);
+            Route::get('/operator', [CategoryController::class, 'operator']);
+            Route::post('/', [CategoryController::class, 'create']);
+        });
+        Route::group(['prefix' => 'tag'],function () {
+            Route::get('/', [HelpDeskController::class, 'tag']);
+        });
+    });
+
     Route::get('dashboard', [DashboardController::class, 'index'])->middleware(['can:admin','throttle:login']);
-    Route::get('outlet/category', [HelpDeskController::class, 'category']);
-    Route::get('outlet/tag', [HelpDeskController::class, 'tag']);
 });
