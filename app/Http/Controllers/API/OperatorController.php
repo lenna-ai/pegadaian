@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Auth;
 
 class OperatorController extends Controller
 {
-     /**
+    /**
     *    @OA\Get(
     *       path="api/operator",
     *       tags={"Operator"},

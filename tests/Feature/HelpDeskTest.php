@@ -61,6 +61,10 @@ class HelpDeskTest extends TestCase
             'call_duration'=>16,
             'result_call'=>'anything',
             'name_agent' => 'helpdesk',
+            'status'=>'Cabang',
+            'parent_branch' => 'CP MEDAN UTAMA',
+            'category'=>'Lucy Herzog',
+            'tag' => 'Rene Adams',
             'input_voice_call'=>UploadedFile::fake()->create('filename.mp3')
         ];
         $response = $this->withHeaders([
@@ -79,6 +83,10 @@ class HelpDeskTest extends TestCase
                 "call_duration",
                 "result_call",
                 "name_agent",
+                'status',
+                'parent_branch',
+                'category',
+                'tag',
                 "input_voice_call",
             ]
         ]);
