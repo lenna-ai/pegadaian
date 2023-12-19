@@ -14,6 +14,8 @@ class Operator extends Model
         'date_to_call',
         'call_duration',
         'result_call',
+        'category',
+        'tag',
         'agent_id'
     ];
 

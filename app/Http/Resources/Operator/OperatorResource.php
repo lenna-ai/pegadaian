@@ -20,6 +20,8 @@ class OperatorResource extends JsonResource
             'date_to_call' => $this->date_to_call,
             'call_duration' => $this->call_duration,
             'result_call' => $this->result_call,
+            'category' => $this->category,
+            'tag' => $this->tag,
         ];
     }
 }

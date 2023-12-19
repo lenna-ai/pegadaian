@@ -71,6 +71,16 @@ class OperatorController extends Controller
     *                     description="date_to_call must be dd/mm/yyyy example 22/10/2023"
     *                 ),
     *                 @OA\Property(
+    *                     property="category",
+    *                     type="string",
+    *                     description="must being exist in category api"
+    *                 ),
+    *                 @OA\Property(
+    *                     property="tag",
+    *                     type="string",
+    *                     description="must being exist in tag api"
+    *                 ),
+    *                 @OA\Property(
     *                     property="call_duration",
     *                     type="integer"
     *                 ),
@@ -94,6 +104,8 @@ class OperatorController extends Controller
     *                   "date_to_call": "string",
     *                   "call_duration": "string",
     *                   "result_call": "string",
+    *                   "category": "string",
+    *                   "tag": "string",
     *                  }
     *              }
     *          }),

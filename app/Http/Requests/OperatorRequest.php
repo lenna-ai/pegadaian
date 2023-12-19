@@ -33,6 +33,8 @@ class OperatorRequest extends FormRequest
             'date_to_call'=>'required',
             'call_duration'=>'required|numeric',
             'result_call'=>'required',
+            'category'=>'required|exists:categories,name',
+            'tag'=>'required|exists:tags,name',
         ];
     }
 }
