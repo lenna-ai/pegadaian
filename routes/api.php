@@ -74,8 +74,8 @@ Route::group(['middleware' => 'auth:api'],function (): void {
         Route::group(['prefix' => 'outlet'],function () {
             Route::get('/statusTrack', [HelpDeskController::class, 'statusTrack'])->middleware(['can:help_desk']);
             Route::get('/parent_branch', [HelpDeskController::class, 'parent_branch'])->middleware(['can:help_desk']);
-            Route::get('/outlet_name/{parent_branch}', [HelpDeskController::class, 'outlet_name'])->middleware(['can:help_desk']);
-            Route::get('/branch_code/{parent_branch}/{outlet_name}', [HelpDeskController::class, 'branch_code'])->middleware(['can:help_desk']);
+            Route::get('/outlet_name', [HelpDeskController::class, 'outlet_name'])->middleware(['can:help_desk']);
+            Route::get('/branch_code', [HelpDeskController::class, 'branch_code'])->middleware(['can:help_desk']);
 
         });
     });
