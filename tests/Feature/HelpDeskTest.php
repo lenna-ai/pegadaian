@@ -62,7 +62,7 @@ class HelpDeskTest extends TestCase
             'call_duration'=>16,
             'result_call'=>'anything',
             'name_agent' => 'helpdesk',
-            'status'=>'Cabang',
+            'status'=>'⁠Analisis',
             'parent_branch' => 'CP MEDAN UTAMA',
             'category'=>'Konfirmasi Surat',
             'tag' => 'Internal',
