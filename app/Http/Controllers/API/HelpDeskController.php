@@ -9,6 +9,7 @@ use App\Models\Category;
 use App\Models\HelpDesk;
 use App\Models\HelpDeskOutlet;
 use App\Models\Operator;
+use App\Models\StatusTrack;
 use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -173,11 +174,11 @@ class HelpDeskController extends Controller
 
     /**
     *    @OA\Get(
-    *       path="api/helpdesk/outlet/status",
+    *       path="api/helpdesk/outlet/statusTrack",
     *       tags={"Helpdesk"},
-    *       operationId="read helpdesk outlet status",
-    *       summary="read helpdesk",
-    *       description="read helpdesk outlet status",
+    *       operationId="read helpdesk outlet statusTrack",
+    *       summary="read statusTrack helpdesk",
+    *       description="read helpdesk outlet statusTrack",
     *       @OA\Response(
     *           response="200",
     *           description="Ok",
@@ -185,16 +186,16 @@ class HelpDeskController extends Controller
     *           (example={
     *               "data": {
     *                   {
-    *                   "status": "string",
+    *                   "name": "string",
     *                  }
     *              }
     *          }),
     *      ),
     *  )
     */
-    public function status()
+    public function statusTrack()
     {
-        $data = HelpDeskOutlet::distinct()->get(['status']);
+        $data = StatusTrack::all();
         return response()->json(['data'=>$data]);
     }
 
