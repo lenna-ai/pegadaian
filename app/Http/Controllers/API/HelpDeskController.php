@@ -206,19 +206,6 @@ class HelpDeskController extends Controller
     *       operationId="read helpdesk outlet parent_branch",
     *       summary="read helpdesk",
     *       description="read helpdesk outlet parent_branch",
-    *    @OA\RequestBody(
-    *         @OA\MediaType(
-    *             mediaType="application/json",
-    *             @OA\Schema(
-    *               required={"status"},
-    *                 @OA\Property(
-    *                     property="status",
-    *                     type="string"
-    *                 ),
-    *                 example={"status": "UPC"}
-    *             )
-    *         )
-    *     ),
     *       @OA\Response(
     *           response="200",
     *           description="Ok",
@@ -235,10 +222,7 @@ class HelpDeskController extends Controller
     */
     public function parent_branch(Request $request)
     {
-        $request->validate([
-            'status' => 'required',
-        ]);
-        $data = HelpDeskOutlet::distinct()->where('status', $request->status)->get(['parent_branch']);
+        $data = HelpDeskOutlet::distinct()->get(['parent_branch']);
         return response()->json(['data'=>$data]);
     }
 
@@ -253,11 +237,7 @@ class HelpDeskController extends Controller
     *         @OA\MediaType(
     *             mediaType="application/json",
     *             @OA\Schema(
-    *               required={"status","parent_branch"},
-    *                 @OA\Property(
-    *                     property="status",
-    *                     type="string"
-    *                 ),
+    *               required={"parent_branch"},
     *                 @OA\Property(
     *                     property="parent_branch",
     *                     type="string"
@@ -283,7 +263,6 @@ class HelpDeskController extends Controller
     public function outlet_name(Request $request)
     {
         $request->validate([
-            'status' => 'required',
             'parent_branch' => 'required',
         ]);
         $data = HelpDeskOutlet::distinct()->where('parent_branch', $request->parent_branch)->get(['outlet_name']);
@@ -301,11 +280,7 @@ class HelpDeskController extends Controller
     *         @OA\MediaType(
     *             mediaType="application/json",
     *             @OA\Schema(
-    *               required={"status","parent_branch","branch_code"},
-    *                 @OA\Property(
-    *                     property="status",
-    *                     type="string"
-    *                 ),
+    *               required={"parent_branch","branch_code"},
     *                 @OA\Property(
     *                     property="parent_branch",
     *                     type="string"
@@ -335,7 +310,6 @@ class HelpDeskController extends Controller
     public function branch_code(Request $request)
     {
         $request->validate([
-            'status' => 'required',
             'parent_branch' => 'required',
             'outlet_name' => 'required',
         ]);
