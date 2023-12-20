@@ -30,7 +30,7 @@ class HelpdeskRequest extends FormRequest
             'call_duration' => 'required|numeric',
             'result_call' => 'required|string',
             'name_agent' => 'required|string',
-            'status'=>'required|exists:help_desk_outlets,status',
+            'status'=>'required|exists:status_tracks,name',
             'parent_branch'=>'required|exists:help_desk_outlets,parent_branch',
             'category'=>'required|exists:categories,name',
             'tag'=>'required|exists:tags,name',
