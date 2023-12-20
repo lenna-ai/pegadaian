@@ -13,6 +13,7 @@ use Tests\TestCase;
 class HelpDeskTest extends TestCase
 {
     // php artisan test --filter HelpDeskTest::test_create_helpdesk
+    // php artisan test --filter HelpDeskTest::test_create_helpdesk_outlet_branch_code
     private $response;
     public function setUp(): void
     {
@@ -63,8 +64,8 @@ class HelpDeskTest extends TestCase
             'name_agent' => 'helpdesk',
             'status'=>'Cabang',
             'parent_branch' => 'CP MEDAN UTAMA',
-            'category'=>'Lucy Herzog',
-            'tag' => 'Rene Adams',
+            'category'=>'Konfirmasi Surat',
+            'tag' => 'Internal',
             'input_voice_call'=>UploadedFile::fake()->create('filename.mp3')
         ];
         $response = $this->withHeaders([
@@ -88,6 +89,78 @@ class HelpDeskTest extends TestCase
                 'category',
                 'tag',
                 "input_voice_call",
+            ]
+        ]);
+    }
+
+    public function test_create_helpdesk_outlet_statustrack(): void
+    {
+        $response = $this->withHeaders([
+            'Authorization' => "Bearer {$this->response['data']['access_token']}",
+            'Accept'=>'application/json'
+        ])->get('/api/helpdesk/outlet/statusTrack');
+
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'data' => [
+                '*'=>[
+                    'name'
+                ],
+            ]
+        ]);
+    }
+
+    public function test_create_helpdesk_outlet_parentBranch(): void
+    {
+        $response = $this->withHeaders([
+            'Authorization' => "Bearer {$this->response['data']['access_token']}",
+            'Accept'=>'application/json'
+        ])->get('/api/helpdesk/outlet/parent_branch');
+
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'data' => [
+                '*'=>[
+                    'parent_branch'
+                ],
+            ]
+        ]);
+    }
+
+    public function test_create_helpdesk_outlet_outlet_name(): void
+    {
+        $parent_branch = "CP MEDAN UTAMA";
+        $response = $this->withHeaders([
+            'Authorization' => "Bearer {$this->response['data']['access_token']}",
+            'Accept'=>'application/json'
+        ])->get("/api/helpdesk/outlet/outlet_name/$parent_branch");
+
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'data' => [
+                '*'=>[
+                    'outlet_name'
+                ],
+            ]
+        ]);
+    }
+
+    public function test_create_helpdesk_outlet_branch_code(): void
+    {
+        $parent_branch = "CP MEDAN UTAMA";
+        $outlet_name = "UPC MEDAN PLASA";
+        $response = $this->withHeaders([
+            'Authorization' => "Bearer {$this->response['data']['access_token']}",
+            'Accept'=>'application/json'
+        ])->get("/api/helpdesk/outlet/branch_code/$parent_branch/$outlet_name");
+
+        $response->assertStatus(200);
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'data' => [
+                '*'=>[
+                    'branch_code'
+                ],
             ]
         ]);
     }

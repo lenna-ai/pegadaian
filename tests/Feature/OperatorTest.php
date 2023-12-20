@@ -55,8 +55,8 @@ class OperatorTest extends TestCase
             'date_to_call'=> "22/10/2023",
             'call_duration'=>20,
             'result_call'=>'required',
-            'category'=>'Lucy Herzog',
-            'tag' => 'Rene Adams',
+            'category'=>'Konfirmasi Surat',
+            'tag' => 'Internal',
         ];
         $response = $this->withHeaders([
             'Authorization' => "Bearer {$this->response['data']['access_token']}",

@@ -220,7 +220,7 @@ class HelpDeskController extends Controller
     *      ),
     *  )
     */
-    public function parent_branch(Request $request)
+    public function parent_branch()
     {
         $data = HelpDeskOutlet::distinct()->get(['parent_branch']);
         return response()->json(['data'=>$data]);
@@ -260,12 +260,9 @@ class HelpDeskController extends Controller
     *      ),
     *  )
     */
-    public function outlet_name(Request $request)
+    public function outlet_name($parent_branch)
     {
-        $request->validate([
-            'parent_branch' => 'required',
-        ]);
-        $data = HelpDeskOutlet::distinct()->where('parent_branch', $request->parent_branch)->get(['outlet_name']);
+        $data = HelpDeskOutlet::distinct()->where('parent_branch', $parent_branch)->get(['outlet_name']);
         return response()->json(['data'=>$data]);
     }
 
@@ -307,15 +304,11 @@ class HelpDeskController extends Controller
     *      ),
     *  )
     */
-    public function branch_code(Request $request)
+    public function branch_code($parent_branch,$outlet_name)
     {
-        $request->validate([
-            'parent_branch' => 'required',
-            'outlet_name' => 'required',
-        ]);
         $data = HelpDeskOutlet::distinct()->where([
-            ['parent_branch', $request->parent_branch],
-            ['outlet_name', $request->outlet_name]
+            ['parent_branch', $parent_branch],
+            ['outlet_name', $outlet_name]
         ])->get(['branch_code']);
         return response()->json(['data'=>$data]);
     }
