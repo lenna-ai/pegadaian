@@ -127,13 +127,13 @@ class HelpDeskTest extends TestCase
         ]);
     }
 
-    public function test_create_helpdesk_outlet_outlet_name(): void
+    public function test_helpdesk_outlet_outlet_name(): void
     {
         $parent_branch = "CP MEDAN UTAMA";
         $response = $this->withHeaders([
             'Authorization' => "Bearer {$this->response['data']['access_token']}",
             'Accept'=>'application/json'
-        ])->get("/api/helpdesk/outlet/outlet_name/$parent_branch");
+        ])->get("/api/helpdesk/outlet/outlet_name?parent_branch=$parent_branch");
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
@@ -145,14 +145,14 @@ class HelpDeskTest extends TestCase
         ]);
     }
 
-    public function test_create_helpdesk_outlet_branch_code(): void
+    public function test_helpdesk_outlet_branch_code(): void
     {
         $parent_branch = "CP MEDAN UTAMA";
         $outlet_name = "UPC MEDAN PLASA";
         $response = $this->withHeaders([
             'Authorization' => "Bearer {$this->response['data']['access_token']}",
             'Accept'=>'application/json'
-        ])->get("/api/helpdesk/outlet/branch_code/$parent_branch/$outlet_name");
+        ])->get("/api/helpdesk/outlet/branch_code?parent_branch=$parent_branch&outlet_name=$outlet_name");
 
         $response->assertStatus(200);
         $response->assertStatus(200);
