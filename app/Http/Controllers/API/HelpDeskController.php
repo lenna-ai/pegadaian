@@ -286,10 +286,7 @@ class HelpDeskController extends Controller
             'status' => 'required',
             'parent_branch' => 'required',
         ]);
-        $data = HelpDeskOutlet::distinct()->where([
-            ['status', $request->status],
-            ['parent_branch', $request->parent_branch]
-        ])->get(['outlet_name']);
+        $data = HelpDeskOutlet::distinct()->where('parent_branch', $request->parent_branch)->get(['outlet_name']);
         return response()->json(['data'=>$data]);
     }
 
@@ -343,7 +340,6 @@ class HelpDeskController extends Controller
             'outlet_name' => 'required',
         ]);
         $data = HelpDeskOutlet::distinct()->where([
-            ['status', $request->status],
             ['parent_branch', $request->parent_branch],
             ['outlet_name', $request->outlet_name]
         ])->get(['branch_code']);
