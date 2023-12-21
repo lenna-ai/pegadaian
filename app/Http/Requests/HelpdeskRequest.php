@@ -31,8 +31,8 @@ class HelpdeskRequest extends FormRequest
             'result_call' => 'required|string',
             'name_agent' => 'required|string',
             'status'=>'required|exists:status_tracks,name',
-            'parent_branch'=>'required|exists:help_desk_outlets,parent_branch',
-            'category'=>'required|exists:categories,name',
+            'parent_branch'=>'required',
+            'category'=>'required',
             'tag'=>'required|exists:tags,name',
             'input_voice_call' => 'required|file|mimes:mpga,wav,m4a,wma,aac,mp3,mp4|max:5000'
         ];
