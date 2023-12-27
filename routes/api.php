@@ -51,7 +51,7 @@ Route::group(['middleware' => 'auth:api'],function (): void {
             Route::get('current_call_session_detail_information/{start_date}/{end_date}', [DashboardHelpdeskController::class, 'current_call_session_detail_information'])->middleware(['can:admin']);
             Route::get('performance_hourly_today', [DashboardHelpdeskController::class, 'performance_hourly_today'])->middleware(['can:admin']);
             Route::get('total_agent/{start_date}/{end_date}', [DashboardHelpdeskController::class, 'total_agent'])->middleware(['can:admin']);
-            Route::get('list_helpdesk', [DashboardHelpdeskController::class, 'list_helpdesk'])->middleware(['can:admin']);
+            Route::get('list_helpdesk/{start_date}/{end_date}', [DashboardHelpdeskController::class, 'list_helpdesk'])->middleware(['can:admin']);
         });
     });
 
