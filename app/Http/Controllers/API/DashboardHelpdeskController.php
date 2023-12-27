@@ -205,6 +205,22 @@ class DashboardHelpdeskController extends Controller
     *       operationId="total_agent_Helpdesk",
     *       summary="total_agent",
     *       description="total_agent",
+    *     @OA\Parameter(
+    *         description="Parameter start_date examples",
+    *         in="path",
+    *         name="start_date",
+    *         required=true,
+    *         @OA\Schema(type="string"),
+    *         @OA\Examples(example="int", value="2023-11-22", summary="An string date value."),
+    *     ),
+    *     @OA\Parameter(
+    *         description="Parameter end_date examples",
+    *         in="path",
+    *         name="end_date",
+    *         required=true,
+    *         @OA\Schema(type="string"),
+    *         @OA\Examples(example="int", value="2023-11-30", summary="An string date value."),
+    *     ),
     *   @OA\Response(
     *           response="200",
     *           description="Ok"
