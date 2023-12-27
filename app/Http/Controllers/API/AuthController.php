@@ -304,7 +304,6 @@ class AuthController extends Controller
     *      ),
     *  )
     */
-
     public function change_status(ChangeStatusRequest $request): JsonResponse
     {
         StatusHelper::changeStatus($request->user_id, $request->status);
