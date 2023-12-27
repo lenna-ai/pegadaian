@@ -9,6 +9,8 @@ use App\Models\Operator;
 use App\Models\StatusActivityLog;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -198,7 +200,7 @@ class DashboardController extends Controller
 
     /**
     *    @OA\Get(
-    *       path="/api/dashboard/operator/total_agent",
+    *       path="/api/dashboard/operator/total_agent/{start_date}/{end_date}",
     *       tags={"Dashboard"},
     *       operationId="total_agent",
     *       summary="total_agent",
@@ -209,31 +211,32 @@ class DashboardController extends Controller
     *       ),
     *  )
     */
-    public function total_agent()
+    public function total_agent($start_date,$end_date)
     {
         $dataUser = [];
 
-        // $users = User::with(['role'])->orderBy('id', 'DESC')->get();
         $users = User::with(['Role','Status'])->orderBy('id', 'DESC')->whereHas('Role', function($userRole){
             $userRole->where('name', 'operator');
         })->get();
+
         foreach ($users as $key => $user) {
             $login = StatusActivityLog::where([
                 ['status','=', 'online'],
                 ['user_id','=', $user->id]
-                ])->orderBy('id', 'DESC')->get();
+                ])->whereDate('created_at', '>=', date($start_date))->whereDate('created_at', '<=', date($end_date))->orderBy('id', 'DESC')->get();
             $logout = StatusActivityLog::where([
                 ['status','=', 'offline'],
                 ['user_id','=', $user->id]
-                ])->orderBy('id', 'DESC')->get();
+                ])->whereDate('created_at', '>=', date($start_date))->whereDate('created_at', '<=', date($end_date))->orderBy('id', 'DESC')->get();
             $break = StatusActivityLog::where([
                 ['status','=', 'break'],
                 ['user_id','=', $user->id]
-                ])->orderBy('id', 'DESC')->get();
+                ])->whereDate('created_at', '>=', date($start_date))->whereDate('created_at', '<=', date($end_date))->orderBy('id', 'DESC')->get();
             $dataUser[] = $user;
-            $dataUser[$key]['duration_login'] = isset($login[0]) ? $login[0]->duration : 0;
-            $dataUser[$key]['duration_logout'] = isset($logout[0]) ? $logout[0]->duration : 0;
-            $dataUser[$key]['duration_break'] = isset($break[0]) ? $break[0]->duration : 0;
+
+            $dataUser[$key]['duration_login'] = $this->countDurationStatus($login);
+            $dataUser[$key]['duration_logout'] = $this->countDurationStatus($logout);
+            $dataUser[$key]['duration_break'] = $this->countDurationStatus($break);
         }
         return response()->json(['data'=>$dataUser]);
     }

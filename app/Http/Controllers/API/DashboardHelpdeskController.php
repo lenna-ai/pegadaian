@@ -200,7 +200,7 @@ class DashboardHelpdeskController extends Controller
 
     /**
     *    @OA\Get(
-    *       path="/api/dashboard/helpdesk/total_agent",
+    *       path="/api/dashboard/helpdesk/total_agent/{start_date}/{end_date}",
     *       tags={"Dashboard"},
     *       operationId="total_agent_Helpdesk",
     *       summary="total_agent",
@@ -211,7 +211,7 @@ class DashboardHelpdeskController extends Controller
     *       ),
     *  )
     */
-    public function total_agent()
+    public function total_agent($start_date,$end_date)
     {
         $dataUser = [];
         // $users = User::orderBy('id', 'DESC')->get();
@@ -222,15 +222,15 @@ class DashboardHelpdeskController extends Controller
             $login = StatusActivityLog::where([
                 ['status','=', 'online'],
                 ['user_id','=', $user->id]
-                ])->orderBy('id', 'DESC')->get();
+                ])->whereDate('created_at', '>=', date($start_date))->whereDate('created_at', '<=', date($end_date))->orderBy('id', 'DESC')->get();
             $logout = StatusActivityLog::where([
                 ['status','=', 'offline'],
                 ['user_id','=', $user->id]
-                ])->orderBy('id', 'DESC')->get();
+                ])->whereDate('created_at', '>=', date($start_date))->whereDate('created_at', '<=', date($end_date))->orderBy('id', 'DESC')->get();
             $break = StatusActivityLog::where([
                 ['status','=', 'break'],
                 ['user_id','=', $user->id]
-                ])->orderBy('id', 'DESC')->get();
+                ])->whereDate('created_at', '>=', date($start_date))->whereDate('created_at', '<=', date($end_date))->orderBy('id', 'DESC')->get();
             $dataUser[] = $user;
             $dataUser[$key]['duration_login'] = isset($login[0]) ? $login[0]->duration : 0;
             $dataUser[$key]['duration_logout'] = isset($logout[0]) ? $logout[0]->duration : 0;

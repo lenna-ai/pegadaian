@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Helpers\CountingData;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
@@ -27,5 +29,15 @@ use Illuminate\Routing\Controller as BaseController;
 */
 class Controller extends BaseController
 {
-    use AuthorizesRequests, ValidatesRequests;
+    use AuthorizesRequests, ValidatesRequests,CountingData;
+
+    // protected function countDurationStatus(Collection $model):int {
+    //     $duration = 0;
+
+    //     foreach ($model as $key => $value) {
+    //         $duration += $value->duration;
+    //     }
+
+    //     return $duration;
+    // }
 }
