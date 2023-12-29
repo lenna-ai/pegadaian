@@ -8,6 +8,9 @@ jobs:
   backend-deployment:
     runs-on: ubuntu-latest
 
+    container:
+      image: kirschbaumdevelopment/laravel-test-runner:7.3
+
     steps:
       - uses: actions/checkout@v2
         with:
@@ -39,11 +42,8 @@ jobs:
             cd /var/www/pegadaian
             exit
 
-      - name: php test
-        with:
-          script: |
-            cd /var/www/pegadaian
-            php artisan test
+      - name: test
+        run: php artisan test
 
       - name: Change permission folder and file on instance
         uses: appleboy/ssh-action@master
