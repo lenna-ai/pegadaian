@@ -40,8 +40,9 @@ jobs:
             exit
 
       - name: php test
-        script: |
-          cd /var/www/pegadaian
+        with:
+          script: |
+            cd /var/www/pegadaian
         run: php artisan test
 
       - name: Change permission folder and file on instance
