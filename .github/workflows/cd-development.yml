@@ -38,6 +38,11 @@ jobs:
             sudo chown -R admin:admin pegadaian
             cd /var/www/pegadaian
 
+      - name: Open Web Client Directory
+        working-directory: src/webclient
+        run: |
+          ls -la
+
       - name: Prepare Laravel Application
         run: |
           cp .env .env
