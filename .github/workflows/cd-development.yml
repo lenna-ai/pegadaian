@@ -7,9 +7,6 @@ on:
 jobs:
   backend-deployment:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: /var/www/pegadaian
 
     steps:
       - uses: actions/checkout@v2
@@ -43,6 +40,7 @@ jobs:
             exit
 
       - name: php test
+        script: cd /var/www/pegadaian
         run: php artisan test
 
       - name: Change permission folder and file on instance
