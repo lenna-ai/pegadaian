@@ -44,7 +44,6 @@ jobs:
 
       - name: php test
         run: php artisan test
-        working-directory: /var/www/pegadaian
 
       - name: Change permission folder and file on instance
         uses: appleboy/ssh-action@master
