@@ -39,6 +39,7 @@ jobs:
             sudo chown -R admin:admin pegadaian
             cd /var/www/pegadaian
             php --version
+            php artisan test
             exit
 
       - name: Change permission folder and file on instance
