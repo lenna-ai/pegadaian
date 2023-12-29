@@ -37,8 +37,10 @@ jobs:
             cd /var/www
             sudo chown -R admin:admin pegadaian
             cd /var/www/pegadaian
-            composer install
-            exit
+
+      - name: Install composer dependencies
+        run: |
+          composer install --no-scripts
 
       - name: test
         run: php artisan test
