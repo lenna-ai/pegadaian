@@ -43,7 +43,7 @@ jobs:
         with:
           script: |
             cd /var/www/pegadaian
-        run: php artisan test
+            php artisan test
 
       - name: Change permission folder and file on instance
         uses: appleboy/ssh-action@master
