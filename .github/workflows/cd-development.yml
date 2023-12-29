@@ -37,6 +37,7 @@ jobs:
             cd /var/www
             sudo chown -R admin:admin pegadaian
             cd /var/www/pegadaian
+            composer install
             exit
 
       - name: test
