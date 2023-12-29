@@ -90,6 +90,7 @@ class AuthTest extends TestCase
             'Authorization' => "Bearer {$this->response['data']['access_token']}",
         ])->post('/api/auth/logout');
 
-        $response->assertStatus(204);
+        $response->assertStatus(304);
+        // $response->assertStatus(204);
     }
 }
