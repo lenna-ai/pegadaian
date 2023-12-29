@@ -30,6 +30,17 @@ jobs:
             php --version
             exit
 
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.2
+          script: |
+            cd /var/www
+            sudo chown -R admin:admin pegadaian
+            cd /var/www/pegadaian
+            php --version
+            exit
+
       - name: Change permission folder and file on instance
         uses: appleboy/ssh-action@master
         with:

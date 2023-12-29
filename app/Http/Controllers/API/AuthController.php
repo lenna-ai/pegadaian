@@ -273,7 +273,7 @@ class AuthController extends Controller
 
     /**
     *    @OA\Post(
-    *       path="/api/auth/change-status",
+    *       path="/api/change-status",
     *       tags={"Authenticate User"},
     *       operationId="Change status user",
     *       summary="change status",
