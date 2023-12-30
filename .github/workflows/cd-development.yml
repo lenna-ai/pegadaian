@@ -37,11 +37,10 @@ jobs:
             cd /var/www
             sudo chown -R admin:admin pegadaian
             cd /var/www/pegadaian
-            ls -la
 
       - name: Prepare Laravel Application
         run: |
-          cp .env .env
+          cp .env.ci .env
           php artisan key:generate
 
       - name: Install composer dependencies
