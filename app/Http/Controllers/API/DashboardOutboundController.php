@@ -1,0 +1,454 @@
+<?php
+
+namespace App\Http\Controllers\API;
+
+use App\Http\Controllers\Controller;
+use App\Http\Resources\Dashboard\DashboardOutboundResource;
+use App\Http\Resources\Outbound\OutboundResource;
+use App\Models\OutBound;
+use App\Models\OutBoundConfirmationTicket;
+use App\Models\StatusActivityLog;
+use App\Models\User;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+
+class DashboardOutboundController extends Controller
+{
+    /**
+    *    @OA\Get(
+    *       path="/api/dashboard/outbound/{page}/total_call/{start_date}/{end_date}",
+    *       tags={"Dashboard Outbound"},
+    *       operationId="total_call_outbound",
+    *       summary="total call outbound by page",
+    *       description="total call outbound by page",
+    *     @OA\Parameter(
+    *         description="Must be in list (agency , ask_more , leads)",
+    *         in="path",
+    *         name="page",
+    *         required=true,
+    *         @OA\Schema(type="string"),
+    *         @OA\Examples(example="page", value="agency", summary="Page value."),
+    *     ),
+    *     @OA\Parameter(
+    *         description="Parameter start_date examples",
+    *         in="path",
+    *         name="start_date",
+    *         required=true,
+    *         @OA\Schema(type="string"),
+    *         @OA\Examples(example="int", value="2023-11-22", summary="An string date value."),
+    *     ),
+    *     @OA\Parameter(
+    *         description="Parameter end_date examples",
+    *         in="path",
+    *         name="end_date",
+    *         required=true,
+    *         @OA\Schema(type="string"),
+    *         @OA\Examples(example="int", value="2023-11-30", summary="An string date value."),
+    *     ),
+    *       @OA\Response(
+    *           response="200",
+    *           description="Ok",
+    *           @OA\JsonContent
+    *           (example={
+    *               "data": {
+    *                   {
+    *                   "count_outbound": "integer",
+    *                  }
+    *              }
+    *          }),
+    *      ),
+    *  )
+    */
+    public function total_call(string $page, $start_date,$end_date)
+    {
+        $outbound = OutBound::where('owned', 'outbound_' . $page)->whereDate('created_at', '>=', date($start_date))
+        ->whereDate('created_at', '<=', date($end_date))->orderBy('id','DESC')->get();
+        $result_operator['count_outbound'] = count($outbound);
+        return new DashboardOutboundResource((object)$result_operator);
+    }
+
+    /**
+    *    @OA\Get(
+    *       path="/api/dashboard/outbound/{page}/average_call_time/{start_date}/{end_date}",
+    *       tags={"Dashboard Outbound"},
+    *       operationId="average_ca_outboundll_time",
+    *       summary="average call time outbound by page for minutes",
+    *       description="average call time outbound by page for minutes",
+    *     @OA\Parameter(
+    *         description="Must be in list (agency , ask_more , leads)",
+    *         in="path",
+    *         name="page",
+    *         required=true,
+    *         @OA\Schema(type="string"),
+    *         @OA\Examples(example="page", value="agency", summary="Page value."),
+    *     ),
+    *     @OA\Parameter(
+    *         description="Parameter start_date examples",
+    *         in="path",
+    *         name="start_date",
+    *         required=true,
+    *         @OA\Schema(type="string"),
+    *         @OA\Examples(example="int", value="2023-11-22", summary="An string date value."),
+    *     ),
+    *     @OA\Parameter(
+    *         description="Parameter end_date examples",
+    *         in="path",
+    *         name="end_date",
+    *         required=true,
+    *         @OA\Schema(type="string"),
+    *         @OA\Examples(example="int", value="2023-11-30", summary="An string date value."),
+    *     ),
+    *       @OA\Response(
+    *           response="200",
+    *           description="Ok",
+    *           @OA\JsonContent
+    *           (example={
+    *               "data": {
+    *                   {
+    *                   "average_call_time": "integer",
+    *                  }
+    *              }
+    *          }),
+    *      ),
+    *  )
+    */
+    public function average_call_time(string $page, $start_date,$end_date)
+    {
+        // $outbound = Operator::whereBetween('created_at',[date($start_date), date($end_date)])->get();
+        $outbound = OutBound::where('owned', 'outbound_' . $page)->whereDate('created_at', '>=', date($start_date))
+        ->whereDate('created_at', '<=', date($end_date))->orderBy('id','DESC')
+        ->get();
+
+        if (!count($outbound)) {
+            $result = 0;
+        } else {
+            $count_outbound = count($outbound);
+            $sumOperator = $outbound->sum('call_duration');
+
+            $result = $sumOperator / $count_outbound;
+        }
+        $result_operator = [
+            'average_call_time' => $result
+        ];
+        return new DashboardOutboundResource((object)$result_operator);
+    }
+
+    /**
+    *    @OA\Get(
+    *       path="/api/dashboard/outbound/{page}/current_call_session_detail_information/{start_date}/{end_date}",
+    *       tags={"Dashboard Outbound"},
+    *       operationId="current_ca_outboundll_session_detail_information",
+    *       summary="current_call_session_detail_information",
+    *       description="it is API for 2 Api Current Call Session & Dashboard Detail Information",
+    *     @OA\Parameter(
+    *         description="Must be in list (agency , ask_more , leads)",
+    *         in="path",
+    *         name="page",
+    *         required=true,
+    *         @OA\Schema(type="string"),
+    *         @OA\Examples(example="page", value="agency", summary="Page value."),
+    *     ),
+    *     @OA\Parameter(
+    *         description="Parameter start_date examples",
+    *         in="path",
+    *         name="start_date",
+    *         required=true,
+    *         @OA\Schema(type="string"),
+    *         @OA\Examples(example="int", value="2023-11-22", summary="An string date value."),
+    *     ),
+    *     @OA\Parameter(
+    *         description="Parameter end_date examples",
+    *         in="path",
+    *         name="end_date",
+    *         required=true,
+    *         @OA\Schema(type="string"),
+    *         @OA\Examples(example="int", value="2023-11-30", summary="An string date value."),
+    *     ),
+    *       @OA\Response(
+    *           response="200",
+    *           description="Ok",
+    *           @OA\JsonContent
+    *           (example={
+    *               "data": {
+    *                   {
+    *                  "name_agent": "admin",
+    *                    "name_customer": "email@gmail.com",
+    *                    "date_to_call": "22/10/2023",
+    *                    "call_duration": 22,
+    *                    "result_call": "sdddsdds"
+    *                  }
+    *              }
+    *          }),
+    *      ),
+    *  )
+    */
+    public function current_call_session_detail_information(string $page, $start_date,$end_date)
+    {
+        $outbound = OutBound::where('owned', 'outbound_' . $page)->whereDate('created_at', '>=', date($start_date))
+        ->whereDate('created_at', '<=', date($end_date))->orderBy('id','DESC')
+        // ->where(['name_agent'=>auth()->user()->name])
+        ->get();
+        return OutboundResource::collection($outbound);
+    }
+
+    /**
+    *    @OA\Get(
+    *       path="/api/dashboard/outbound/{page}/performance_hourly_today/{start_date}/{end_date}",
+    *       tags={"Dashboard Outbound"},
+    *       operationId="performanc_outbounde_hourly_today",
+    *       summary="performance hourly today outbound by page",
+    *       description="performance hourly today outbound by page",
+    *     @OA\Parameter(
+    *         description="Must be in list (agency , ask_more , leads)",
+    *         in="path",
+    *         name="page",
+    *         required=true,
+    *         @OA\Schema(type="string"),
+    *         @OA\Examples(example="page", value="agency", summary="Page value."),
+    *     ),
+    *   @OA\Response(
+    *           response="200",
+    *           description="Ok"
+    *      ),
+    *  )
+    */
+    public function performance_hourly_today(string $page)
+    {
+        $data = OutBound::where('owned', 'outbound_' . $page)->where('date_to_call', '>=', Carbon::yesterday()->subDay())->get()->groupBy(function($date) {
+            return Carbon::parse($date->date_to_call)->format('H');
+        });
+        return response()->json(['data'=>$data]);
+    }
+
+    /**
+    *    @OA\Get(
+    *       path="/api/dashboard/outbound/total_agent/{start_date}/{end_date}",
+    *       tags={"Dashboard Outbound"},
+    *       operationId="total_agen_outboundt",
+    *       summary="total agent",
+    *       description="total agent outbound",
+    *     @OA\Parameter(
+    *         description="Parameter start_date examples",
+    *         in="path",
+    *         name="start_date",
+    *         required=true,
+    *         @OA\Schema(type="string"),
+    *         @OA\Examples(example="int", value="2023-11-22", summary="An string date value."),
+    *     ),
+    *     @OA\Parameter(
+    *         description="Parameter end_date examples",
+    *         in="path",
+    *         name="end_date",
+    *         required=true,
+    *         @OA\Schema(type="string"),
+    *         @OA\Examples(example="int", value="2023-11-30", summary="An string date value."),
+    *     ),
+    *   @OA\Response(
+    *           response="200",
+    *           description="Ok"
+    *       ),
+    *  )
+    */
+    public function total_agent(string $page, $start_date,$end_date)
+    {
+        $dataUser = [];
+
+        $users = User::with(['Role','Status'])->orderBy('id', 'DESC')->whereHas('Role', function($userRole){
+            $userRole->where('name', 'outbound');
+        })->get();
+
+        foreach ($users as $key => $user) {
+            $login = StatusActivityLog::where([
+                ['status','=', 'online'],
+                ['user_id','=', $user->id]
+                ])->whereDate('created_at', '>=', date($start_date))->whereDate('created_at', '<=', date($end_date))->orderBy('id', 'DESC')->get();
+            $logout = StatusActivityLog::where([
+                ['status','=', 'offline'],
+                ['user_id','=', $user->id]
+                ])->whereDate('created_at', '>=', date($start_date))->whereDate('created_at', '<=', date($end_date))->orderBy('id', 'DESC')->get();
+            $break = StatusActivityLog::where([
+                ['status','=', 'break'],
+                ['user_id','=', $user->id]
+                ])->whereDate('created_at', '>=', date($start_date))->whereDate('created_at', '<=', date($end_date))->orderBy('id', 'DESC')->get();
+            $dataUser[] = $user;
+
+            $dataUser[$key]['duration_login'] = $this->countDurationStatus($login);
+            $dataUser[$key]['duration_logout'] = $this->countDurationStatus($logout);
+            $dataUser[$key]['duration_break'] = $this->countDurationStatus($break);
+        }
+        return response()->json(['data'=>$dataUser]);
+    }
+
+    /**
+    *    @OA\Get(
+    *       path="/api/dashboard/outbound/confirmation-ticket/total_call/{start_date}/{end_date}",
+    *       tags={"Dashboard Outbound"},
+    *       operationId="total_call_outbound_confirmation_ticket",
+    *       summary="total call outbound confirmation ticket",
+    *       description="total call outbound confirmation ticket",
+    *     @OA\Parameter(
+    *         description="Parameter start_date examples",
+    *         in="path",
+    *         name="start_date",
+    *         required=true,
+    *         @OA\Schema(type="string"),
+    *         @OA\Examples(example="int", value="2023-11-22", summary="An string date value."),
+    *     ),
+    *     @OA\Parameter(
+    *         description="Parameter end_date examples",
+    *         in="path",
+    *         name="end_date",
+    *         required=true,
+    *         @OA\Schema(type="string"),
+    *         @OA\Examples(example="int", value="2023-11-30", summary="An string date value."),
+    *     ),
+    *       @OA\Response(
+    *           response="200",
+    *           description="Ok",
+    *           @OA\JsonContent
+    *           (example={
+    *               "data": {
+    *                   {
+    *                   "count_outbound": "integer",
+    *                  }
+    *              }
+    *          }),
+    *      ),
+    *  )
+    */
+    public function total_call_confirmation_ticket($start_date,$end_date)
+    {
+        $outbound = OutBoundConfirmationTicket::whereDate('created_at', '>=', date($start_date))
+        ->whereDate('created_at', '<=', date($end_date))->orderBy('id','DESC')->get();
+        $result_operator['count_outbound'] = count($outbound);
+        return new DashboardOutboundResource((object)$result_operator);
+    }
+
+    /**
+    *    @OA\Get(
+    *       path="/api/dashboard/outbound/confirmation-ticket/average_call_time/{start_date}/{end_date}",
+    *       tags={"Dashboard Outbound"},
+    *       operationId="average_ca_outboundll_time_confirmation_ticket",
+    *       summary="average call time outbound confirmation ticket for minutes",
+    *       description="average call time outbound confirmation ticket for minutes",
+    *     @OA\Parameter(
+    *         description="Parameter start_date examples",
+    *         in="path",
+    *         name="start_date",
+    *         required=true,
+    *         @OA\Schema(type="string"),
+    *         @OA\Examples(example="int", value="2023-11-22", summary="An string date value."),
+    *     ),
+    *     @OA\Parameter(
+    *         description="Parameter end_date examples",
+    *         in="path",
+    *         name="end_date",
+    *         required=true,
+    *         @OA\Schema(type="string"),
+    *         @OA\Examples(example="int", value="2023-11-30", summary="An string date value."),
+    *     ),
+    *       @OA\Response(
+    *           response="200",
+    *           description="Ok",
+    *           @OA\JsonContent
+    *           (example={
+    *               "data": {
+    *                   {
+    *                   "average_call_time": "integer",
+    *                  }
+    *              }
+    *          }),
+    *      ),
+    *  )
+    */
+    public function average_call_time_confirmation_ticket($start_date,$end_date)
+    {
+        // $outbound = Operator::whereBetween('created_at',[date($start_date), date($end_date)])->get();
+        $outbound = OutBoundConfirmationTicket::whereDate('created_at', '>=', date($start_date))
+        ->whereDate('created_at', '<=', date($end_date))->orderBy('id','DESC')
+        ->get();
+
+        if (!count($outbound)) {
+            $result = 0;
+        } else {
+            $count_outbound = count($outbound);
+            $sumOperator = $outbound->sum('call_duration');
+
+            $result = $sumOperator / $count_outbound;
+        }
+        $result_operator = [
+            'average_call_time' => $result
+        ];
+        return new DashboardOutboundResource((object)$result_operator);
+    }
+
+    /**
+    *    @OA\Get(
+    *       path="/api/dashboard/outbound/confirmation-ticket/current_call_session_detail_information/{start_date}/{end_date}",
+    *       tags={"Dashboard Outbound"},
+    *       operationId="current_ca_outboundll_session_detail_information_confirmation_ticket",
+    *       summary="current_call_session_detail_information",
+    *       description="it is API for 2 Api Current Call Session & Dashboard Detail Information",
+    *     @OA\Parameter(
+    *         description="Parameter start_date examples",
+    *         in="path",
+    *         name="start_date",
+    *         required=true,
+    *         @OA\Schema(type="string"),
+    *         @OA\Examples(example="int", value="2023-11-22", summary="An string date value."),
+    *     ),
+    *     @OA\Parameter(
+    *         description="Parameter end_date examples",
+    *         in="path",
+    *         name="end_date",
+    *         required=true,
+    *         @OA\Schema(type="string"),
+    *         @OA\Examples(example="int", value="2023-11-30", summary="An string date value."),
+    *     ),
+    *       @OA\Response(
+    *           response="200",
+    *           description="Ok",
+    *           @OA\JsonContent
+    *           (example={
+    *               "data": {
+    *                   {
+    *                  "name_agent": "admin",
+    *                    "name_customer": "email@gmail.com",
+    *                    "date_to_call": "22/10/2023",
+    *                    "call_duration": 22,
+    *                    "result_call": "sdddsdds"
+    *                  }
+    *              }
+    *          }),
+    *      ),
+    *  )
+    */
+    public function current_call_session_detail_information_confirmation_ticket($start_date,$end_date)
+    {
+        $outbound = OutBoundConfirmationTicket::whereDate('created_at', '>=', date($start_date))
+        ->whereDate('created_at', '<=', date($end_date))->orderBy('id','DESC')
+        // ->where(['name_agent'=>auth()->user()->name])
+        ->get();
+        return OutboundResource::collection($outbound);
+    }
+
+    /**
+    *    @OA\Get(
+    *       path="/api/dashboard/outbound/confirmation-ticket/performance_hourly_today/{start_date}/{end_date}",
+    *       tags={"Dashboard Outbound"},
+    *       operationId="performanc_outbounde_hourly_today_confirmation_ticket",
+    *       summary="performance hourly today",
+    *   @OA\Response(
+    *           response="200",
+    *           description="Ok"
+    *      ),
+    *  )
+    */
+    public function performance_hourly_today_confirmation_ticket()
+    {
+        $data = OutBoundConfirmationTicket::where('date_to_call', '>=', Carbon::yesterday()->subDay())->get()->groupBy(function($date) {
+            return Carbon::parse($date->date_to_call)->format('H');
+        });
+        return response()->json(['data'=>$data]);
+    }
+}

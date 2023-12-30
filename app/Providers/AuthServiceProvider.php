@@ -6,10 +6,13 @@ namespace App\Providers;
 
 use App\Models\HelpDesk;
 use App\Models\Operator;
+use App\Models\OutBound;
+use App\Models\OutBoundConfirmationTicket;
 use App\Models\Role;
 use App\Models\User;
 use App\Policies\HelpDeskPolicy;
 use App\Policies\OperatorPolicy;
+use App\Policies\OutboundPolicy;
 use App\Policies\UserPolicy;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -25,7 +28,9 @@ class AuthServiceProvider extends ServiceProvider
     protected $policies = [
         User::class => UserPolicy::class,
         HelpDesk::class => HelpDeskPolicy::class,
-        Operator::class => OperatorPolicy::class
+        Operator::class => OperatorPolicy::class,
+        OutBound::class => OutboundPolicy::class,
+        OutBoundConfirmationTicket::class => OutboundPolicy::class,
     ];
 
     /**
@@ -64,6 +69,17 @@ class AuthServiceProvider extends ServiceProvider
                 }
             }
             return $result ? Response::allow() : Response::deny('You must be an help_desk.');;
+        });
+
+        Gate::define('outbound',function (User $user): Response {
+            $result = false;
+            foreach ($user->role as $role) {
+                if ($role->name == 'outbound') {
+                    $result = true;
+                    break;
+                }
+            }
+            return $result ? Response::allow() : Response::deny('You must be an outbound.');;
         });
     }
 }

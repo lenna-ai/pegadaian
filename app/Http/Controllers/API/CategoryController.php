@@ -110,4 +110,31 @@ class CategoryController extends Controller
         $result = Category::create($data);
         return new CategoryResource($result);
     }
+
+    /**
+    *    @OA\Get(
+    *       path="/api/outlet/category/outbound",
+    *       tags={"Outlet"},
+    *       operationId="read category outbound",
+    *       summary="read category outbound",
+    *       description="read category outbound",
+    *       @OA\Response(
+    *           response="200",
+    *           description="Ok",
+    *           @OA\JsonContent
+    *           (example={
+    *               "data": {
+    *                   {
+    *                   "name": "string",
+    *                  }
+    *              }
+    *          }),
+    *      ),
+    *  )
+    */
+    public function outbound()
+    {
+        $data = Category::where('owned','outbound')->orderBy('id','asc')->get(['name']);
+        return CategoryResource::collection($data);
+    }
 }

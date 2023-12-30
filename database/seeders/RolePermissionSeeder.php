@@ -17,48 +17,61 @@ class RolePermissionSeeder extends Seeder
     {
         $data = [
             //admin
-            [
-                'role_id' => Role::where('name','admin')->first()->id,
-                'permission_id' => Permission::where('name','create_user')->first()->id
-            ],
-            [
-                'role_id' => Role::where('name','admin')->first()->id,
-                'permission_id' => Permission::where('name','update_user')->first()->id
-            ],
-            [
-                'role_id' => Role::where('name','admin')->first()->id,
-                'permission_id' => Permission::where('name','read_user')->first()->id
-            ],
-            [
-                'role_id' => Role::where('name','admin')->first()->id,
-                'permission_id' => Permission::where('name','delete_user')->first()->id
-            ],
+            // [
+            //     'role_id' => Role::where('name','admin')->first()->id,
+            //     'permission_id' => Permission::where('name','create_user')->first()->id
+            // ],
+            // [
+            //     'role_id' => Role::where('name','admin')->first()->id,
+            //     'permission_id' => Permission::where('name','update_user')->first()->id
+            // ],
+            // [
+            //     'role_id' => Role::where('name','admin')->first()->id,
+            //     'permission_id' => Permission::where('name','read_user')->first()->id
+            // ],
+            // [
+            //     'role_id' => Role::where('name','admin')->first()->id,
+            //     'permission_id' => Permission::where('name','delete_user')->first()->id
+            // ],
 
-            //operator
+            // //operator
+            // [
+            //     'role_id' => Role::where('name','operator')->first()->id,
+            //     'permission_id' => Permission::where('name','create_operator')->first()->id
+            // ],
+            // [
+            //     'role_id' => Role::where('name','operator')->first()->id,
+            //     'permission_id' => Permission::where('name','read_operator')->first()->id
+            // ],
+            // [
+            //     'role_id' => Role::where('name','operator')->first()->id,
+            //     'permission_id' => Permission::where('name','update_operator')->first()->id
+            // ],
+            // //helpdesk
+            // [
+            //     'role_id' => Role::where('name','help_desk')->first()->id,
+            //     'permission_id' => Permission::where('name','create_helpdesk')->first()->id
+            // ],
+            // [
+            //     'role_id' => Role::where('name','help_desk')->first()->id,
+            //     'permission_id' => Permission::where('name','read_helpdesk')->first()->id
+            // ],
+            // [
+            //     'role_id' => Role::where('name','help_desk')->first()->id,
+            //     'permission_id' => Permission::where('name','update_helpdesk')->first()->id
+            // ],
+            //outbound
             [
-                'role_id' => Role::where('name','operator')->first()->id,
-                'permission_id' => Permission::where('name','create_operator')->first()->id
+                'role_id' => Role::where('name','outbound')->first()->id,
+                'permission_id' => Permission::where('name','create_outbound')->first()->id
             ],
             [
-                'role_id' => Role::where('name','operator')->first()->id,
-                'permission_id' => Permission::where('name','read_operator')->first()->id
+                'role_id' => Role::where('name','outbound')->first()->id,
+                'permission_id' => Permission::where('name','read_outbound')->first()->id
             ],
             [
-                'role_id' => Role::where('name','operator')->first()->id,
-                'permission_id' => Permission::where('name','update_operator')->first()->id
-            ],
-            //helpdesk
-            [
-                'role_id' => Role::where('name','help_desk')->first()->id,
-                'permission_id' => Permission::where('name','create_helpdesk')->first()->id
-            ],
-            [
-                'role_id' => Role::where('name','help_desk')->first()->id,
-                'permission_id' => Permission::where('name','read_helpdesk')->first()->id
-            ],
-            [
-                'role_id' => Role::where('name','help_desk')->first()->id,
-                'permission_id' => Permission::where('name','update_helpdesk')->first()->id
+                'role_id' => Role::where('name','outbound')->first()->id,
+                'permission_id' => Permission::where('name','update_outbound')->first()->id
             ],
         ];
 

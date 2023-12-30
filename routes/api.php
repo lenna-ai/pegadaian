@@ -4,9 +4,12 @@ use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\CategoryController;
 use App\Http\Controllers\API\DashboardController;
 use App\Http\Controllers\API\DashboardHelpdeskController;
+use App\Http\Controllers\API\DashboardOutboundController;
 use App\Http\Controllers\API\HelpDeskController;
 use App\Http\Controllers\API\OperatorController;
+use App\Http\Controllers\API\OutBoundController;
 use App\Http\Controllers\API\UserController;
+// use App\Http\Controllers\DashboardOutboundController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
@@ -54,6 +57,24 @@ Route::group(['middleware' => 'auth:api'],function (): void {
             Route::get('total_agent/{start_date}/{end_date}', [DashboardHelpdeskController::class, 'total_agent'])->middleware(['can:admin']);
             Route::get('list_helpdesk/{start_date}/{end_date}', [DashboardHelpdeskController::class, 'list_helpdesk'])->middleware(['can:admin']);
         });
+
+        Route::group(['prefix'=>'outbound'],function () {
+            Route::group(['prefix' => 'confirmation-ticket'], function() {
+                Route::get('total_call/{start_date}/{end_date}', [DashboardOutboundController::class, 'total_call_confirmation_ticket'])->middleware(['can:admin']);
+                Route::get('average_call_time/{start_date}/{end_date}', [DashboardOutboundController::class, 'average_call_time_confirmation_ticket'])->middleware(['can:admin']);
+                Route::get('current_call_session_detail_information/{start_date}/{end_date}', [DashboardOutboundController::class, 'current_call_session_detail_information_confirmation_ticket'])->middleware(['can:admin']);
+                Route::get('performance_hourly_today', [DashboardOutboundController::class, 'performance_hourly_today_confirmation_ticket'])->middleware(['can:admin']);
+                Route::get('total_agent/{start_date}/{end_date}', [DashboardOutboundController::class, 'total_agent_confirmation_ticket'])->middleware(['can:admin']);
+            });
+
+            Route::group(['prefix' => '{page}'], function() {
+                Route::get('total_call/{start_date}/{end_date}', [DashboardOutboundController::class, 'total_call'])->middleware(['can:admin']);
+                Route::get('average_call_time/{start_date}/{end_date}', [DashboardOutboundController::class, 'average_call_time'])->middleware(['can:admin']);
+                Route::get('current_call_session_detail_information/{start_date}/{end_date}', [DashboardOutboundController::class, 'current_call_session_detail_information'])->middleware(['can:admin']);
+                Route::get('performance_hourly_today', [DashboardOutboundController::class, 'performance_hourly_today'])->middleware(['can:admin']);
+                Route::get('total_agent/{start_date}/{end_date}', [DashboardOutboundController::class, 'total_agent'])->middleware(['can:admin']);
+            });
+        });
     });
 
     Route::group(['prefix' => 'user'],function () {
@@ -84,10 +105,22 @@ Route::group(['middleware' => 'auth:api'],function (): void {
         Route::group(['prefix' => 'category'],function () {
             Route::get('/helpdesk', [CategoryController::class, 'helpdesk']);
             Route::get('/operator', [CategoryController::class, 'operator']);
+            Route::get('/outbound', [CategoryController::class, 'outbound']);
             Route::post('/', [CategoryController::class, 'create']);
         });
         Route::group(['prefix' => 'tag'],function () {
             Route::get('/', [HelpDeskController::class, 'tag']);
+        });
+    });
+
+    Route::group(['prefix' => 'outbound'], function() {
+        Route::post('/confirmation-ticket', [OutBoundController::class, 'createConfirmationTicket'])->middleware(['can:outbound']);
+        Route::get('/confirmation-ticket', [OutBoundController::class, 'confirmationTicket'])->middleware(['can:outbound']);
+
+        Route::group(['prefix' => '{page}'], function() {
+            Route::get('/outlet/statusTrack', [OutBoundController::class, 'statusTrack']);
+            Route::post('/', [OutBoundController::class, 'create'])->middleware(['can:outbound']);
+            Route::get('/', [OutBoundController::class, 'index'])->middleware(['can:outbound']);
         });
     });
 
