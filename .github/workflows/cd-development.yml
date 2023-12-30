@@ -38,14 +38,14 @@ jobs:
             sudo chown -R admin:admin pegadaian
             cd /var/www/pegadaian
 
+      - name: Install composer dependencies
+        run: |
+          composer install --no-scripts
+
       - name: Prepare Laravel Application
         run: |
           cp .env.ci .env
           php artisan key:generate
-
-      - name: Install composer dependencies
-        run: |
-          composer install --no-scripts
 
       - name: test
         run: php artisan test
