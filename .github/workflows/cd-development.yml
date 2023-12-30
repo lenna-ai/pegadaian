@@ -39,7 +39,7 @@ jobs:
             cd /var/www/pegadaian
 
       - name: Open Web Client Directory
-        working-directory: src/webclient
+        working-directory: /var/www/pegadaian
         run: |
           ls -la
 
