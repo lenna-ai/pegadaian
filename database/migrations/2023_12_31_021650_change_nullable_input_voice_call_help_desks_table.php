@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('help_desks', function(Blueprint $table) {
             $table->string('input_voice_call')->nullable()->change();
-            $table->string('ticket_number')->after('id');
+            $table->string('ticket_number')->default('ARIA')->after('id');
         });
     }
 
