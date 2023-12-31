@@ -4,6 +4,7 @@ namespace App\Http\Resources\Operator;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Storage;
 
 class OperatorResource extends JsonResource
 {
