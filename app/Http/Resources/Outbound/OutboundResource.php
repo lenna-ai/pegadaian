@@ -15,6 +15,7 @@ class OutboundResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id' => $this->id,
             'name' => $this->name,
             'call_time' => $this->call_time,
             'call_duration' => $this->call_duration,

@@ -9,6 +9,7 @@ class HelpDesk extends Model
 {
     use HasFactory;
     protected $fillable = [
+        'ticket_number',
         'branch_code',
         'branch_name',
         'branch_name_staff',

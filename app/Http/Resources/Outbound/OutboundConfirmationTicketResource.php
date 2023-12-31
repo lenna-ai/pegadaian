@@ -15,6 +15,7 @@ class OutboundConfirmationTicketResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id' => $this->id,
             'name_agent' => $this->name_agent,
             'ticket_number' => $this->ticket_number,
             'category' => $this->category,

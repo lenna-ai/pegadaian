@@ -36,6 +36,8 @@ class HelpDeskTest extends TestCase
         $response->assertJsonStructure([
             'data' => [
                 '*'=>[
+                    'id',
+                    'ticket_number',
                     'branch_code',
                     "branch_name",
                     "branch_name_staff",
@@ -50,10 +52,36 @@ class HelpDeskTest extends TestCase
         ]);
     }
 
+    public function test_detail_helpdesk(): void
+    {
+        $response = $this->withHeaders([
+            'Authorization' => "Bearer {$this->response['data']['access_token']}",
+            'Accept'=>'application/json'
+        ])->get('/api/helpdesk/detail/3');
+
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'data' => [
+                'id',
+                'ticket_number',
+                'branch_code',
+                "branch_name",
+                "branch_name_staff",
+                "branch_phone_number",
+                "date_to_call",
+                "call_duration",
+                "result_call",
+                "name_agent",
+                "input_voice_call",
+            ]
+        ]);
+    }
+
     public function test_create_helpdesk(): void
     {
 
         $data = [
+            'ticket_number'=>'ARIA-123232',
             'branch_code'=>202,
             'branch_name'=>'prod',
             'branch_name_staff'=>'production',
@@ -76,6 +104,52 @@ class HelpDeskTest extends TestCase
         $response->assertStatus(201);
         $response->assertJsonStructure([
             'data' => [
+                'id',
+                'branch_code',
+                "branch_name",
+                "branch_name_staff",
+                "branch_phone_number",
+                "date_to_call",
+                "call_duration",
+                "result_call",
+                "name_agent",
+                'status',
+                'parent_branch',
+                'category',
+                'tag',
+                "input_voice_call",
+            ]
+        ]);
+    }
+
+    public function test_update_helpdesk(): void
+    {
+
+        $data = [
+            'ticket_number'=>'ARIA-123232',
+            'branch_code'=>202,
+            'branch_name'=>'prod',
+            'branch_name_staff'=>'production',
+            'branch_phone_number'=>'0886622891027',
+            'date_to_call'=>'2023-12-12 12:00',
+            'call_duration'=>16,
+            'result_call'=>'anything test',
+            'name_agent' => 'helpdesk',
+            'status'=>'⁠Analisis',
+            'parent_branch' => 'CP MEDAN UTAMA',
+            'category'=>'Konfirmasi Surat',
+            'tag' => 'Internal',
+            'input_voice_call'=>null
+        ];
+        $response = $this->withHeaders([
+            'Authorization' => "Bearer {$this->response['data']['access_token']}",
+            'Accept'=>'application/json'
+        ])->post('/api/helpdesk/update/3',$data);
+
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'data' => [
+                'id',
                 'branch_code',
                 "branch_name",
                 "branch_name_staff",

@@ -11,11 +11,15 @@ use Tests\TestCase;
 class OutBoundTest extends TestCase
 {
     // php artisan test --filter OutBoundTest::test_index_outbound_by_page
+    // php artisan test --filter OutBoundTest::test_detail_outbound_by_page
     // php artisan test --filter OutBoundTest::test_index_outbound_confirmation_ticket
+    // php artisan test --filter OutBoundTest::test_detail_outbound_confirmation_ticket
     // php artisan test --filter OutBoundTest::test_category_outbound
     // php artisan test --filter OutBoundTest::test_statusTrack_outbound_by_page
     // php artisan test --filter OutBoundTest::test_create_outbound_by_page
+    // php artisan test --filter OutBoundTest::test_update_outbound_by_page
     // php artisan test --filter OutBoundTest::test_create_outbound_confirmation_ticket
+    // php artisan test --filter OutBoundTest::test_update_outbound_confirmation_ticket
 
     private $response;
 
@@ -40,11 +44,31 @@ class OutBoundTest extends TestCase
         $response->assertJsonStructure([
             'data' => [
                 '*'=>[
+                    'id',
                     'name',
                     "call_time",
                     "clal_duration",
                     "status",
                 ]
+            ]
+        ]);
+    }
+
+    public function test_detail_outbound_by_page(): void
+    {
+        $response = $this->withHeaders([
+            'Authorization' => "Bearer {$this->response['data']['access_token']}",
+            'Accept'=>'application/json'
+        ])->get('/api/outbound/agency/detail/2'); // possible page: agency, ask_more, leads
+
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'data' => [
+                'id',
+                'name',
+                "call_time",
+                "clal_duration",
+                "status",
             ]
         ]);
     }
@@ -60,6 +84,7 @@ class OutBoundTest extends TestCase
         $response->assertJsonStructure([
             'data' => [
                 '*'=>[
+                    'id',
                     'name_agent',
                     'ticket_number',
                     'category',
@@ -68,6 +93,27 @@ class OutBoundTest extends TestCase
                     "call_duration",
                     "result_call",
                 ]
+            ]
+        ]);
+    }
+
+    public function test_detail_outbound_confirmation_ticket(): void
+    {
+        $response = $this->withHeaders([
+            'Authorization' => "Bearer {$this->response['data']['access_token']}",
+            'Accept'=>'application/json'
+        ])->get('/api/outbound/confirmation-ticket/detail/3');
+
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'data' => [
+                'id',
+                'ticket_number',
+                'category',
+                "status",
+                "call_time",
+                "call_duration",
+                "result_call",
             ]
         ]);
     }
@@ -131,6 +177,32 @@ class OutBoundTest extends TestCase
         ]);
     }
 
+    public function test_update_outbound_by_page(): void
+    {
+
+        $data = [
+            'name'=>'Randika Test Updated',
+            'call_time'=>'2023-10-22 10:11',
+            'call_duration'=>'45',
+            'status'=>'DIANGKAT',
+        ];
+        $response = $this->withHeaders([
+            'Authorization' => "Bearer {$this->response['data']['access_token']}",
+            'Accept'=>'application/json'
+        ])->post('/api/outbound/agency/update/2',$data); // possible page: agency, ask_more, leads
+
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'data' => [
+                'id',
+                'name',
+                "call_time",
+                "call_duration",
+                "status",
+            ]
+        ]);
+    }
+
     public function test_create_outbound_confirmation_ticket(): void
     {
 
@@ -151,6 +223,38 @@ class OutBoundTest extends TestCase
         $response->assertStatus(201);
         $response->assertJsonStructure([
             'data' => [
+                'name_agent',
+                'ticket_number',
+                'category',
+                'status',
+                "call_time",
+                "call_duration",
+                "result_call",
+            ]
+        ]);
+    }
+
+    public function test_update_outbound_confirmation_ticket(): void
+    {
+
+        $data = [
+            'name_agent'=>'Randika Agent Updated',
+            'ticket_number'=>'TICKET-1234',
+            'category'=>'Wallet',
+            'status'=>'Pelapor Belum Bisa Cek / Konfirmasi Penyelesaian',
+            'call_time'=>'2023-10-22 10:11',
+            'call_duration'=>'45',
+            'result_call'=>'OKE',
+        ];
+        $response = $this->withHeaders([
+            'Authorization' => "Bearer {$this->response['data']['access_token']}",
+            'Accept'=>'application/json'
+        ])->post('/api/outbound/confirmation-ticket/update/3',$data);
+
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'data' => [
+                'id',
                 'name_agent',
                 'ticket_number',
                 'category',

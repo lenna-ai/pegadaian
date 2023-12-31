@@ -15,6 +15,7 @@ class Operator extends Model
         'call_duration',
         'result_call',
         'category',
+        'input_voice_call',
         'tag',
         'agent_id'
     ];

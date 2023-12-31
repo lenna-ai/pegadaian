@@ -97,6 +97,7 @@ class OutBoundController extends Controller
     *           (example={
     *             "data": {
     *                {
+    *                    "id": "integer",
     *                    "name": "string",
     *                    "call_time": "string",
     *                    "call_duration": "integer",
@@ -116,6 +117,83 @@ class OutBoundController extends Controller
 
         $create = OutBound::create($data);
         return new OutboundResource($create);
+    }
+
+    /**
+    *    @OA\POST(
+    *       path="/api/outbound/{page}/update/{id}",
+    *       tags={"Outbound"},
+    *       operationId="update outbound",
+    *       summary="update outbound",
+    *       description="update outbound",
+    *    @OA\Parameter(
+    *         description="Must be in list (agency , ask_more , leads)",
+    *         in="path",
+    *         name="page",
+    *         required=true,
+    *         @OA\Schema(type="string"),
+    *         @OA\Examples(example="page", value="agency", summary="Page value."),
+    *    ),
+    *    @OA\Parameter(
+    *         description="Outbound ID",
+    *         in="path",
+    *         name="id",
+    *         required=true,
+    *         @OA\Schema(type="integer"),
+    *    ),
+    *    @OA\RequestBody(
+    *         @OA\MediaType(
+    *             mediaType="application/json",
+    *             @OA\Schema(
+    *               required={"name","call_time","call_duration","status"},
+    *                 @OA\Property(
+    *                     property="name",
+    *                     type="string",
+    *                 ),
+    *                 @OA\Property(
+    *                     property="call_time",
+    *                     type="string",
+    *                     description="call_time must be Y-m-d H:i example 2023-10-22 10:11"
+    *                 ),
+    *                 @OA\Property(
+    *                     property="call_duration",
+    *                     type="integer"
+    *                 ),
+    *                 @OA\Property(
+    *                     property="status",
+    *                     type="string",
+    *                 ),
+    *                 example={"name": "Randika Test","call_time": "2023-10-22 10:11","call_duration": 45,"status": "DIANGKAT"}
+    *             )
+    *         )
+    *     ),
+    *       @OA\Response(
+    *           response="201",
+    *           description="Ok",
+    *           @OA\JsonContent
+    *           (example={
+    *             "data": {
+    *                {
+    *                    "id": "integer",
+    *                    "name": "string",
+    *                    "call_time": "string",
+    *                    "call_duration": "integer",
+    *                    "status": "string",
+    *               }
+    *              }
+    *          }),
+    *      ),
+    *  )
+    */
+    public function update(string $page, OutBound $outbound, OutboundRequest $request)
+    {
+        $this->authorize('create',Outbound::class);
+        $data = $request->all();
+        $data['agent_id'] = Auth::user()->id;
+        $data['owned'] = 'outbound_' . $page;
+
+        $outbound->update($data);
+        return new OutboundResource($outbound);
     }
 
     /**
@@ -140,6 +218,7 @@ class OutBoundController extends Controller
     *           (example={
     *               "data": {
     *                   {
+    *                   "id": "integer",
     *                   "name": "string",
     *                   "call_time": "string",
     *                   "call_duration": "string",
@@ -155,6 +234,50 @@ class OutBoundController extends Controller
         $this->authorize('read',Outbound::class);
         $data = OutBound::where('owned', 'outbound_' . $page)->where('agent_id', Auth::user()->id)->get();
         return OutboundResource::collection($data);
+    }
+
+    /**
+    *    @OA\Get(
+    *       path="/api/outbound/{page}/detail/{id}",
+    *       tags={"Outbound"},
+    *       operationId="read outbound detail",
+    *       summary="read outbound detail",
+    *       description="read outbound detail",
+    *       @OA\Parameter(
+    *         description="Must be in list (agency , ask_more , leads)",
+    *         in="path",
+    *         name="page",
+    *         required=true,
+    *         @OA\Schema(type="string"),
+    *         @OA\Examples(example="page", value="agency", summary="Page value."),
+    *      ),
+    *       @OA\Parameter(
+    *         description="Outbound ID",
+    *         in="path",
+    *         name="id",
+    *         required=true,
+    *         @OA\Schema(type="integer"),
+    *       ),
+    *       @OA\Response(
+    *           response="200",
+    *           description="Ok",
+    *           @OA\JsonContent
+    *           (example={
+    *               "data": {
+    *                   "id": "integer",
+    *                   "name": "string",
+    *                   "call_time": "string",
+    *                   "call_duration": "string",
+    *                   "status": "string",
+    *              }
+    *          }),
+    *      ),
+    *  )
+    */
+    public function detail(string $page, OutBound $outbound)
+    {
+        $this->authorize('read',Outbound::class);
+        return new OutboundResource($outbound);
     }
 
     /**
@@ -246,7 +369,6 @@ class OutBoundController extends Controller
     *           @OA\JsonContent
     *           (example={
     *               "data": {
-    *                   {
     *                   "name_agent": "string",
     *                   "ticket_number": "string",
     *                   "category": "string",
@@ -254,7 +376,6 @@ class OutBoundController extends Controller
     *                   "call_time": "string",
     *                   "call_duration": "integer",
     *                   "result_call": "string",
-    *                  }
     *              }
     *          }),
     *      ),
@@ -265,5 +386,126 @@ class OutBoundController extends Controller
         $this->authorize('read',Outbound::class);
         $data = OutBoundConfirmationTicket::where('agent_id', Auth::user()->id)->get();
         return OutboundConfirmationTicketResource::collection($data);
+    }
+
+    /**
+    *    @OA\Get(
+    *       path="/api/outbound/confirmation-ticket/detail/{id}",
+    *       tags={"Outbound"},
+    *       operationId="read outbound confirmation ticket detail",
+    *       summary="read outbound confirmation ticket detail",
+    *       description="read outbound confirmation ticket detail",
+    *       @OA\Parameter(
+    *         description="Outbound ID",
+    *         in="path",
+    *         name="id",
+    *         required=true,
+    *         @OA\Schema(type="integer"),
+    *       ),
+    *       @OA\Response(
+    *           response="200",
+    *           description="Ok",
+    *           @OA\JsonContent
+    *           (example={
+    *               "data": {
+    *                   "id": "integer",
+    *                   "name_agent": "string",
+    *                   "ticket_number": "string",
+    *                   "category": "string",
+    *                   "status": "string",
+    *                   "call_time": "string",
+    *                   "call_duration": "integer",
+    *                   "result_call": "string",
+    *              }
+    *          }),
+    *      ),
+    *  )
+    */
+    public function detailConfirmationTicket(OutBoundConfirmationTicket $outbound)
+    {
+        $this->authorize('read',Outbound::class);
+        return new OutboundConfirmationTicketResource($outbound);
+    }
+
+    /**
+    *    @OA\POST(
+    *       path="/api/outbound/confirmation-ticket/update/{id}",
+    *       tags={"Outbound"},
+    *       operationId="update outbound confirmation ticket",
+    *       summary="update outbound confirmation ticket",
+    *       description="update outbound confirmation ticket",
+    *       @OA\Parameter(
+    *         description="Outbound ID",
+    *         in="path",
+    *         name="id",
+    *         required=true,
+    *         @OA\Schema(type="integer"),
+    *       ),
+    *    @OA\RequestBody(
+    *         @OA\MediaType(
+    *             mediaType="application/json",
+    *             @OA\Schema(
+    *               required={"name_agent","ticket_number","category","status","call_time","call_duration","result_call"},
+    *                 @OA\Property(
+    *                     property="name_agent",
+    *                     type="string",
+    *                 ),
+    *                 @OA\Property(
+    *                     property="ticket_number",
+    *                     type="string",
+    *                 ),
+    *                 @OA\Property(
+    *                     property="category",
+    *                     type="string",
+    *                 ),
+    *                 @OA\Property(
+    *                     property="status",
+    *                     type="string",
+    *                     description="must being exist in status api",
+    *                 ),
+    *                 @OA\Property(
+    *                     property="call_time",
+    *                     type="string",
+    *                     description="call_time must be Y-m-d H:i example 2023-10-22 10:11"
+    *                 ),
+    *                 @OA\Property(
+    *                     property="call_duration",
+    *                     type="integer"
+    *                 ),
+    *                 @OA\Property(
+    *                     property="result_call",
+    *                     type="string",
+    *                 ),
+    *                 example={"name_agent": "Randika Test","ticket_number": "TICKET-1234","category": "Wallet","status": "Pelapor Belum Bisa Cek / Konfirmasi Penyelesaian","call_time": "2023-10-22 10:11","call_duration": 45,"result_call": "OKE"}
+    *             )
+    *         )
+    *     ),
+    *       @OA\Response(
+    *           response="201",
+    *           description="Ok",
+    *           @OA\JsonContent
+    *           (example={
+    *             "data": {
+    *                 "id": "integer",
+    *                 "name_agent": "string",
+    *                 "ticket_number": "string",
+    *                 "category": "string",
+    *                 "status": "string",
+    *                 "call_time": "string",
+    *                 "call_duration": "integer",
+    *                 "result_call": "string",
+    *              }
+    *          }),
+    *      ),
+    *  )
+    */
+    public function updateConfirmationTicket(OutBoundConfirmationTicket $outbound, OutboundConfirmationTicketRequest $request)
+    {
+        $this->authorize('create',OutBoundConfirmationTicket::class);
+        $data = $request->all();
+        $data['agent_id'] = Auth::user()->id;
+
+        $outbound->update($data);
+        return new OutboundConfirmationTicketResource($outbound);
     }
 }

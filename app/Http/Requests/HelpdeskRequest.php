@@ -22,6 +22,7 @@ class HelpdeskRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'ticket_number' => 'required|string',
             'branch_code' => 'required|numeric',
             'branch_name' => 'required|string',
             'branch_name_staff' => 'required|string',
@@ -34,7 +35,7 @@ class HelpdeskRequest extends FormRequest
             'parent_branch'=>'required',
             'category'=>'required',
             'tag'=>'required|exists:tags,name',
-            'input_voice_call' => 'required|file|mimes:mpga,wav,m4a,wma,aac,mp3,mp4|max:5000'
+            'input_voice_call' => 'nullable|file|mimes:mpga,wav,m4a,wma,aac,mp3,mp4|max:5000'
         ];
     }
 }

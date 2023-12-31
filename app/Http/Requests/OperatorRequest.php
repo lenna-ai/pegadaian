@@ -35,6 +35,7 @@ class OperatorRequest extends FormRequest
             'result_call'=>'required',
             'category'=>'required|exists:categories,name',
             'tag'=>'required|exists:tags,name',
+            'input_voice_call' => 'file|mimes:mpga,wav,m4a,wma,aac,mp3,mp4|max:5000',
         ];
     }
 }

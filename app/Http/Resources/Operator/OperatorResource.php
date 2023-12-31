@@ -15,6 +15,7 @@ class OperatorResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id' => $this->id,
             'name_agent' => $this->name_agent,
             'name_customer' => $this->name_customer,
             'date_to_call' => $this->date_to_call,
@@ -22,6 +23,7 @@ class OperatorResource extends JsonResource
             'result_call' => $this->result_call,
             'category' => $this->category,
             'tag' => $this->tag,
+            'input_voice_call'=> !is_null($this->input_voice_call) ? env('APP_URL','https://pegadaian-api.lenna.ai').Storage::disk('local')->url($this->input_voice_call) : null,
         ];
     }
 }

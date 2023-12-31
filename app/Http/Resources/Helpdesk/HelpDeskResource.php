@@ -16,6 +16,8 @@ class HelpDeskResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id' => $this->id,
+            'ticket_number' => $this->ticket_number,
             'branch_code' => $this->branch_code,
             'branch_name'=> $this->branch_name,
             'branch_name_staff'=> $this->branch_name_staff,
@@ -28,7 +30,7 @@ class HelpDeskResource extends JsonResource
             'parent_branch'=> $this->parent_branch,
             'category'=> $this->category,
             'tag'=> $this->tag,
-            'input_voice_call'=> env('APP_URL','https://pegadaian-api.lenna.ai').Storage::disk('local')->url($this->input_voice_call),
+            'input_voice_call'=> !is_null($this->input_voice_call) ? env('APP_URL','https://pegadaian-api.lenna.ai').Storage::disk('local')->url($this->input_voice_call) : null,
         ];
     }
 }
