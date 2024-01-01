@@ -8,6 +8,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
+use Illuminate\Support\Str;
 
 class OperatorTest extends TestCase
 {
@@ -48,10 +49,13 @@ class OperatorTest extends TestCase
 
     public function test_detail_operator(): void
     {
+        // create operator nya buat sementara
+        $operator = $this->test_create_operator();
+
         $response = $this->withHeaders([
             'Authorization' => "Bearer {$this->response['data']['access_token']}",
             'Accept'=>'application/json'
-        ])->get('/api/operator/detail/2');
+        ])->get('/api/operator/detail/' . $operator['id']);
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
@@ -64,14 +68,16 @@ class OperatorTest extends TestCase
                 "result_call",
             ]
         ]);
+
+        Operator::where('id', $operator['id'])->delete();
     }
 
-    public function test_create_operator(): void
+    public function test_create_operator(): array
     {
 
         $data = [
             'name_agent' => 'admin',
-            'name_customer'=>'required',
+            'name_customer'=>'required-' . Str::random(2),
             'date_to_call'=> "22/10/2023",
             'call_duration'=>20,
             'result_call'=>'required',
@@ -98,10 +104,14 @@ class OperatorTest extends TestCase
                 "input_voice_call",
             ]
         ]);
+
+        return $response->json('data');
     }
 
     public function test_update_operator(): void
     {
+        // create operator nya buat sementara
+        $operator = $this->test_create_operator();
 
         $data = [
             'name_agent' => 'admin',
@@ -116,7 +126,7 @@ class OperatorTest extends TestCase
         $response = $this->withHeaders([
             'Authorization' => "Bearer {$this->response['data']['access_token']}",
             'Accept'=>'application/json'
-        ])->post('/api/operator/update/2',$data);
+        ])->post('/api/operator/update/' . $operator['id'],$data);
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
@@ -132,6 +142,8 @@ class OperatorTest extends TestCase
                 "input_voice_call",
             ]
         ]);
+
+        Operator::where('id', $operator['id'])->delete();
     }
 
     public function tearDown(): void

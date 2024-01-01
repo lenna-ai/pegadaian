@@ -52,31 +52,6 @@ class HelpDeskTest extends TestCase
         ]);
     }
 
-    public function test_detail_helpdesk(): void
-    {
-        $response = $this->withHeaders([
-            'Authorization' => "Bearer {$this->response['data']['access_token']}",
-            'Accept'=>'application/json'
-        ])->get('/api/helpdesk/detail/3');
-
-        $response->assertStatus(200);
-        $response->assertJsonStructure([
-            'data' => [
-                'id',
-                'ticket_number',
-                'branch_code',
-                "branch_name",
-                "branch_name_staff",
-                "branch_phone_number",
-                "date_to_call",
-                "call_duration",
-                "result_call",
-                "name_agent",
-                "input_voice_call",
-            ]
-        ]);
-    }
-
     public function test_create_helpdesk(): void
     {
 
@@ -122,8 +97,42 @@ class HelpDeskTest extends TestCase
         ]);
     }
 
+    public function test_detail_helpdesk(): void
+    {
+        // create helpdesk nya buat sementara
+        $this->test_create_helpdesk();
+        $helpdesk = HelpDesk::where('ticket_number', 'ARIA-123232')->where('branch_code', 202)->first();
+
+        $response = $this->withHeaders([
+            'Authorization' => "Bearer {$this->response['data']['access_token']}",
+            'Accept'=>'application/json'
+        ])->get('/api/helpdesk/detail/' . $helpdesk->id);
+
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'data' => [
+                'id',
+                'ticket_number',
+                'branch_code',
+                "branch_name",
+                "branch_name_staff",
+                "branch_phone_number",
+                "date_to_call",
+                "call_duration",
+                "result_call",
+                "name_agent",
+                "input_voice_call",
+            ]
+        ]);
+
+        $helpdesk->delete();
+    }
+
     public function test_update_helpdesk(): void
     {
+        // create helpdesk nya buat sementara
+        $this->test_create_helpdesk();
+        $helpdesk = HelpDesk::where('ticket_number', 'ARIA-123232')->where('branch_code', 202)->first();
 
         $data = [
             'ticket_number'=>'ARIA-123232',
@@ -144,7 +153,7 @@ class HelpDeskTest extends TestCase
         $response = $this->withHeaders([
             'Authorization' => "Bearer {$this->response['data']['access_token']}",
             'Accept'=>'application/json'
-        ])->post('/api/helpdesk/update/3',$data);
+        ])->post('/api/helpdesk/update/' . $helpdesk->id,$data);
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
@@ -165,6 +174,8 @@ class HelpDeskTest extends TestCase
                 "input_voice_call",
             ]
         ]);
+
+        $helpdesk->delete();
     }
 
     public function test_create_helpdesk_outlet_statustrack(): void
