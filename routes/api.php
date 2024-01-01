@@ -122,8 +122,8 @@ Route::group(['middleware' => 'auth:api'],function (): void {
         Route::post('/confirmation-ticket', [OutBoundController::class, 'createConfirmationTicket'])->middleware(['can:outbound']);
         Route::get('/confirmation-ticket', [OutBoundController::class, 'confirmationTicket'])->middleware(['can:outbound']);
 
-        Route::post('/confirmation-ticket/update/{id}', [OutBoundController::class, 'updateConfirmationTicket'])->middleware(['can:outbound']);
-        Route::get('/confirmation-ticket/detail/{id}', [OutBoundController::class, 'detailConfirmationTicket'])->middleware(['can:outbound']);
+        Route::post('/confirmation-ticket/update/{outbound}', [OutBoundController::class, 'updateConfirmationTicket'])->middleware(['can:outbound']);
+        Route::get('/confirmation-ticket/detail/{outbound}', [OutBoundController::class, 'detailConfirmationTicket'])->middleware(['can:outbound']);
 
         Route::group(['prefix' => '{page}'], function() {
             Route::get('/outlet/statusTrack', [OutBoundController::class, 'statusTrack']);
