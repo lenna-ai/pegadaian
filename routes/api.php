@@ -59,12 +59,13 @@ Route::group(['middleware' => 'auth:api'],function (): void {
         });
 
         Route::group(['prefix'=>'outbound'],function () {
+            Route::get('total_agent/{start_date}/{end_date}', [DashboardOutboundController::class, 'total_agent'])->middleware(['can:admin']);
+
             Route::group(['prefix' => 'confirmation-ticket'], function() {
                 Route::get('total_call/{start_date}/{end_date}', [DashboardOutboundController::class, 'total_call_confirmation_ticket'])->middleware(['can:admin']);
                 Route::get('average_call_time/{start_date}/{end_date}', [DashboardOutboundController::class, 'average_call_time_confirmation_ticket'])->middleware(['can:admin']);
                 Route::get('current_call_session_detail_information/{start_date}/{end_date}', [DashboardOutboundController::class, 'current_call_session_detail_information_confirmation_ticket'])->middleware(['can:admin']);
                 Route::get('performance_hourly_today', [DashboardOutboundController::class, 'performance_hourly_today_confirmation_ticket'])->middleware(['can:admin']);
-                Route::get('total_agent/{start_date}/{end_date}', [DashboardOutboundController::class, 'total_agent_confirmation_ticket'])->middleware(['can:admin']);
             });
 
             Route::group(['prefix' => '{page}'], function() {
@@ -72,7 +73,6 @@ Route::group(['middleware' => 'auth:api'],function (): void {
                 Route::get('average_call_time/{start_date}/{end_date}', [DashboardOutboundController::class, 'average_call_time'])->middleware(['can:admin']);
                 Route::get('current_call_session_detail_information/{start_date}/{end_date}', [DashboardOutboundController::class, 'current_call_session_detail_information'])->middleware(['can:admin']);
                 Route::get('performance_hourly_today', [DashboardOutboundController::class, 'performance_hourly_today'])->middleware(['can:admin']);
-                Route::get('total_agent/{start_date}/{end_date}', [DashboardOutboundController::class, 'total_agent'])->middleware(['can:admin']);
             });
         });
     });
