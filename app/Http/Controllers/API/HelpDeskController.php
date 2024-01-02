@@ -13,6 +13,7 @@ use App\Models\StatusTrack;
 use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
@@ -212,7 +213,7 @@ class HelpDeskController extends Controller
         $this->authorize('create',HelpDesk::class);
         $data = $helpdeskRequest->all();
 
-        if(!empty($data['input_voice_call'])) {
+        if(!empty($data['input_voice_call']) && $data['input_voice_call'] instanceof UploadedFile) {
             $filenameWithExt = $data['input_voice_call']->getClientOriginalName();
             $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
             $extension = $data['input_voice_call']->getClientOriginalExtension();
@@ -348,7 +349,7 @@ class HelpDeskController extends Controller
         $this->authorize('update',HelpDesk::class);
         $data = $helpdeskRequest->all();
 
-        if(!empty($data['input_voice_call'])) {
+        if(!empty($data['input_voice_call']) && $data['input_voice_call'] instanceof UploadedFile) {
             $filenameWithExt = $data['input_voice_call']->getClientOriginalName();
             $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
             $extension = $data['input_voice_call']->getClientOriginalExtension();
@@ -356,6 +357,14 @@ class HelpDeskController extends Controller
             $helpdeskRequest->file('input_voice_call')->storeAs('public/input_voice_call',$resultFilename);
 
             $data['input_voice_call'] = 'public/input_voice_call/'.$resultFilename;
+
+        } else if(empty($data['input_voice_call'])) {
+            if($helpdesk->input_voice_call) {
+                $filePath = storage_path('app/' . $helpdesk->input_voice_call);
+                if(file_exists($filePath)) @unlink($filePath);
+            }
+
+            $data['input_voice_call'] = null;
         }
 
         $data['agent_id'] = Auth::user()->id;

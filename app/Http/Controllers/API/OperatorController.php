@@ -8,6 +8,7 @@ use App\Http\Resources\Operator\OperatorResource;
 use App\Models\Operator;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 
 class OperatorController extends Controller
@@ -78,9 +79,10 @@ class OperatorController extends Controller
     *      ),
     *  )
     */
-    public function detail(Operator $operator)
+    public function detail($id)
     {
         $this->authorize('read',Operator::class);
+        $operator = Operator::find($id);
         return new OperatorResource($operator);
     }
 
@@ -163,7 +165,7 @@ class OperatorController extends Controller
         $this->authorize('create',Operator::class);
         $data = $operatorRequest->all();
 
-        if(!empty($data['input_voice_call'])) {
+        if(!empty($data['input_voice_call']) && $data['input_voice_call'] instanceof UploadedFile) {
             $filenameWithExt = $data['input_voice_call']->getClientOriginalName();
             $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
             $extension = $data['input_voice_call']->getClientOriginalExtension();
@@ -260,12 +262,13 @@ class OperatorController extends Controller
     *      ),
     *  )
     */
-    public function update(Operator $operator, OperatorRequest $operatorRequest): OperatorResource
+    public function update($id, OperatorRequest $operatorRequest): OperatorResource
     {
-        $this->authorize('create',Operator::class);
+        $this->authorize('update',Operator::class);
+        $operator = Operator::find($id);
         $data = $operatorRequest->all();
 
-        if(!empty($data['input_voice_call'])) {
+        if(!empty($data['input_voice_call']) && $data['input_voice_call'] instanceof UploadedFile) {
             $filenameWithExt = $data['input_voice_call']->getClientOriginalName();
             $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
             $extension = $data['input_voice_call']->getClientOriginalExtension();
@@ -273,6 +276,9 @@ class OperatorController extends Controller
             $operatorRequest->file('input_voice_call')->storeAs('public/input_voice_call',$resultFilename);
 
             $data['input_voice_call'] = 'public/input_voice_call/'.$resultFilename;
+
+        } else if(empty($data['input_voice_call'])) {
+            $data['input_voice_call'] = null;
         }
 
         $data['agent_id'] = auth()->user()->id;

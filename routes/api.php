@@ -85,11 +85,11 @@ Route::group(['middleware' => 'auth:api'],function (): void {
     });
 
     Route::group(['prefix' => 'operator'],function () {
-        Route::post('/', [OperatorController::class, 'create'])->middleware(['can:operator']);
+        Route::post('/', [OperatorController::class, 'create'])->middleware(['can:operator'])->name('create-operator');
         Route::get('/', [OperatorController::class, 'index'])->middleware(['can:operator']);
 
-        Route::post('/update/{operator}', [OperatorController::class, 'update'])->middleware(['can:operator']);
-        Route::get('/detail/{operator}', [OperatorController::class, 'detail'])->middleware(['can:operator']);
+        Route::post('/update/{id}', [OperatorController::class, 'update'])->middleware(['can:operator'])->name('update-operator');
+        Route::get('/detail/{id}', [OperatorController::class, 'detail'])->middleware(['can:operator']);
     });
 
     Route::group(['prefix' => 'helpdesk'],function () {

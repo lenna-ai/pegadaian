@@ -22,11 +22,13 @@ class OperatorRequest extends FormRequest
     public function rules(): array
     {
         $nameCustomer = 'required|string|min:3';
-        if ($this->method() == 'POST') {
+        if ($this->routeIs('create-operator')) {
             $nameCustomer .= '|unique:operators,name_customer';
-        }elseif ($this->method() == 'PUT') {
+        }elseif ($this->routeIs('update-operator')) {
             $nameCustomer .= '|unique:operators,name_customer,'.$this->route('id');
         }
+
+        $inputVoiceCall = $this->file('input_voice_call') !== null ? 'file|mimes:mpga,wav,m4a,wma,aac,mp3,mp4|max:5000' : '';
         return [
             'name_agent' => 'string|exists:users,name',
             'name_customer'=>$nameCustomer,
@@ -35,7 +37,7 @@ class OperatorRequest extends FormRequest
             'result_call'=>'required',
             'category'=>'required',
             'tag'=>'required|exists:tags,name',
-            'input_voice_call' => 'file|mimes:mpga,wav,m4a,wma,aac,mp3,mp4|max:5000',
+            'input_voice_call' => $inputVoiceCall,
         ];
     }
 }
