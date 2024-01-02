@@ -124,6 +124,10 @@ class StatusTrackSeeder extends Seeder
                 'owned' => 'outbound_confirmation_ticket',
             ],
             [
+                'name' => 'penyelesaian sudah sesuai',
+                'owned' => 'outbound_confirmation_ticket',
+            ],
+            [
                 'name' => 'Tidak Perlu Outbound',
                 'owned' => 'outbound_confirmation_ticket',
             ],
