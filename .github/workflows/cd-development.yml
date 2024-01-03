@@ -23,7 +23,7 @@ jobs:
           port: ${{ secrets.SSH_PORT_PROD }}
           script: |
             cd /var/www
-            sudo chown -R admin:admin pegadaian
+            sudo chown -R arifin:admin pegadaian
             cd /var/www/pegadaian
             git checkout master
             git fetch
@@ -36,7 +36,7 @@ jobs:
           php-version: 8.2
           script: |
             cd /var/www
-            sudo chown -R admin:admin pegadaian
+            sudo chown -R arifin:admin pegadaian
             cd /var/www/pegadaian
 
       - name: Install composer dependencies
