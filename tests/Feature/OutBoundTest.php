@@ -47,7 +47,7 @@ class OutBoundTest extends TestCase
                     'id',
                     'name',
                     "call_time",
-                    "clal_duration",
+                    "call_duration",
                     "status",
                 ]
             ]
@@ -67,7 +67,7 @@ class OutBoundTest extends TestCase
                 'id',
                 'name',
                 "call_time",
-                "clal_duration",
+                "call_duration",
                 "status",
             ]
         ]);

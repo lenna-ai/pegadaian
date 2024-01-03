@@ -78,7 +78,7 @@ class OperatorTest extends TestCase
         $data = [
             'name_agent' => 'admin',
             'name_customer'=>'required-' . Str::random(2),
-            'date_to_call'=> "22/10/2023",
+            'date_to_call'=> "2023-10-22 13:30",
             'call_duration'=>20,
             'result_call'=>'required',
             'category'=>'Konfirmasi Surat',
@@ -116,7 +116,7 @@ class OperatorTest extends TestCase
         $data = [
             'name_agent' => 'admin',
             'name_customer'=>'required',
-            'date_to_call'=> "22/10/2023",
+            'date_to_call'=> "2023-10-22 13:30",
             'call_duration'=>20,
             'result_call'=>'required',
             'category'=>'Konfirmasi Surat',
