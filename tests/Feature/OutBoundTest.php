@@ -56,10 +56,13 @@ class OutBoundTest extends TestCase
 
     public function test_detail_outbound_by_page(): void
     {
+        // create outbound nya buat sementara
+        $outbound = $this->test_create_outbound_by_page();
+
         $response = $this->withHeaders([
             'Authorization' => "Bearer {$this->response['data']['access_token']}",
             'Accept'=>'application/json'
-        ])->get('/api/outbound/agency/detail/2'); // possible page: agency, ask_more, leads
+        ])->get('/api/outbound/agency/detail/' . $outbound['id']); // possible page: agency, ask_more, leads
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
@@ -71,6 +74,8 @@ class OutBoundTest extends TestCase
                 "status",
             ]
         ]);
+
+        OutBound::find($outbound['id'])->delete();
     }
 
     public function test_index_outbound_confirmation_ticket(): void
@@ -99,10 +104,13 @@ class OutBoundTest extends TestCase
 
     public function test_detail_outbound_confirmation_ticket(): void
     {
+        // create outbound nya buat sementara
+        $outbound = $this->test_create_outbound_confirmation_ticket();
+
         $response = $this->withHeaders([
             'Authorization' => "Bearer {$this->response['data']['access_token']}",
             'Accept'=>'application/json'
-        ])->get('/api/outbound/confirmation-ticket/detail/3');
+        ])->get('/api/outbound/confirmation-ticket/detail/' . $outbound['id']);
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
@@ -116,6 +124,8 @@ class OutBoundTest extends TestCase
                 "result_call",
             ]
         ]);
+
+        OutBoundConfirmationTicket::find($outbound['id'])->delete();
     }
 
     public function test_category_outbound(): void
@@ -152,7 +162,7 @@ class OutBoundTest extends TestCase
         ]);
     }
 
-    public function test_create_outbound_by_page(): void
+    public function test_create_outbound_by_page()
     {
 
         $data = [
@@ -175,10 +185,14 @@ class OutBoundTest extends TestCase
                 "status",
             ]
         ]);
+
+        return $response->json('data');
     }
 
     public function test_update_outbound_by_page(): void
     {
+        // create outbound nya buat sementara
+        $outbound = $this->test_create_outbound_by_page();
 
         $data = [
             'name'=>'Randika Test Updated',
@@ -189,7 +203,7 @@ class OutBoundTest extends TestCase
         $response = $this->withHeaders([
             'Authorization' => "Bearer {$this->response['data']['access_token']}",
             'Accept'=>'application/json'
-        ])->post('/api/outbound/agency/update/2',$data); // possible page: agency, ask_more, leads
+        ])->post('/api/outbound/agency/update/' . $outbound['id'],$data); // possible page: agency, ask_more, leads
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
@@ -201,9 +215,11 @@ class OutBoundTest extends TestCase
                 "status",
             ]
         ]);
+
+        OutBound::find($outbound['id'])->delete();
     }
 
-    public function test_create_outbound_confirmation_ticket(): void
+    public function test_create_outbound_confirmation_ticket()
     {
 
         $data = [
@@ -232,10 +248,14 @@ class OutBoundTest extends TestCase
                 "result_call",
             ]
         ]);
+
+        return $response->json('data');
     }
 
     public function test_update_outbound_confirmation_ticket(): void
     {
+        // create outbound nya buat sementara
+        $outbound = $this->test_create_outbound_confirmation_ticket();
 
         $data = [
             'name_agent'=>'Randika Agent Updated',
@@ -249,7 +269,7 @@ class OutBoundTest extends TestCase
         $response = $this->withHeaders([
             'Authorization' => "Bearer {$this->response['data']['access_token']}",
             'Accept'=>'application/json'
-        ])->post('/api/outbound/confirmation-ticket/update/3',$data);
+        ])->post('/api/outbound/confirmation-ticket/update/' . $outbound['id'],$data);
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
@@ -264,6 +284,8 @@ class OutBoundTest extends TestCase
                 "result_call",
             ]
         ]);
+
+        OutBoundConfirmationTicket::find($outbound['id'])->delete();
     }
 
     public function tearDown(): void

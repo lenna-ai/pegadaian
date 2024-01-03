@@ -21,17 +21,10 @@ class OperatorRequest extends FormRequest
      */
     public function rules(): array
     {
-        $nameCustomer = 'required|string|min:3';
-        if ($this->routeIs('create-operator')) {
-            $nameCustomer .= '|unique:operators,name_customer';
-        }elseif ($this->routeIs('update-operator')) {
-            $nameCustomer .= '|unique:operators,name_customer,'.$this->route('id');
-        }
-
         $inputVoiceCall = $this->file('input_voice_call') !== null ? 'file|mimes:mpga,wav,m4a,wma,aac,mp3,mp4|max:5000' : '';
         return [
             'name_agent' => 'string|exists:users,name',
-            'name_customer'=>$nameCustomer,
+            'name_customer'=>'required|string|min:3',
             'date_to_call'=>'required|date_format:Y-m-d H:i',
             'call_duration'=>'required|numeric',
             'result_call'=>'required',
