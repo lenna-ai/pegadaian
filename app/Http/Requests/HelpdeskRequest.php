@@ -21,7 +21,7 @@ class HelpdeskRequest extends FormRequest
      */
     public function rules(): array
     {
-        $inputVoiceCall = $this->file('input_voice_call') !== null ? 'file|mimes:mpga,wav,m4a,wma,aac,mp3,mp4|max:5000' : '';
+        $inputVoiceCall = $this->file('input_voice_call') !== null ? 'file|mimes:mpga,wav,m4a,mp4a,wma,aac,mp3,mp4,3gp|max:5000' : '';
         return [
             'ticket_number' => 'required|string',
             'branch_code' => 'required|numeric',
