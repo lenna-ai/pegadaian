@@ -174,7 +174,7 @@ class DashboardOutboundController extends Controller
     *                   {
     *                  "name_agent": "admin",
     *                    "name_customer": "email@gmail.com",
-    *                    "date_to_call": "22/10/2023",
+    *                    "call_time": "22/10/2023",
     *                    "call_duration": 22,
     *                    "result_call": "sdddsdds"
     *                  }
@@ -216,7 +216,7 @@ class DashboardOutboundController extends Controller
     public function performance_hourly_today(string $page)
     {
         $data = OutBound::where('owned', 'outbound_' . $page)->where('call_time', '>=', Carbon::yesterday()->subDay())->get()->groupBy(function($date) {
-            return Carbon::parse($date->date_to_call)->format('H');
+            return Carbon::parse($date->call_time)->format('H');
         });
         return response()->json(['data'=>$data]);
     }
@@ -415,7 +415,7 @@ class DashboardOutboundController extends Controller
     *                   {
     *                  "name_agent": "admin",
     *                    "name_customer": "email@gmail.com",
-    *                    "date_to_call": "22/10/2023",
+    *                    "call_time": "22/10/2023",
     *                    "call_duration": 22,
     *                    "result_call": "sdddsdds"
     *                  }
@@ -448,7 +448,7 @@ class DashboardOutboundController extends Controller
     public function performance_hourly_today_confirmation_ticket()
     {
         $data = OutBoundConfirmationTicket::where('call_time', '>=', Carbon::yesterday()->subDay())->get()->groupBy(function($date) {
-            return Carbon::parse($date->date_to_call)->format('H');
+            return Carbon::parse($date->call_time)->format('H');
         });
         return response()->json(['data'=>$data]);
     }
