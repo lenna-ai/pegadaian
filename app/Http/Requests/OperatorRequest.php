@@ -27,7 +27,7 @@ class OperatorRequest extends FormRequest
         }elseif ($this->routeIs('update-operator')) {
             $nameCustomer .= '|unique:operators,name_customer,'.$this->route('id');
         }
-        $inputVoiceCall = $this->file('input_voice_call') !== null ? 'file|mimes:mpga,wav,m4a,mp4a,wma,aac,mp3,mp4,3gp|max:5000' : '';
+        $inputVoiceCall = $this->file('input_voice_call') !== null ? 'file|mimes:mpga,wav,m4a,mp4a,wma,aac,mp3,mp4,3gp|max:10000' : '';
         return [
             'name_agent' => 'string|exists:users,name',
             'name_customer'=>'required|string|min:3',
