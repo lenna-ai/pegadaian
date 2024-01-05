@@ -248,9 +248,9 @@ class DashboardHelpdeskController extends Controller
                 ['user_id','=', $user->id]
                 ])->whereDate('created_at', '>=', date($start_date))->whereDate('created_at', '<=', date($end_date))->orderBy('id', 'DESC')->get();
             $dataUser[] = $user;
-            $dataUser[$key]['duration_login'] = isset($login[0]) ? $login[0]->duration : 0;
-            $dataUser[$key]['duration_logout'] = isset($logout[0]) ? $logout[0]->duration : 0;
-            $dataUser[$key]['duration_break'] = isset($break[0]) ? $break[0]->duration : 0;
+            $dataUser[$key]['duration_login'] = $this->countDurationStatus($login);
+            $dataUser[$key]['duration_logout'] = $this->countDurationStatus($logout);
+            $dataUser[$key]['duration_break'] = $this->countDurationStatus($break);
         }
         return $dataUser;
     }
