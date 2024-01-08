@@ -67,7 +67,7 @@ class CategoryController extends Controller
     /**
     *    @OA\POST(
     *       path="/api/category",
-    *       tags={"category"},
+    *       tags={"Category"},
     *       operationId="create category",
     *       summary="create category",
     *       description="create category",

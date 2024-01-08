@@ -170,8 +170,8 @@ class DashboardController extends Controller
     public function current_call_session_detail_information($start_date,$end_date)
     {
         // $operator = Operator::whereBetween('created_at',[date($start_date), date($end_date)])
-        $operator = Operator::whereDate('created_at', '>=', date($start_date))
-        ->whereDate('created_at', '<=', date($end_date))->orderBy('id','DESC')
+        $operator = Operator::whereDate('date_to_call', '>=', date($start_date))
+        ->whereDate('date_to_call', '<=', date($end_date))->orderBy('id','DESC')
         // ->where(['name_agent'=>auth()->user()->name])
         ->get();
         return OperatorResource::collection($operator);

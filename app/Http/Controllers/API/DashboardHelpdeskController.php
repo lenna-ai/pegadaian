@@ -169,9 +169,9 @@ class DashboardHelpdeskController extends Controller
     */
     public function current_call_session_detail_information($start_date,$end_date)
     {
-        // $helpdesk = HelpDesk::whereBetween('created_at',[date($start_date), date($end_date)])->where(['name_agent'=>auth()->user()->name])->get();
-        $helpdesk = HelpDesk::whereDate('created_at', '>=', date($start_date))
-        ->whereDate('created_at', '<=', date($end_date))->orderBy('id','DESC')
+        // $helpdesk = HelpDesk::whereDate('date_to_call',[date($start_date), date($end_date)])->where(['name_agent'=>auth()->user()->name])->get();
+        $helpdesk = HelpDesk::whereDate('date_to_call', '>=', date($start_date))
+        ->whereDate('date_to_call', '<=', date($end_date))->orderBy('id','DESC')
         // ->where(['name_agent'=>auth()->user()->name])
         ->get();
         return HelpDeskResource::collection($helpdesk);
