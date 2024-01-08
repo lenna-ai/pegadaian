@@ -51,6 +51,10 @@ jobs:
       - name: test
         run: php artisan test
 
+      - name: test failed
+        if: success() || failure()
+        run: docker-compose down
+
       - name: Change permission folder and file on instance
         uses: appleboy/ssh-action@master
         with:
