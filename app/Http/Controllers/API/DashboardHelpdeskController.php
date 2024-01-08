@@ -129,7 +129,7 @@ class DashboardHelpdeskController extends Controller
     /**
     *    @OA\Get(
     *       path="/api/dashboard/helpdesk/current_call_session_detail_information/{start_date}/{end_date}",
-    *       tags={"Dashboard"},
+    *       tags={"Dashboard Helpdesk"},
     *       operationId="current_call_session_detail_information_Helpdesk",
     *       summary="current_call_session_detail_information",
     *       description="it is API for 2 Api Current Call Session & Dashboard Detail Information",
@@ -180,7 +180,7 @@ class DashboardHelpdeskController extends Controller
     /**
     *    @OA\Get(
     *       path="/api/dashboard/helpdesk/performance_hourly_today/{start_date}/{end_date}",
-    *       tags={"Dashboard"},
+    *       tags={"Dashboard Helpdesk"},
     *       operationId="performance_hourly_today_Helpdesk",
     *       summary="performance_hourly_today",
     *       description="performance_hourly_today",
@@ -201,7 +201,7 @@ class DashboardHelpdeskController extends Controller
     /**
     *    @OA\Get(
     *       path="/api/dashboard/helpdesk/total_agent/{start_date}/{end_date}",
-    *       tags={"Dashboard"},
+    *       tags={"Dashboard Helpdesk"},
     *       operationId="total_agent_Helpdesk",
     *       summary="total_agent",
     *       description="total_agent",
@@ -255,6 +255,35 @@ class DashboardHelpdeskController extends Controller
         return $dataUser;
     }
 
+    /**
+    *    @OA\Get(
+    *       path="/api/dashboard/helpdesk/list_helpdesk/{start_date}/{end_date}",
+    *       tags={"Dashboard Helpdesk"},
+    *       operationId="list_helpdesk_Helpdesk",
+    *       summary="list_helpdesk",
+    *       description="list_helpdesk",
+    *     @OA\Parameter(
+    *         description="Parameter start_date examples",
+    *         in="path",
+    *         name="start_date",
+    *         required=true,
+    *         @OA\Schema(type="string"),
+    *         @OA\Examples(example="int", value="2023-11-22", summary="An string date value."),
+    *     ),
+    *     @OA\Parameter(
+    *         description="Parameter end_date examples",
+    *         in="path",
+    *         name="end_date",
+    *         required=true,
+    *         @OA\Schema(type="string"),
+    *         @OA\Examples(example="int", value="2023-11-30", summary="An string date value."),
+    *     ),
+    *   @OA\Response(
+    *           response="200",
+    *           description="Ok"
+    *       ),
+    *  )
+    */
     public function list_helpdesk($start_date,$end_date)
     {
         $data = HelpDesk::whereDate('date_to_call', '>=', $start_date)
