@@ -232,7 +232,7 @@ class OutBoundController extends Controller
     public function index(string $page)
     {
         $this->authorize('read',Outbound::class);
-        $data = OutBound::where('owned', 'outbound_' . $page)->where('agent_id', Auth::user()->id)->get();
+        $data = OutBound::where('owned', 'outbound_' . $page)->where('agent_id', Auth::user()->id)->paginate(10);
         return OutboundResource::collection($data);
     }
 
@@ -384,7 +384,7 @@ class OutBoundController extends Controller
     public function confirmationTicket()
     {
         $this->authorize('read',Outbound::class);
-        $data = OutBoundConfirmationTicket::where('agent_id', Auth::user()->id)->get();
+        $data = OutBoundConfirmationTicket::where('agent_id', Auth::user()->id)->paginate(10);
         return OutboundConfirmationTicketResource::collection($data);
     }
 

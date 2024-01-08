@@ -63,7 +63,7 @@ class DashboardController extends Controller
     {
         // $operator = Operator::whereBetween('created_at',[date($start_date), date($end_date)])->get();
         $operator = Operator::whereDate('created_at', '>=', date($start_date))
-        ->whereDate('created_at', '<=', date($end_date))->orderBy('id','DESC')->get();
+        ->whereDate('created_at', '<=', date($end_date))->orderBy('id','DESC')->paginate(10);
         $result_operator['count_operator'] = count($operator);
         return new DashboardResource((object)$result_operator);
     }
@@ -110,7 +110,7 @@ class DashboardController extends Controller
         // $operator = Operator::whereBetween('created_at',[date($start_date), date($end_date)])->get();
         $operator = Operator::whereDate('created_at', '>=', date($start_date))
         ->whereDate('created_at', '<=', date($end_date))->orderBy('id','DESC')
-        ->get();
+        ->paginate(10);
 
         if (!count($operator)) {
             $result = 0;
@@ -173,7 +173,7 @@ class DashboardController extends Controller
         $operator = Operator::whereDate('date_to_call', '>=', date($start_date))
         ->whereDate('date_to_call', '<=', date($end_date))->orderBy('id','DESC')
         // ->where(['name_agent'=>auth()->user()->name])
-        ->get();
+        ->paginate(10);
         return OperatorResource::collection($operator);
     }
 
