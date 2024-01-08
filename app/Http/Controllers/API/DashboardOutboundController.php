@@ -185,7 +185,7 @@ class DashboardOutboundController extends Controller
     */
     public function current_call_session_detail_information(string $page, $start_date,$end_date)
     {
-        $outbound = OutBound::where('owned', 'outbound_' . $page)->whereDate('date_to_call', '>=', date($start_date))
+        $outbound = OutBound::where('owned', 'outbound_' . $page)->whereDate('call_time', '>=', date($start_date))
         ->whereDate('date_to_call', '<=', date($end_date))->orderBy('id','DESC')
         // ->where(['name_agent'=>auth()->user()->name])
         ->get();
@@ -277,6 +277,7 @@ class DashboardOutboundController extends Controller
             $dataUser[$key]['duration_logout'] = $this->countDurationStatus($logout);
             $dataUser[$key]['duration_break'] = $this->countDurationStatus($break);
         }
+        dd($dataUser);
         return response()->json(['data'=>$dataUser]);
     }
 
