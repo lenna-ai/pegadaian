@@ -11,6 +11,7 @@ use App\Models\Operator;
 use App\Models\StatusActivityLog;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -291,5 +292,40 @@ class DashboardHelpdeskController extends Controller
         ->paginate(10);
 
         return HelpDeskResource::collection($data);
+    }
+
+    /**
+    *    @OA\Get(
+    *       path="/api/dashboard/helpdesk/count_category/{start_date}/{end_date}",
+    *       tags={"Dashboard Helpdesk"},
+    *       operationId="count_category",
+    *       summary="count_category",
+    *       description="count_category",
+    *     @OA\Parameter(
+    *         description="Parameter start_date examples",
+    *         in="path",
+    *         name="start_date",
+    *         required=true,
+    *         @OA\Schema(type="string"),
+    *         @OA\Examples(example="int", value="2023-11-22", summary="An string date value."),
+    *     ),
+    *     @OA\Parameter(
+    *         description="Parameter end_date examples",
+    *         in="path",
+    *         name="end_date",
+    *         required=true,
+    *         @OA\Schema(type="string"),
+    *         @OA\Examples(example="int", value="2023-11-30", summary="An string date value."),
+    *     ),
+    *   @OA\Response(
+    *           response="200",
+    *           description="Ok"
+    *       ),
+    *  )
+    */
+    public function count_category($start_date,$end_date): JsonResponse
+    {
+        $category = HelpDesk::whereDate('date_to_call', '>=', date($start_date))->whereDate('date_to_call', '<=', date($end_date))->groupBy('category')->selectRaw('category as category, count(*) as count_category')->get();
+        return response()->json(['data'=>$category]);
     }
 }
