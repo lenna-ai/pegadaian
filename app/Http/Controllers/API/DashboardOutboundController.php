@@ -189,7 +189,7 @@ class DashboardOutboundController extends Controller
         $outbound = OutBound::where('owned', 'outbound_' . $page)->whereDate('call_time', '>=', date($start_date))
         ->whereDate('call_time', '<=', date($end_date))->orderBy('id','DESC')
         // ->where(['name_agent'=>auth()->user()->name])
-        ->get();
+        ->paginate(10);
         return OutboundResource::collection($outbound);
     }
 
@@ -430,7 +430,7 @@ class DashboardOutboundController extends Controller
         $outbound = OutBoundConfirmationTicket::whereDate('created_at', '>=', date($start_date))
         ->whereDate('created_at', '<=', date($end_date))->orderBy('id','DESC')
         // ->where(['name_agent'=>auth()->user()->name])
-        ->get();
+        ->paginate(10);
         return OutboundConfirmationTicketResource::collection($outbound);
     }
 
