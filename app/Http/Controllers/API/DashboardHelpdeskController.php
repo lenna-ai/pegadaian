@@ -173,7 +173,7 @@ class DashboardHelpdeskController extends Controller
         $helpdesk = HelpDesk::whereDate('date_to_call', '>=', date($start_date))
         ->whereDate('date_to_call', '<=', date($end_date))->orderBy('id','DESC')
         // ->where(['name_agent'=>auth()->user()->name])
-        ->get();
+        ->paginate(10);
         return HelpDeskResource::collection($helpdesk);
     }
 
@@ -288,7 +288,7 @@ class DashboardHelpdeskController extends Controller
     {
         $data = HelpDesk::whereDate('date_to_call', '>=', $start_date)
         ->whereDate('date_to_call', '<=', $end_date)
-        ->get();
+        ->paginate(10);
 
         return HelpDeskResource::collection($data);
     }
