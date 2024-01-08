@@ -277,7 +277,6 @@ class DashboardOutboundController extends Controller
             $dataUser[$key]['duration_logout'] = $this->countDurationStatus($logout);
             $dataUser[$key]['duration_break'] = $this->countDurationStatus($break);
         }
-        dd($dataUser);
         return response()->json(['data'=>$dataUser]);
     }
 
