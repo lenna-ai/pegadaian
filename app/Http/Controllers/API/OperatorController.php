@@ -43,7 +43,7 @@ class OperatorController extends Controller
     public function index(): AnonymousResourceCollection
     {
         $this->authorize('read',Operator::class);
-        $data = Operator::where('agent_id', Auth::user()->id)->get();
+        $data = Operator::where('agent_id', Auth::user()->id)->paginate(10);
         return OperatorResource::collection($data);
     }
 
