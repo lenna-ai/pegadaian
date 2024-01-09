@@ -262,9 +262,9 @@ class DashboardController extends Controller
     *    @OA\Get(
     *       path="/api/dashboard/operator/count_category/{start_date}/{end_date}",
     *       tags={"Dashboard"},
-    *       operationId="count_category",
-    *       summary="count_category",
-    *       description="count_category",
+    *       operationId="Dashboard count_category",
+    *       summary="Dashboard count_category",
+    *       description="Dashboard count_category",
     *     @OA\Parameter(
     *         description="Parameter start_date examples",
     *         in="path",
