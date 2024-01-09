@@ -63,8 +63,8 @@ class DashboardController extends Controller
     public function total_call($start_date,$end_date)
     {
         // $operator = Operator::whereBetween('created_at',[date($start_date), date($end_date)])->get();
-        $operator = Operator::whereDate('created_at', '>=', date($start_date))
-        ->whereDate('created_at', '<=', date($end_date))->orderBy('id','DESC')->paginate(10);
+        $operator = Operator::whereDate('date_to_call', '>=', date($start_date))
+        ->whereDate('date_to_call', '<=', date($end_date))->orderBy('id','DESC')->paginate(10);
         $result_operator['count_operator'] = count($operator);
         return new DashboardResource((object)$result_operator);
     }
@@ -109,8 +109,8 @@ class DashboardController extends Controller
     public function average_call_time($start_date,$end_date)
     {
         // $operator = Operator::whereBetween('created_at',[date($start_date), date($end_date)])->get();
-        $operator = Operator::whereDate('created_at', '>=', date($start_date))
-        ->whereDate('created_at', '<=', date($end_date))->orderBy('id','DESC')
+        $operator = Operator::whereDate('date_to_call', '>=', date($start_date))
+        ->whereDate('date_to_call', '<=', date($end_date))->orderBy('id','DESC')
         ->paginate(10);
 
         if (!count($operator)) {

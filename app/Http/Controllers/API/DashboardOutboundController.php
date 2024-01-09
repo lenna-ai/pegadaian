@@ -63,8 +63,8 @@ class DashboardOutboundController extends Controller
     */
     public function total_call(string $page, $start_date,$end_date)
     {
-        $outbound = OutBound::where('owned', 'outbound_' . $page)->whereDate('created_at', '>=', date($start_date))
-        ->whereDate('created_at', '<=', date($end_date))->orderBy('id','DESC')->get();
+        $outbound = OutBound::where('owned', 'outbound_' . $page)->whereDate('call_time', '>=', date($start_date))
+        ->whereDate('call_time', '<=', date($end_date))->orderBy('id','DESC')->get();
         $result_operator['count_outbound'] = count($outbound);
         return new DashboardOutboundResource((object)$result_operator);
     }
@@ -117,8 +117,8 @@ class DashboardOutboundController extends Controller
     public function average_call_time(string $page, $start_date,$end_date)
     {
         // $outbound = Operator::whereBetween('created_at',[date($start_date), date($end_date)])->get();
-        $outbound = OutBound::where('owned', 'outbound_' . $page)->whereDate('created_at', '>=', date($start_date))
-        ->whereDate('created_at', '<=', date($end_date))->orderBy('id','DESC')
+        $outbound = OutBound::where('owned', 'outbound_' . $page)->whereDate('call_time', '>=', date($start_date))
+        ->whereDate('call_time', '<=', date($end_date))->orderBy('id','DESC')
         ->get();
 
         if (!count($outbound)) {
@@ -320,8 +320,8 @@ class DashboardOutboundController extends Controller
     */
     public function total_call_confirmation_ticket($start_date,$end_date)
     {
-        $outbound = OutBoundConfirmationTicket::whereDate('created_at', '>=', date($start_date))
-        ->whereDate('created_at', '<=', date($end_date))->orderBy('id','DESC')->get();
+        $outbound = OutBoundConfirmationTicket::whereDate('call_time', '>=', date($start_date))
+        ->whereDate('call_time', '<=', date($end_date))->orderBy('id','DESC')->get();
         $result_operator['count_outbound'] = count($outbound);
         return new DashboardOutboundResource((object)$result_operator);
     }
@@ -366,8 +366,8 @@ class DashboardOutboundController extends Controller
     public function average_call_time_confirmation_ticket($start_date,$end_date)
     {
         // $outbound = Operator::whereBetween('created_at',[date($start_date), date($end_date)])->get();
-        $outbound = OutBoundConfirmationTicket::whereDate('created_at', '>=', date($start_date))
-        ->whereDate('created_at', '<=', date($end_date))->orderBy('id','DESC')
+        $outbound = OutBoundConfirmationTicket::whereDate('call_time', '>=', date($start_date))
+        ->whereDate('call_time', '<=', date($end_date))->orderBy('id','DESC')
         ->get();
 
         if (!count($outbound)) {
@@ -427,8 +427,8 @@ class DashboardOutboundController extends Controller
     */
     public function current_call_session_detail_information_confirmation_ticket($start_date,$end_date)
     {
-        $outbound = OutBoundConfirmationTicket::whereDate('created_at', '>=', date($start_date))
-        ->whereDate('created_at', '<=', date($end_date))->orderBy('id','DESC')
+        $outbound = OutBoundConfirmationTicket::whereDate('call_time', '>=', date($start_date))
+        ->whereDate('call_time', '<=', date($end_date))->orderBy('id','DESC')
         // ->where(['name_agent'=>auth()->user()->name])
         ->paginate(10);
         return OutboundConfirmationTicketResource::collection($outbound);
