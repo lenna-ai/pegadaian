@@ -63,8 +63,8 @@ class DashboardHelpdeskController extends Controller
     public function total_call($start_date,$end_date)
     {
         // $helpdesk = HelpDesk::whereBetween('created_at',[date($start_date), date($end_date)])->get();
-        $helpdesk = HelpDesk::whereDate('created_at', '>=', date($start_date))
-        ->whereDate('created_at', '<=', date($end_date))->orderBy('id','DESC')->get();
+        $helpdesk = HelpDesk::whereDate('date_to_call', '>=', date($start_date))
+        ->whereDate('date_to_call', '<=', date($end_date))->orderBy('id','DESC')->get();
         $result_helpdesk['count_helpdesk'] = count($helpdesk);
         return new DashboardHelpdeskResource((object)$result_helpdesk);
     }
@@ -109,8 +109,8 @@ class DashboardHelpdeskController extends Controller
     public function average_call_time($start_date,$end_date)
     {
         // $helpdesk = HelpDesk::whereBetween('created_at',[date($start_date), date($end_date)])->get();
-        $helpdesk = HelpDesk::whereDate('created_at', '>=', date($start_date))
-        ->whereDate('created_at', '<=', date($end_date))->orderBy('id','DESC')
+        $helpdesk = HelpDesk::whereDate('date_to_call', '>=', date($start_date))
+        ->whereDate('date_to_call', '<=', date($end_date))->orderBy('id','DESC')
         ->get();
 
         if (!count($helpdesk)) {
