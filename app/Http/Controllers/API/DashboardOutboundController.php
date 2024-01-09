@@ -458,9 +458,9 @@ class DashboardOutboundController extends Controller
     *    @OA\Get(
     *       path="/api/dashboard/outbound/count_category/{start_date}/{end_date}",
     *       tags={"Dashboard Outbound"},
-    *       operationId="count_category",
-    *       summary="count_category",
-    *       description="count_category",
+    *       operationId="Outbound count_category",
+    *       summary="Outbound count_category",
+    *       description="Outbound count_category",
     *     @OA\Parameter(
     *         description="Parameter start_date examples",
     *         in="path",

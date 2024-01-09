@@ -298,9 +298,9 @@ class DashboardHelpdeskController extends Controller
     *    @OA\Get(
     *       path="/api/dashboard/helpdesk/count_category/{start_date}/{end_date}",
     *       tags={"Dashboard Helpdesk"},
-    *       operationId="count_category",
-    *       summary="count_category",
-    *       description="count_category",
+    *       operationId="Helpdesk count_category",
+    *       summary="Helpdesk count_category",
+    *       description="Helpdesk count_category",
     *     @OA\Parameter(
     *         description="Parameter start_date examples",
     *         in="path",
