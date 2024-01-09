@@ -184,12 +184,12 @@ class DashboardOutboundController extends Controller
     *      ),
     *  )
     */
-    public function current_call_session_detail_information(string $page, $start_date,$end_date)
+    public function current_call_session_detail_information(string $page, $start_date,$end_date,Request $request)
     {
         $outbound = OutBound::where('owned', 'outbound_' . $page)->whereDate('call_time', '>=', date($start_date))
-        ->whereDate('call_time', '<=', date($end_date))->orderBy('id','DESC')
-        // ->where(['name_agent'=>auth()->user()->name])
-        ->paginate(10);
+        ->whereDate('call_time', '<=', date($end_date))->orderBy('id','DESC');
+
+        $outbound = $request->get('page') == 'all' ? $outbound->get() : $outbound->paginate(10);
         return OutboundResource::collection($outbound);
     }
 
@@ -425,12 +425,12 @@ class DashboardOutboundController extends Controller
     *      ),
     *  )
     */
-    public function current_call_session_detail_information_confirmation_ticket($start_date,$end_date)
+    public function current_call_session_detail_information_confirmation_ticket($start_date,$end_date,Request $request)
     {
         $outbound = OutBoundConfirmationTicket::whereDate('call_time', '>=', date($start_date))
-        ->whereDate('call_time', '<=', date($end_date))->orderBy('id','DESC')
-        // ->where(['name_agent'=>auth()->user()->name])
-        ->paginate(10);
+        ->whereDate('call_time', '<=', date($end_date))->orderBy('id','DESC');
+
+        $outbound = $request->get('page') == 'all' ? $outbound->get() : $outbound->paginate(10);
         return OutboundConfirmationTicketResource::collection($outbound);
     }
 
