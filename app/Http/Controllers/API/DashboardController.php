@@ -64,7 +64,7 @@ class DashboardController extends Controller
     {
         // $operator = Operator::whereBetween('created_at',[date($start_date), date($end_date)])->get();
         $operator = Operator::whereDate('date_to_call', '>=', date($start_date))
-        ->whereDate('date_to_call', '<=', date($end_date))->orderBy('id','DESC')->paginate(10);
+        ->whereDate('date_to_call', '<=', date($end_date))->orderBy('id','DESC');
         $result_operator['count_operator'] = count($operator);
         return new DashboardResource((object)$result_operator);
     }
