@@ -172,7 +172,7 @@ class DashboardController extends Controller
     {
         // $operator = Operator::whereBetween('created_at',[date($start_date), date($end_date)])
         $operator = Operator::whereDate('date_to_call', '>=', date($start_date))
-        ->whereDate('date_to_call', '<=', date($end_date))->orderBy('id','DESC');
+        ->whereDate('date_to_call', '<=', date($end_date))->orderBy('date_to_call','DESC');
 
         $operator = $request->get('page') == 'all' ? $operator->get() : $operator->paginate(10);
         return OperatorResource::collection($operator);
