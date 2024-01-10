@@ -20,8 +20,10 @@ class OutBoundTest extends TestCase
     // php artisan test --filter OutBoundTest::test_update_outbound_by_page
     // php artisan test --filter OutBoundTest::test_create_outbound_confirmation_ticket
     // php artisan test --filter OutBoundTest::test_update_outbound_confirmation_ticket
+    // php artisan test --filter OutBoundTest::test_count_tag
 
     private $response;
+    private $responseAdmin;
 
     public function setUp(): void
     {
@@ -31,6 +33,11 @@ class OutBoundTest extends TestCase
             "password"=>"secret"
         ];
         $this->response = $this->post('/api/auth/login',$data);
+        $dataAdmin = [
+            "email"=>"admin@lenna.ai",
+            "password"=>"secret"
+        ];
+        $this->responseAdmin = $this->post('/api/auth/login',$dataAdmin);
     }
 
     public function test_index_outbound_by_page(): void
@@ -288,17 +295,18 @@ class OutBoundTest extends TestCase
         OutBoundConfirmationTicket::find($outbound['id'])->delete();
     }
 
-    public function test_count_tag(): void
+    public function test_count_category(): void
     {
         $response = $this->withHeaders([
-            'Authorization' => "Bearer {$this->response['data']['access_token']}",
-        ])->get('/api/dashboard/outbound/count_tag/2023-01-01/2024-01-10');
+            'Authorization' => "Bearer {$this->responseAdmin['data']['access_token']}",
+        ])->get('/api/dashboard/outbound/count_category/2023-01-01/2024-01-10');
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
             'data' => [
                 '*' => [
-                    'tag',
+                    'category',
+                    'count_category',
                     'percentage',
                 ]
             ]

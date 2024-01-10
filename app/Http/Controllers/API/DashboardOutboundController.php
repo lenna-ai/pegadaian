@@ -491,7 +491,7 @@ class DashboardOutboundController extends Controller
         select
             Count(*)
         from
-            outbound_confirmation_ticket where date(date_to_call) >='".date($start_date)."' and date(date_to_call) <='".date($end_date)."')),2) as percentage")->get();
+            outbound_confirmation_ticket where date(call_time) >='".date($start_date)."' and date(call_time) <='".date($end_date)."')),2) as percentage")->get();
         return response()->json(['data'=>$category]);
     }
 
@@ -499,9 +499,9 @@ class DashboardOutboundController extends Controller
     *    @OA\Get(
     *       path="/api/dashboard/outbound/count_status/{start_date}/{end_date}",
     *       tags={"Dashboard"},
-    *       operationId="Dashboard count_tag",
-    *       summary="Dashboard count_tag",
-    *       description="Dashboard count_tag",
+    *       operationId="Dashboard outbound count_tag",
+    *       summary="Dashboard outbound count_tag",
+    *       description="Dashboard outbound count_tag",
     *     @OA\Parameter(
     *         description="Parameter start_date examples",
     *         in="path",

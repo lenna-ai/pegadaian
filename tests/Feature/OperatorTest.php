@@ -14,6 +14,7 @@ class OperatorTest extends TestCase
 {
     // php artisan test --filter OperatorTest::test_index_operator
     private $response;
+    private $responseAdmin;
     public function setUp(): void
     {
         parent::setUp();
@@ -23,6 +24,11 @@ class OperatorTest extends TestCase
             "name"=>"hai"
         ];
         $this->response = $this->post('/api/auth/login',$data);
+        $dataAdmin = [
+            "email"=>"admin@lenna.ai",
+            "password"=>"secret"
+        ];
+        $this->responseAdmin = $this->post('/api/auth/login',$dataAdmin);
     }
 
     public function test_index_operator(): void
@@ -149,7 +155,7 @@ class OperatorTest extends TestCase
     public function test_count_tag(): void
     {
         $response = $this->withHeaders([
-            'Authorization' => "Bearer {$this->response['data']['access_token']}",
+            'Authorization' => "Bearer {$this->responseAdmin['data']['access_token']}",
         ])->get('/api/dashboard/operator/count_tag/2023-01-01/2024-01-10');
 
         $response->assertStatus(200);

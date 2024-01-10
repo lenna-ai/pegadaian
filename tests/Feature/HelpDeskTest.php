@@ -16,6 +16,7 @@ class HelpDeskTest extends TestCase
     // php artisan test --filter HelpDeskTest::test_create_helpdesk_outlet_branch_code
     // php artisan test --filter HelpDeskTest::test_count_tag
     private $response;
+    private $responseAdmin;
     public function setUp(): void
     {
         parent::setUp();
@@ -24,6 +25,11 @@ class HelpDeskTest extends TestCase
             "password"=>"secret"
         ];
         $this->response = $this->post('/api/auth/login',$data);
+        $dataAdmin = [
+            "email"=>"admin@lenna.ai",
+            "password"=>"secret"
+        ];
+        $this->responseAdmin = $this->post('/api/auth/login',$dataAdmin);
     }
 
     public function test_index_helpdesk(): void
@@ -254,7 +260,7 @@ class HelpDeskTest extends TestCase
     public function test_count_tag(): void
     {
         $response = $this->withHeaders([
-            'Authorization' => "Bearer {$this->response['data']['access_token']}",
+            'Authorization' => "Bearer {$this->responseAdmin['data']['access_token']}",
             'Accept'=>'application/json'
         ])->get('/api/dashboard/helpdesk/count_tag/2023-01-01/2024-01-10');
 
