@@ -325,7 +325,54 @@ class DashboardHelpdeskController extends Controller
     */
     public function count_category($start_date,$end_date): JsonResponse
     {
-        $category = HelpDesk::whereDate('date_to_call', '>=', date($start_date))->whereDate('date_to_call', '<=', date($end_date))->groupBy('category')->selectRaw('category as category, count(*) as count_category')->get();
+        $category = HelpDesk::whereDate('date_to_call', '>=', date($start_date))->whereDate('date_to_call', '<=', date($end_date))->groupBy('category')->selectRaw("category,
+        count(*) as count_category,
+        round((Count(tag)* 100.0 / (
+        select
+            Count(*)
+        from
+            help_desks where date(date_to_call) >='".date($start_date)."' and date(date_to_call) <='".date($end_date)."')),2) as percentage")->get();
         return response()->json(['data'=>$category]);
+    }
+
+    /**
+    *    @OA\Get(
+    *       path="/api/dashboard/helpdesk/count_tag/{start_date}/{end_date}",
+    *       tags={"Dashboard"},
+    *       operationId="Dashboard count_tag",
+    *       summary="Dashboard count_tag",
+    *       description="Dashboard count_tag",
+    *     @OA\Parameter(
+    *         description="Parameter start_date examples",
+    *         in="path",
+    *         name="start_date",
+    *         required=true,
+    *         @OA\Schema(type="string"),
+    *         @OA\Examples(example="int", value="2023-11-22", summary="An string date value."),
+    *     ),
+    *     @OA\Parameter(
+    *         description="Parameter end_date examples",
+    *         in="path",
+    *         name="end_date",
+    *         required=true,
+    *         @OA\Schema(type="string"),
+    *         @OA\Examples(example="int", value="2023-11-30", summary="An string date value."),
+    *     ),
+    *   @OA\Response(
+    *           response="200",
+    *           description="Ok"
+    *       ),
+    *  )
+    */
+    public function count_tag($start_date,$end_date): JsonResponse
+    {
+        $tags = HelpDesk::whereDate('date_to_call', '>=', date($start_date))->whereDate('date_to_call', '<=', date($end_date))->groupBy('tag')->selectRaw("tag,
+        count(*) as count_tag,
+        round((Count(tag)* 100.0 / (
+        select
+            Count(*)
+        from
+            help_desks where date(date_to_call) >='".date($start_date)."' and date(date_to_call) <='".date($end_date)."')),2) as percentage")->get();
+        return response()->json(['data'=>$tags]);
     }
 }

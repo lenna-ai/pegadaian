@@ -288,6 +288,23 @@ class OutBoundTest extends TestCase
         OutBoundConfirmationTicket::find($outbound['id'])->delete();
     }
 
+    public function test_count_tag(): void
+    {
+        $response = $this->withHeaders([
+            'Authorization' => "Bearer {$this->response['data']['access_token']}",
+        ])->get('/api/dashboard/outbound/count_tag/2023-01-01/2024-01-10');
+
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'data' => [
+                '*' => [
+                    'tag',
+                    'percentage',
+                ]
+            ]
+        ]);
+    }
+
     public function tearDown(): void
     {
         $outboundByPage = OutBound::where(['name' => 'Randika Test'])->first();

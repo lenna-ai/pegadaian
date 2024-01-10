@@ -14,6 +14,7 @@ class HelpDeskTest extends TestCase
 {
     // php artisan test --filter HelpDeskTest::test_create_helpdesk
     // php artisan test --filter HelpDeskTest::test_create_helpdesk_outlet_branch_code
+    // php artisan test --filter HelpDeskTest::test_count_tag
     private $response;
     public function setUp(): void
     {
@@ -246,6 +247,25 @@ class HelpDeskTest extends TestCase
                 '*'=>[
                     'branch_code'
                 ],
+            ]
+        ]);
+    }
+
+    public function test_count_tag(): void
+    {
+        $response = $this->withHeaders([
+            'Authorization' => "Bearer {$this->response['data']['access_token']}",
+            'Accept'=>'application/json'
+        ])->get('/api/dashboard/helpdesk/count_tag/2023-01-01/2024-01-10');
+
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'data' => [
+                '*' => [
+                    'tag',
+                    'count_tag',
+                    'percentage',
+                ]
             ]
         ]);
     }

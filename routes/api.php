@@ -48,6 +48,7 @@ Route::group(['middleware' => 'auth:api'],function (): void {
             Route::get('performance_hourly_today', [DashboardController::class, 'performance_hourly_today'])->middleware(['can:admin']);
             Route::get('total_agent/{start_date}/{end_date}', [DashboardController::class, 'total_agent'])->middleware(['can:admin']);
             Route::get('count_category/{start_date}/{end_date}', [DashboardController::class, 'count_category'])->middleware(['can:admin']);
+            Route::get('count_tag/{start_date}/{end_date}', [DashboardController::class, 'count_tag'])->middleware(['can:admin']);
         });
 
         Route::group(['prefix'=>'helpdesk'],function () {
@@ -57,12 +58,15 @@ Route::group(['middleware' => 'auth:api'],function (): void {
             Route::get('performance_hourly_today', [DashboardHelpdeskController::class, 'performance_hourly_today'])->middleware(['can:admin']);
             Route::get('total_agent/{start_date}/{end_date}', [DashboardHelpdeskController::class, 'total_agent'])->middleware(['can:admin']);
             Route::get('list_helpdesk/{start_date}/{end_date}', [DashboardHelpdeskController::class, 'list_helpdesk'])->middleware(['can:admin']);
-            Route::get('count_category/{start_date}/{end_date}', [DashboardController::class, 'count_category'])->middleware(['can:admin']);
+            Route::get('count_category/{start_date}/{end_date}', [DashboardHelpdeskController::class, 'count_category'])->middleware(['can:admin']);
+            Route::get('count_tag/{start_date}/{end_date}', [DashboardHelpdeskController::class, 'count_tag'])->middleware(['can:admin']);
         });
 
         Route::group(['prefix'=>'outbound'],function () {
             Route::get('total_agent/{start_date}/{end_date}', [DashboardOutboundController::class, 'total_agent'])->middleware(['can:admin']);
-            Route::get('count_category/{start_date}/{end_date}', [DashboardController::class, 'count_category'])->middleware(['can:admin']);
+            Route::get('count_category/{start_date}/{end_date}', [DashboardOutboundController::class, 'count_category'])->middleware(['can:admin']);
+            Route::get('count_status/{start_date}/{end_date}', [DashboardOutboundController::class, 'count_status'])->middleware(['can:admin']);
+
             Route::group(['prefix' => 'confirmation-ticket'], function() {
                 Route::get('total_call/{start_date}/{end_date}', [DashboardOutboundController::class, 'total_call_confirmation_ticket'])->middleware(['can:admin']);
                 Route::get('average_call_time/{start_date}/{end_date}', [DashboardOutboundController::class, 'average_call_time_confirmation_ticket'])->middleware(['can:admin']);
