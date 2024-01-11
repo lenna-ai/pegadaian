@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\OutBound;
 use App\Models\OutBoundConfirmationTicket;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -33,11 +34,10 @@ class OutBoundTest extends TestCase
             "password"=>"secret"
         ];
         $this->response = $this->post('/api/auth/login',$data);
-        $dataAdmin = [
-            "email"=>"admin@lenna.ai",
-            "password"=>"secret"
-        ];
-        $this->responseAdmin = $this->post('/api/auth/login',$dataAdmin);
+        $this->responseAdmin = User::where([
+            ["email",'=',"admin@lenna.ai"],
+            ["password",'=','$2y$12$VhY9UXOqpxMg2sGYPv/fiOEmM58uXp6TodbfocTheR0eKLYcasVA6']
+        ])->first();
     }
 
     public function test_index_outbound_by_page(): void
@@ -297,9 +297,7 @@ class OutBoundTest extends TestCase
 
     public function test_count_category(): void
     {
-        $response = $this->withHeaders([
-            'Authorization' => "Bearer {$this->responseAdmin['data']['access_token']}",
-        ])->get('/api/dashboard/outbound/count_category/2023-01-01/2024-01-10');
+        $response = $this->actingAs(User::find($this->responseAdmin->id))->get('/api/dashboard/outbound/count_category/2023-01-01/2024-01-10');
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
@@ -307,6 +305,22 @@ class OutBoundTest extends TestCase
                 '*' => [
                     'category',
                     'count_category',
+                    'percentage',
+                ]
+            ]
+        ]);
+    }
+
+    public function test_count_status(): void
+    {
+        $response = $this->actingAs(User::find($this->responseAdmin->id))->get('/api/dashboard/outbound/count_status/2023-01-01/2024-01-10');
+
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'data' => [
+                '*' => [
+                    'status',
+                    'count_status',
                     'percentage',
                 ]
             ]
