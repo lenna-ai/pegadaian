@@ -11,6 +11,7 @@ use App\Models\OutBound;
 use App\Models\OutBoundConfirmationTicket;
 use App\Models\StatusTrack;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 class OutBoundController extends Controller
 {
@@ -229,10 +230,15 @@ class OutBoundController extends Controller
     *      ),
     *  )
     */
-    public function index(string $page)
+    public function index(string $page,Request $request)
     {
         $this->authorize('read',Outbound::class);
-        $data = OutBound::where('owned', 'outbound_' . $page)->where('agent_id', Auth::user()->id)->paginate(10);
+        if($request->orderby == null || $request->orderby == ''){
+            $OrderBy = 'desc';
+        } else {
+            $OrderBy = strtolower($request->get('orderby'));
+        }
+        $data = OutBound::where('owned', 'outbound_' . $page)->where('agent_id', Auth::user()->id)->orderBy('call_time',$OrderBy)->paginate(10);
         return OutboundResource::collection($data);
     }
 

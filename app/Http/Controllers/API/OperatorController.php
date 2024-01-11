@@ -40,10 +40,15 @@ class OperatorController extends Controller
     *      ),
     *  )
     */
-    public function index(): AnonymousResourceCollection
+    public function index(Request $request): AnonymousResourceCollection
     {
         $this->authorize('read',Operator::class);
-        $data = Operator::where('agent_id', Auth::user()->id)->orderBy('date_to_call','DESC')->paginate(10);
+        if($request->orderby == null || $request->orderby == ''){
+            $OrderBy = 'desc';
+        } else {
+            $OrderBy = strtolower($request->get('orderby'));
+        }
+        $data = Operator::where('agent_id', Auth::user()->id)->orderBy('date_to_call',$OrderBy)->paginate(10);
         return OperatorResource::collection($data);
     }
 
