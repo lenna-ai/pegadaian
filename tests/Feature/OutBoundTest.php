@@ -22,6 +22,7 @@ class OutBoundTest extends TestCase
     // php artisan test --filter OutBoundTest::test_create_outbound_confirmation_ticket
     // php artisan test --filter OutBoundTest::test_update_outbound_confirmation_ticket
     // php artisan test --filter OutBoundTest::test_count_tag
+    // php artisan test --filter OutBoundTest::count_status_mt
 
     private $response;
     private $responseAdmin;
@@ -321,6 +322,53 @@ class OutBoundTest extends TestCase
                 '*' => [
                     'status',
                     'count_status',
+                    'percentage',
+                ]
+            ]
+        ]);
+    }
+
+    public function test_count_status_lead(): void
+    {
+        $response = $this->actingAs(User::find($this->responseAdmin->id))->get('/api/dashboard/outbound/count_status_lead/2023-01-01/2024-01-10');
+
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'data' => [
+                '*' => [
+                    'status',
+                    'count_status_lead',
+                    'percentage',
+                ]
+            ]
+        ]);
+    }
+
+    public function test_count_status_agency(): void
+    {
+        $response = $this->actingAs(User::find($this->responseAdmin->id))->get('/api/dashboard/outbound/count_status_agency/2023-01-01/2024-01-10');
+
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'data' => [
+                '*' => [
+                    'status',
+                    'count_status_agency',
+                    'percentage',
+                ]
+            ]
+        ]);
+    }
+    public function test_count_status_mt(): void
+    {
+        $response = $this->actingAs(User::find($this->responseAdmin->id))->get('/api/dashboard/outbound/count_status_mt/2023-01-01/2024-01-10');
+
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'data' => [
+                '*' => [
+                    'status',
+                    'count_status_mt',
                     'percentage',
                 ]
             ]
