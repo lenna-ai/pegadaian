@@ -21,12 +21,12 @@ class OperatorRequest extends FormRequest
      */
     public function rules(): array
     {
-        $nameCustomer = 'required|string|min:3';
-        if ($this->routeIs('create-operator')) {
-            $nameCustomer .= '|unique:operators,name_customer';
-        }elseif ($this->routeIs('update-operator')) {
-            $nameCustomer .= '|unique:operators,name_customer,'.$this->route('id');
-        }
+        // $nameCustomer = 'required|string|min:3';
+        // if ($this->routeIs('create-operator')) {
+        //     $nameCustomer .= '|unique:operators,name_customer';
+        // }elseif ($this->routeIs('update-operator')) {
+        //     $nameCustomer .= '|unique:operators,name_customer,'.$this->route('id');
+        // }
         $inputVoiceCall = $this->file('input_voice_call') !== null ? 'file|mimes:mpga,wav,m4a,mp4a,wma,aac,mp3,mp4,3gp|max:10000' : '';
         return [
             'name_agent' => 'string|exists:users,name',
