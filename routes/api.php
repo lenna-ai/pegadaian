@@ -66,6 +66,9 @@ Route::group(['middleware' => 'auth:api'],function (): void {
             Route::get('total_agent/{start_date}/{end_date}', [DashboardOutboundController::class, 'total_agent'])->middleware(['can:admin']);
             Route::get('count_category/{start_date}/{end_date}', [DashboardOutboundController::class, 'count_category'])->middleware(['can:admin']);
             Route::get('count_status/{start_date}/{end_date}', [DashboardOutboundController::class, 'count_status'])->middleware(['can:admin']);
+            Route::get('count_status_mt/{start_date}/{end_date}', [DashboardOutboundController::class, 'count_status_mt'])->middleware(['can:admin']);
+            Route::get('count_status_lead/{start_date}/{end_date}', [DashboardOutboundController::class, 'count_status_lead'])->middleware(['can:admin']);
+            Route::get('count_status_agency/{start_date}/{end_date}', [DashboardOutboundController::class, 'count_status_agency'])->middleware(['can:admin']);
 
             Route::group(['prefix' => 'confirmation-ticket'], function() {
                 Route::get('total_call/{start_date}/{end_date}', [DashboardOutboundController::class, 'total_call_confirmation_ticket'])->middleware(['can:admin']);

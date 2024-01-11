@@ -499,9 +499,9 @@ class DashboardOutboundController extends Controller
     *    @OA\Get(
     *       path="/api/dashboard/outbound/count_status/{start_date}/{end_date}",
     *       tags={"Dashboard"},
-    *       operationId="Dashboard outbound count_tag",
-    *       summary="Dashboard outbound count_tag",
-    *       description="Dashboard outbound count_tag",
+    *       operationId="Dashboard outbound count_status",
+    *       summary="Dashboard outbound count_status",
+    *       description="Dashboard outbound count_status",
     *     @OA\Parameter(
     *         description="Parameter start_date examples",
     *         in="path",
@@ -533,6 +533,129 @@ class DashboardOutboundController extends Controller
             Count(*)
         from
             outbound_confirmation_ticket where date(call_time) >='".date($start_date)."' and date(call_time) <='".date($end_date)."')),2) as percentage")->get();
+        return response()->json(['data'=>$tags]);
+    }
+
+    /**
+    *    @OA\Get(
+    *       path="/api/dashboard/outbound/count_status_mt/{start_date}/{end_date}",
+    *       tags={"Dashboard"},
+    *       operationId="Dashboard outbound count_status_mt",
+    *       summary="Dashboard outbound count_status_mt",
+    *       description="Dashboard outbound count_status_mt",
+    *     @OA\Parameter(
+    *         description="Parameter start_date examples",
+    *         in="path",
+    *         name="start_date",
+    *         required=true,
+    *         @OA\Schema(type="string"),
+    *         @OA\Examples(example="int", value="2023-11-22", summary="An string date value."),
+    *     ),
+    *     @OA\Parameter(
+    *         description="Parameter end_date examples",
+    *         in="path",
+    *         name="end_date",
+    *         required=true,
+    *         @OA\Schema(type="string"),
+    *         @OA\Examples(example="int", value="2023-11-30", summary="An string date value."),
+    *     ),
+    *   @OA\Response(
+    *           response="200",
+    *           description="Ok"
+    *       ),
+    *  )
+    */
+    public function count_status_mt($start_date,$end_date): JsonResponse
+    {
+        $tags = OutBound::whereDate('call_time', '>=', date($start_date))->whereDate('call_time', '<=', date($end_date))->where('owned','outbound_ask_more')->groupBy('status')->selectRaw("status,
+        count(*) as count_status_mt,
+        round((Count(status)* 100.0 / (
+        select
+            Count(*)
+        from
+            OutBound where date(call_time) >='".date($start_date)."' and date(call_time) <='".date($end_date)."')),2) as percentage")->get();
+        return response()->json(['data'=>$tags]);
+    }
+
+    /**
+    *    @OA\Get(
+    *       path="/api/dashboard/outbound/count_status_lead/{start_date}/{end_date}",
+    *       tags={"Dashboard"},
+    *       operationId="Dashboard outbound count_status_lead",
+    *       summary="Dashboard outbound count_status_lead",
+    *       description="Dashboard outbound count_status_lead",
+    *     @OA\Parameter(
+    *         description="Parameter start_date examples",
+    *         in="path",
+    *         name="start_date",
+    *         required=true,
+    *         @OA\Schema(type="string"),
+    *         @OA\Examples(example="int", value="2023-11-22", summary="An string date value."),
+    *     ),
+    *     @OA\Parameter(
+    *         description="Parameter end_date examples",
+    *         in="path",
+    *         name="end_date",
+    *         required=true,
+    *         @OA\Schema(type="string"),
+    *         @OA\Examples(example="int", value="2023-11-30", summary="An string date value."),
+    *     ),
+    *   @OA\Response(
+    *           response="200",
+    *           description="Ok"
+    *       ),
+    *  )
+    */
+    public function count_status_lead($start_date,$end_date): JsonResponse
+    {
+        $tags = OutBound::whereDate('call_time', '>=', date($start_date))->whereDate('call_time', '<=', date($end_date))->where('owned','outbound_leads')->groupBy('status')->selectRaw("status,
+        count(*) as count_status_lead,
+        round((Count(status)* 100.0 / (
+        select
+            Count(*)
+        from
+            OutBound where date(call_time) >='".date($start_date)."' and date(call_time) <='".date($end_date)."')),2) as percentage")->get();
+        return response()->json(['data'=>$tags]);
+    }
+
+    /**
+    *    @OA\Get(
+    *       path="/api/dashboard/outbound/count_status_agency/{start_date}/{end_date}",
+    *       tags={"Dashboard"},
+    *       operationId="Dashboard outbound count_status_agency",
+    *       summary="Dashboard outbound count_status_agency",
+    *       description="Dashboard outbound count_status_agency",
+    *     @OA\Parameter(
+    *         description="Parameter start_date examples",
+    *         in="path",
+    *         name="start_date",
+    *         required=true,
+    *         @OA\Schema(type="string"),
+    *         @OA\Examples(example="int", value="2023-11-22", summary="An string date value."),
+    *     ),
+    *     @OA\Parameter(
+    *         description="Parameter end_date examples",
+    *         in="path",
+    *         name="end_date",
+    *         required=true,
+    *         @OA\Schema(type="string"),
+    *         @OA\Examples(example="int", value="2023-11-30", summary="An string date value."),
+    *     ),
+    *   @OA\Response(
+    *           response="200",
+    *           description="Ok"
+    *       ),
+    *  )
+    */
+    public function count_status_agency($start_date,$end_date): JsonResponse
+    {
+        $tags = OutBound::whereDate('call_time', '>=', date($start_date))->whereDate('call_time', '<=', date($end_date))->where('owned','outbound_agency')->groupBy('status')->selectRaw("status,
+        count(*) as count_status_agency,
+        round((Count(status)* 100.0 / (
+        select
+            Count(*)
+        from
+            OutBound where date(call_time) >='".date($start_date)."' and date(call_time) <='".date($end_date)."')),2) as percentage")->get();
         return response()->json(['data'=>$tags]);
     }
 }
