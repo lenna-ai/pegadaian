@@ -54,7 +54,7 @@ jobs:
       - name: test failed
         if: success() || failure()
         run: |
-          docker-compose -f .github/workflows/cd-development.yml down
+          docker compose -f .github/workflows/cd-development.yml down
 
       - name: Change permission folder and file on instance
         uses: appleboy/ssh-action@master
