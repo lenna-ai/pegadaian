@@ -532,7 +532,7 @@ class DashboardOutboundController extends Controller
         select
             Count(*)
         from
-            outbound_confirmation_ticket where date(date_to_call) >='".date($start_date)."' and date(date_to_call) <='".date($end_date)."')),2) as percentage")->get();
+            outbound_confirmation_ticket where date(call_time) >='".date($start_date)."' and date(call_time) <='".date($end_date)."')),2) as percentage")->get();
         return response()->json(['data'=>$tags]);
     }
 }
