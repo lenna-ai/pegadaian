@@ -53,7 +53,9 @@ jobs:
 
       - name: test failed
         if: success() || failure()
-        run: docker container stop php-fpm-pegadaian
+        run: |
+        docker container ps
+        docker container stop php-fpm-pegadaian
 
       - name: Change permission folder and file on instance
         uses: appleboy/ssh-action@master
