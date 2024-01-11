@@ -424,7 +424,6 @@ class HelpDeskController extends Controller
     {
         $data = HelpDeskOutlet::distinct()->get(['parent_branch']);
         return response()->json(['data'=>$data]);
-        // return HelpDeskResource::collection($data);
     }
 
     /**
