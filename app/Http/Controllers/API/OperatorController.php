@@ -40,17 +40,10 @@ class OperatorController extends Controller
     *      ),
     *  )
     */
-    public function index(Request $request): AnonymousResourceCollection
+    public function index(): AnonymousResourceCollection
     {
         $this->authorize('read',Operator::class);
-
-        if($request->orderby == null || $request->orderby == ''){
-            $OrderBy = $request->get('orderby');
-        } else {
-            $OrderBy = 'DESC';
-        }
-
-        $data = Operator::where('agent_id', Auth::user()->id)->orderBy('date_to_call',$OrderBy)->paginate(10);
+        $data = Operator::where('agent_id', Auth::user()->id)->orderBy('date_to_call','DESC')->paginate(10);
         return OperatorResource::collection($data);
     }
 
@@ -281,7 +274,6 @@ class OperatorController extends Controller
             $extension = $data['input_voice_call']->getClientOriginalExtension();
             $resultFilename = $filename.'_'.time().'.'.$extension;
             $operatorRequest->file('input_voice_call')->storeAs('public/input_voice_call',$resultFilename);
-
 
             $data['input_voice_call'] = 'public/input_voice_call/'.$resultFilename;
 
