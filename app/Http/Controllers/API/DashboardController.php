@@ -180,7 +180,7 @@ class DashboardController extends Controller
 
     /**
     *    @OA\Get(
-    *       path="/api/dashboard/operator/performance_hourly_today/{start_date}/{end_date}",
+    *       path="/api/dashboard/operator/performance_hourly_today",
     *       tags={"Dashboard"},
     *       operationId="performance_hourly_today",
     *       summary="performance_hourly_today",
@@ -193,7 +193,7 @@ class DashboardController extends Controller
     */
     public function performance_hourly_today()
     {
-        $data = Operator::where('date_to_call', '>=', Carbon::yesterday()->subDay())->get()->groupBy(function($date) {
+        $data = Operator::whereDate('created_at', Carbon::today()->toDateString())->get()->groupBy(function($date) {
             return Carbon::parse($date->date_to_call)->format('H');
         });
         return response()->json(['data'=>$data]);
