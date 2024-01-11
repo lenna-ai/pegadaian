@@ -48,14 +48,13 @@ jobs:
           cp .env.ci .env
           php artisan key:generate
 
-      # - name: test
-      #   run: php artisan test
+      - name: test
+        run: php artisan test
 
       - name: test failed
         if: success() || failure()
         run: |
-          docker container ps
-          docker container stop php-fpm-pegadaian
+          docker-compose down
 
       - name: Change permission folder and file on instance
         uses: appleboy/ssh-action@master
