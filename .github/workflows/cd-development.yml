@@ -53,7 +53,7 @@ jobs:
 
       - name: test failed
         if: success() || failure()
-        script: |
+        run: |
           docker container ps
           docker container stop php-fpm-pegadaian
 
