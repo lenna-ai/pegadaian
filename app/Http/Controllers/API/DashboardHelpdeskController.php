@@ -193,7 +193,7 @@ class DashboardHelpdeskController extends Controller
     */
     public function performance_hourly_today()
     {
-        $data = HelpDesk::where('date_to_call', '>=', Carbon::yesterday()->subDay())->get()->groupBy(function($date) {
+        $data = HelpDesk::whereDate('created_at', Carbon::today()->toDateString())->get()->groupBy(function($date) {
             return Carbon::parse($date->date_to_call)->format('H');
         });
         return response()->json(['data'=>$data]);
@@ -285,11 +285,12 @@ class DashboardHelpdeskController extends Controller
     *       ),
     *  )
     */
-    public function list_helpdesk($start_date,$end_date)
+    public function list_helpdesk($start_date,$end_date,Request $request)
     {
         $data = HelpDesk::whereDate('date_to_call', '>=', $start_date)
-        ->whereDate('date_to_call', '<=', $end_date)
-        ->paginate(10);
+        ->whereDate('date_to_call', '<=', $end_date);
+
+        $data = $request->get('page') == 'all' ? $data->get() : $data->paginate(10);
 
         return HelpDeskResource::collection($data);
     }

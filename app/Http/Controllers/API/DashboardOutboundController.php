@@ -216,7 +216,7 @@ class DashboardOutboundController extends Controller
     */
     public function performance_hourly_today(string $page)
     {
-        $data = OutBound::where('owned', 'outbound_' . $page)->where('call_time', '>=', Carbon::yesterday()->subDay())->get()->groupBy(function($date) {
+        $data = OutBound::where('owned', 'outbound_' . $page)->whereDate('created_at', Carbon::today()->toDateString())->get()->groupBy(function($date) {
             return Carbon::parse($date->call_time)->format('H');
         });
         return response()->json(['data'=>$data]);
@@ -448,7 +448,7 @@ class DashboardOutboundController extends Controller
     */
     public function performance_hourly_today_confirmation_ticket()
     {
-        $data = OutBoundConfirmationTicket::where('call_time', '>=', Carbon::yesterday()->subDay())->get()->groupBy(function($date) {
+        $data = OutBoundConfirmationTicket::whereDate('created_at', Carbon::today()->toDateString())->get()->groupBy(function($date) {
             return Carbon::parse($date->call_time)->format('H');
         });
         return response()->json(['data'=>$data]);
