@@ -193,7 +193,7 @@ class DashboardHelpdeskController extends Controller
     */
     public function performance_hourly_today()
     {
-        $data = HelpDesk::where('date_to_call', '>=', Carbon::yesterday()->subDay())->get()->groupBy(function($date) {
+        $data = HelpDesk::whereDate('created_at', Carbon::today()->toDateString())->get()->groupBy(function($date) {
             return Carbon::parse($date->date_to_call)->format('H');
         });
         return response()->json(['data'=>$data]);
@@ -285,11 +285,12 @@ class DashboardHelpdeskController extends Controller
     *       ),
     *  )
     */
-    public function list_helpdesk($start_date,$end_date)
+    public function list_helpdesk($start_date,$end_date,Request $request)
     {
         $data = HelpDesk::whereDate('date_to_call', '>=', $start_date)
-        ->whereDate('date_to_call', '<=', $end_date)
-        ->paginate(10);
+        ->whereDate('date_to_call', '<=', $end_date);
+
+        $data = $request->get('page') == 'all' ? $data->get() : $data->paginate(10);
 
         return HelpDeskResource::collection($data);
     }
@@ -325,7 +326,54 @@ class DashboardHelpdeskController extends Controller
     */
     public function count_category($start_date,$end_date): JsonResponse
     {
-        $category = HelpDesk::whereDate('date_to_call', '>=', date($start_date))->whereDate('date_to_call', '<=', date($end_date))->groupBy('category')->selectRaw('category as category, count(*) as count_category')->get();
+        $category = HelpDesk::whereDate('date_to_call', '>=', date($start_date))->whereDate('date_to_call', '<=', date($end_date))->groupBy('category')->selectRaw("category,
+        count(*) as count_category,
+        round((Count(tag)* 100.0 / (
+        select
+            Count(*)
+        from
+            help_desks where date(date_to_call) >='".date($start_date)."' and date(date_to_call) <='".date($end_date)."')),2) as percentage")->get();
         return response()->json(['data'=>$category]);
+    }
+
+    /**
+    *    @OA\Get(
+    *       path="/api/dashboard/helpdesk/count_tag/{start_date}/{end_date}",
+    *       tags={"Dashboard"},
+    *       operationId="Dashboard helpdesk count_tag",
+    *       summary="Dashboard helpdesk count_tag",
+    *       description="Dashboard helpdesk count_tag",
+    *     @OA\Parameter(
+    *         description="Parameter start_date examples",
+    *         in="path",
+    *         name="start_date",
+    *         required=true,
+    *         @OA\Schema(type="string"),
+    *         @OA\Examples(example="int", value="2023-11-22", summary="An string date value."),
+    *     ),
+    *     @OA\Parameter(
+    *         description="Parameter end_date examples",
+    *         in="path",
+    *         name="end_date",
+    *         required=true,
+    *         @OA\Schema(type="string"),
+    *         @OA\Examples(example="int", value="2023-11-30", summary="An string date value."),
+    *     ),
+    *   @OA\Response(
+    *           response="200",
+    *           description="Ok"
+    *       ),
+    *  )
+    */
+    public function count_tag($start_date,$end_date): JsonResponse
+    {
+        $tags = HelpDesk::whereDate('date_to_call', '>=', date($start_date))->whereDate('date_to_call', '<=', date($end_date))->groupBy('tag')->selectRaw("tag,
+        count(*) as count_tag,
+        round((Count(tag)* 100.0 / (
+        select
+            Count(*)
+        from
+            help_desks where date(date_to_call) >='".date($start_date)."' and date(date_to_call) <='".date($end_date)."')),2) as percentage")->get();
+        return response()->json(['data'=>$tags]);
     }
 }

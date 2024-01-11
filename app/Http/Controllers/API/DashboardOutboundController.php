@@ -216,7 +216,7 @@ class DashboardOutboundController extends Controller
     */
     public function performance_hourly_today(string $page)
     {
-        $data = OutBound::where('owned', 'outbound_' . $page)->where('call_time', '>=', Carbon::yesterday()->subDay())->get()->groupBy(function($date) {
+        $data = OutBound::where('owned', 'outbound_' . $page)->whereDate('created_at', Carbon::today()->toDateString())->get()->groupBy(function($date) {
             return Carbon::parse($date->call_time)->format('H');
         });
         return response()->json(['data'=>$data]);
@@ -448,7 +448,7 @@ class DashboardOutboundController extends Controller
     */
     public function performance_hourly_today_confirmation_ticket()
     {
-        $data = OutBoundConfirmationTicket::where('call_time', '>=', Carbon::yesterday()->subDay())->get()->groupBy(function($date) {
+        $data = OutBoundConfirmationTicket::whereDate('created_at', Carbon::today()->toDateString())->get()->groupBy(function($date) {
             return Carbon::parse($date->call_time)->format('H');
         });
         return response()->json(['data'=>$data]);
@@ -485,7 +485,54 @@ class DashboardOutboundController extends Controller
     */
     public function count_category($start_date,$end_date): JsonResponse
     {
-        $category = OutBound::whereDate('date_to_call', '>=', date($start_date))->whereDate('date_to_call', '<=', date($end_date))->groupBy('category')->selectRaw('category as category, count(*) as count_category')->get();
+        $category = OutBoundConfirmationTicket::whereDate('call_time', '>=', date($start_date))->whereDate('call_time', '<=', date($end_date))->groupBy('category')->selectRaw("category,
+        count(*) as count_category,
+        round((Count(category)* 100.0 / (
+        select
+            Count(*)
+        from
+            outbound_confirmation_ticket where date(call_time) >='".date($start_date)."' and date(call_time) <='".date($end_date)."')),2) as percentage")->get();
         return response()->json(['data'=>$category]);
+    }
+
+    /**
+    *    @OA\Get(
+    *       path="/api/dashboard/outbound/count_status/{start_date}/{end_date}",
+    *       tags={"Dashboard"},
+    *       operationId="Dashboard outbound count_tag",
+    *       summary="Dashboard outbound count_tag",
+    *       description="Dashboard outbound count_tag",
+    *     @OA\Parameter(
+    *         description="Parameter start_date examples",
+    *         in="path",
+    *         name="start_date",
+    *         required=true,
+    *         @OA\Schema(type="string"),
+    *         @OA\Examples(example="int", value="2023-11-22", summary="An string date value."),
+    *     ),
+    *     @OA\Parameter(
+    *         description="Parameter end_date examples",
+    *         in="path",
+    *         name="end_date",
+    *         required=true,
+    *         @OA\Schema(type="string"),
+    *         @OA\Examples(example="int", value="2023-11-30", summary="An string date value."),
+    *     ),
+    *   @OA\Response(
+    *           response="200",
+    *           description="Ok"
+    *       ),
+    *  )
+    */
+    public function count_status($start_date,$end_date): JsonResponse
+    {
+        $tags = OutBoundConfirmationTicket::whereDate('call_time', '>=', date($start_date))->whereDate('call_time', '<=', date($end_date))->groupBy('status')->selectRaw("status,
+        count(*) as count_status,
+        round((Count(status)* 100.0 / (
+        select
+            Count(*)
+        from
+            outbound_confirmation_ticket where date(call_time) >='".date($start_date)."' and date(call_time) <='".date($end_date)."')),2) as percentage")->get();
+        return response()->json(['data'=>$tags]);
     }
 }

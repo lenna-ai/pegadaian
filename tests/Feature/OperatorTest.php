@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Operator;
+use App\Models\User;
 use DateTime;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -14,22 +15,26 @@ class OperatorTest extends TestCase
 {
     // php artisan test --filter OperatorTest::test_index_operator
     private $response;
+    private $responseAdmin;
     public function setUp(): void
     {
         parent::setUp();
         $data = [
             "email"=>"operator@lenna.ai",
-            "password"=>"secret",
-            "name"=>"hai"
+            "password"=>"secret"
         ];
         $this->response = $this->post('/api/auth/login',$data);
+
+        $this->responseAdmin = User::where([
+            ["email",'=',"admin@lenna.ai"],
+            ["password",'=','$2y$12$VhY9UXOqpxMg2sGYPv/fiOEmM58uXp6TodbfocTheR0eKLYcasVA6']
+        ])->first();
     }
 
     public function test_index_operator(): void
     {
         $response = $this->withHeaders([
-            'Authorization' => "Bearer {$this->response['data']['access_token']}",
-            'Accept'=>'application/json'
+            'Authorization' => "Bearer {$this->response['data']['access_token']}"
         ])->get('/api/operator');
 
         $response->assertStatus(200);
@@ -144,6 +149,37 @@ class OperatorTest extends TestCase
         ]);
 
         Operator::where('id', $operator['id'])->delete();
+    }
+
+    public function test_count_category(): void
+    {
+        $response = $this->actingAs(User::find($this->responseAdmin->id))->get('/api/dashboard/operator/count_category/2023-01-01/2024-01-10');
+
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'data' => [
+                '*' => [
+                    'category',
+                    'count_category',
+                    'percentage',
+                ]
+            ]
+        ]);
+    }
+
+    public function test_count_tag(): void
+    {
+        $response = $this->actingAs(User::find($this->responseAdmin->id))->get('/api/dashboard/operator/count_tag/2023-01-01/2024-01-10');
+
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'data' => [
+                '*' => [
+                    'tag',
+                    'percentage',
+                ]
+            ]
+        ]);
     }
 
     public function tearDown(): void

@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\HelpDesk;
 use App\Models\Operator;
+use App\Models\User;
 use DateTime;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -14,7 +15,9 @@ class HelpDeskTest extends TestCase
 {
     // php artisan test --filter HelpDeskTest::test_create_helpdesk
     // php artisan test --filter HelpDeskTest::test_create_helpdesk_outlet_branch_code
+    // php artisan test --filter HelpDeskTest::test_count_tag
     private $response;
+    private $responseAdmin;
     public function setUp(): void
     {
         parent::setUp();
@@ -23,6 +26,10 @@ class HelpDeskTest extends TestCase
             "password"=>"secret"
         ];
         $this->response = $this->post('/api/auth/login',$data);
+        $this->responseAdmin = User::where([
+            ["email",'=',"admin@lenna.ai"],
+            ["password",'=','$2y$12$VhY9UXOqpxMg2sGYPv/fiOEmM58uXp6TodbfocTheR0eKLYcasVA6']
+        ])->first();
     }
 
     public function test_index_helpdesk(): void
@@ -246,6 +253,38 @@ class HelpDeskTest extends TestCase
                 '*'=>[
                     'branch_code'
                 ],
+            ]
+        ]);
+    }
+
+    public function test_count_category(): void
+    {
+        $response = $this->actingAs(User::find($this->responseAdmin->id))->get('/api/dashboard/helpdesk/count_category/2023-01-01/2024-01-10');
+
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'data' => [
+                '*' => [
+                    'category',
+                    'count_category',
+                    'percentage',
+                ]
+            ]
+        ]);
+    }
+
+    public function test_count_tag(): void
+    {
+        $response = $this->actingAs(User::find($this->responseAdmin->id))->get('/api/dashboard/helpdesk/count_tag/2023-01-01/2024-01-10');
+
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'data' => [
+                '*' => [
+                    'tag',
+                    'count_tag',
+                    'percentage',
+                ]
             ]
         ]);
     }
