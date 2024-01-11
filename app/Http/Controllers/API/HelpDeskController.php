@@ -422,7 +422,7 @@ class HelpDeskController extends Controller
     */
     public function parent_branch()
     {
-        $data = HelpDeskOutlet::distinct()->get(['parent_branch']);
+        $data = HelpDeskOutlet::distinct()->get(['parent_branch'])->paginate(10);
         return response()->json(['data'=>$data]);
     }
 
