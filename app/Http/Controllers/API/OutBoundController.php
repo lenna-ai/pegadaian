@@ -257,7 +257,7 @@ class OutBoundController extends Controller
     public function index(string $page,string $order_by = 'desc',string $start_date,string $end_date)
     {
         $this->authorize('read',Outbound::class);
-        $data = OutBound::where('owned', 'outbound_' . $page)->where('agent_id', Auth::user()->id)->whereDate('date_to_call', '>=', date($start_date))->whereDate('date_to_call', '<=', date($end_date))->orderBy('call_time',$order_by)->paginate(10);
+        $data = OutBound::where('owned', 'outbound_' . $page)->where('agent_id', Auth::user()->id)->whereDate('call_time', '>=', date($start_date))->whereDate('call_time', '<=', date($end_date))->orderBy('call_time',$order_by)->paginate(10);
         return OutboundResource::collection($data);
     }
 
@@ -433,7 +433,7 @@ class OutBoundController extends Controller
     public function confirmationTicket(string $order_by = 'desc',string $start_date,string $end_date)
     {
         $this->authorize('read',Outbound::class);
-        $data = OutBoundConfirmationTicket::where('agent_id', Auth::user()->id)->whereDate('date_to_call', '>=', date($start_date))->whereDate('date_to_call', '<=', date($end_date))->orderBy('call_time',$order_by)->paginate(10);
+        $data = OutBoundConfirmationTicket::where('agent_id', Auth::user()->id)->whereDate('call_time', '>=', date($start_date))->whereDate('call_time', '<=', date($end_date))->orderBy('call_time',$order_by)->paginate(10);
         return OutboundConfirmationTicketResource::collection($data);
     }
 
