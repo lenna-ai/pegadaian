@@ -383,11 +383,35 @@ class OutBoundController extends Controller
 
     /**
     *    @OA\Get(
-    *       path="/api/outbound/confirmation-ticket",
+    *       path="/api/outbound/confirmation-ticket/{order_by}/{start_date}/{end_date}",
     *       tags={"Outbound"},
     *       operationId="read outbound confirmation ticket",
     *       summary="read outbound confirmation ticket",
     *       description="read outbound confirmation ticket",
+    *     @OA\Parameter(
+    *         description="Parameter order_by examples",
+    *         in="path",
+    *         name="order_by",
+    *         required=true,
+    *         @OA\Schema(type="string"),
+    *         @OA\Examples(example="int", value="asc || desc", summary="An string date value."),
+    *     ),
+    *     @OA\Parameter(
+    *         description="Parameter start_date examples",
+    *         in="path",
+    *         name="start_date",
+    *         required=true,
+    *         @OA\Schema(type="string"),
+    *         @OA\Examples(example="int", value="2023-11-22", summary="An string date value."),
+    *     ),
+    *     @OA\Parameter(
+    *         description="Parameter end_date examples",
+    *         in="path",
+    *         name="end_date",
+    *         required=true,
+    *         @OA\Schema(type="string"),
+    *         @OA\Examples(example="int", value="2023-11-30", summary="An string date value."),
+    *     ),
     *       @OA\Response(
     *           response="200",
     *           description="Ok",
@@ -406,10 +430,10 @@ class OutBoundController extends Controller
     *      ),
     *  )
     */
-    public function confirmationTicket()
+    public function confirmationTicket(string $order_by = 'desc',string $start_date,string $end_date)
     {
         $this->authorize('read',Outbound::class);
-        $data = OutBoundConfirmationTicket::where('agent_id', Auth::user()->id)->paginate(10);
+        $data = OutBoundConfirmationTicket::where('agent_id', Auth::user()->id)->whereDate('date_to_call', '>=', date($start_date))->whereDate('date_to_call', '<=', date($end_date))->orderBy('call_time',$order_by)->paginate(10);
         return OutboundConfirmationTicketResource::collection($data);
     }
 
