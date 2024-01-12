@@ -95,7 +95,7 @@ Route::group(['middleware' => 'auth:api'],function (): void {
 
     Route::group(['prefix' => 'operator'],function () {
         Route::post('/', [OperatorController::class, 'create'])->middleware(['can:operator'])->name('create-operator');
-        Route::get('/', [OperatorController::class, 'index'])->middleware(['can:operator']);
+        Route::get('/{order_by}/{start_date}/{end_date}', [OperatorController::class, 'index'])->middleware(['can:operator']);
 
         Route::post('/update/{id}', [OperatorController::class, 'update'])->middleware(['can:operator'])->name('update-operator');
         Route::get('/detail/{id}', [OperatorController::class, 'detail'])->middleware(['can:operator']);
@@ -103,7 +103,7 @@ Route::group(['middleware' => 'auth:api'],function (): void {
 
     Route::group(['prefix' => 'helpdesk'],function () {
         Route::post('/', [HelpDeskController::class, 'create'])->middleware(['can:help_desk']);
-        Route::get('/', [HelpDeskController::class, 'index'])->middleware(['can:help_desk']);
+        Route::get('/{order_by}/{start_date}/{end_date}', [HelpDeskController::class, 'index'])->middleware(['can:help_desk']);
         Route::post('/update/{helpdesk}', [HelpDeskController::class, 'update'])->middleware(['can:help_desk']);
         Route::get('/detail/{helpdesk}', [HelpDeskController::class, 'detail'])->middleware(['can:help_desk']);
 
@@ -137,7 +137,7 @@ Route::group(['middleware' => 'auth:api'],function (): void {
         Route::group(['prefix' => '{page}'], function() {
             Route::get('/outlet/statusTrack', [OutBoundController::class, 'statusTrack']);
             Route::post('/', [OutBoundController::class, 'create'])->middleware(['can:outbound']);
-            Route::get('/', [OutBoundController::class, 'index'])->middleware(['can:outbound']);
+            Route::get('/{order_by}/{start_date}/{end_date}', [OutBoundController::class, 'index'])->middleware(['can:outbound']);
 
             Route::post('/update/{outbound}', [OutBoundController::class, 'update'])->middleware(['can:outbound']);
             Route::get('/detail/{outbound}', [OutBoundController::class, 'detail'])->middleware(['can:outbound']);

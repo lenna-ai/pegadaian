@@ -15,11 +15,35 @@ class OperatorController extends Controller
 {
     /**
     *    @OA\Get(
-    *       path="api/operator",
+    *       path="api/operator/{order_by}/{start_date}/{end_date}",
     *       tags={"Operator"},
     *       operationId="read operator",
     *       summary="read operator",
     *       description="read operator",
+    *     @OA\Parameter(
+    *         description="Parameter order_by examples",
+    *         in="path",
+    *         name="order_by",
+    *         required=true,
+    *         @OA\Schema(type="string"),
+    *         @OA\Examples(example="int", value="asc || desc", summary="An string date value."),
+    *     ),
+    *     @OA\Parameter(
+    *         description="Parameter start_date examples",
+    *         in="path",
+    *         name="start_date",
+    *         required=true,
+    *         @OA\Schema(type="string"),
+    *         @OA\Examples(example="int", value="2023-11-22", summary="An string date value."),
+    *     ),
+    *     @OA\Parameter(
+    *         description="Parameter end_date examples",
+    *         in="path",
+    *         name="end_date",
+    *         required=true,
+    *         @OA\Schema(type="string"),
+    *         @OA\Examples(example="int", value="2023-11-30", summary="An string date value."),
+    *     ),
     *       @OA\Response(
     *           response="200",
     *           description="Ok",
@@ -40,15 +64,11 @@ class OperatorController extends Controller
     *      ),
     *  )
     */
-    public function index(Request $request): AnonymousResourceCollection
+    public function index($order_by='desc',$start_date,$end_date): AnonymousResourceCollection
     {
         $this->authorize('read',Operator::class);
-        if($request->orderby == null || $request->orderby == ''){
-            $OrderBy = 'desc';
-        } else {
-            $OrderBy = strtolower($request->get('orderby'));
-        }
-        $data = Operator::where('agent_id', Auth::user()->id)->orderBy('date_to_call',$OrderBy)->paginate(10);
+        $data = Operator::where('agent_id', Auth::user()->id)->whereDate('date_to_call', '>=', date($start_date))
+        ->whereDate('date_to_call', '<=', date($end_date))->orderBy('date_to_call',$order_by)->paginate(10);
         return OperatorResource::collection($data);
     }
 

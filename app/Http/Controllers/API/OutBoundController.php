@@ -212,6 +212,30 @@ class OutBoundController extends Controller
     *         @OA\Schema(type="string"),
     *         @OA\Examples(example="page", value="agency", summary="Page value."),
     *      ),
+    *     @OA\Parameter(
+    *         description="Parameter order_by examples",
+    *         in="path",
+    *         name="order_by",
+    *         required=true,
+    *         @OA\Schema(type="string"),
+    *         @OA\Examples(example="int", value="asc || desc", summary="An string date value."),
+    *     ),
+    *     @OA\Parameter(
+    *         description="Parameter start_date examples",
+    *         in="path",
+    *         name="start_date",
+    *         required=true,
+    *         @OA\Schema(type="string"),
+    *         @OA\Examples(example="int", value="2023-11-22", summary="An string date value."),
+    *     ),
+    *     @OA\Parameter(
+    *         description="Parameter end_date examples",
+    *         in="path",
+    *         name="end_date",
+    *         required=true,
+    *         @OA\Schema(type="string"),
+    *         @OA\Examples(example="int", value="2023-11-30", summary="An string date value."),
+    *     ),
     *       @OA\Response(
     *           response="200",
     *           description="Ok",
@@ -230,15 +254,10 @@ class OutBoundController extends Controller
     *      ),
     *  )
     */
-    public function index(string $page,Request $request)
+    public function index(string $page,string $order_by = 'desc',string $start_date,string $end_date)
     {
         $this->authorize('read',Outbound::class);
-        if($request->orderby == null || $request->orderby == ''){
-            $OrderBy = 'desc';
-        } else {
-            $OrderBy = strtolower($request->get('orderby'));
-        }
-        $data = OutBound::where('owned', 'outbound_' . $page)->where('agent_id', Auth::user()->id)->orderBy('call_time',$OrderBy)->paginate(10);
+        $data = OutBound::where('owned', 'outbound_' . $page)->where('agent_id', Auth::user()->id)->whereDate('date_to_call', '>=', date($start_date))->whereDate('date_to_call', '<=', date($end_date))->orderBy('call_time',$order_by)->paginate(10);
         return OutboundResource::collection($data);
     }
 
