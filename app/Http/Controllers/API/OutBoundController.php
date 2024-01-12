@@ -199,7 +199,7 @@ class OutBoundController extends Controller
 
     /**
     *    @OA\Get(
-    *       path="/api/outbound/{page}",
+    *       path="/api/outbound/{page}/{order_by}/{start_date}/{end_date}",
     *       tags={"Outbound"},
     *       operationId="read outbound by page",
     *       summary="read outbound by page",
