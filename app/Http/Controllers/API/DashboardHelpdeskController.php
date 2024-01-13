@@ -191,9 +191,11 @@ class DashboardHelpdeskController extends Controller
     *      ),
     *  )
     */
-    public function performance_hourly_today()
+    public function performance_hourly_today($start_date,$end_date)
     {
-        $data = HelpDesk::whereDate('created_at', Carbon::today()->toDateString())->get()->groupBy(function($date) {
+
+        // $data = HelpDesk::whereDate('created_at', Carbon::today()->toDateString())->get()->groupBy(function($date) {
+        $data = HelpDesk::whereDate('date_to_call','>=', date($start_date))->whereDate('date_to_call', '<=', date($end_date))->get()->groupBy(function($date) {
             return Carbon::parse($date->date_to_call)->format('H');
         });
         return response()->json(['data'=>$data]);
