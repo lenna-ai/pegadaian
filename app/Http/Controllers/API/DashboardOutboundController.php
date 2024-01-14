@@ -195,7 +195,7 @@ class DashboardOutboundController extends Controller
 
     /**
     *    @OA\Get(
-    *       path="/api/dashboard/outbound/{page}/performance_hourly_today",
+    *       path="/api/dashboard/outbound/{page}/performance_hourly_today/{start_date}/{end_date}",
     *       tags={"Dashboard Outbound"},
     *       operationId="performanc_outbounde_hourly_today",
     *       summary="performance hourly today outbound by page",
@@ -214,9 +214,9 @@ class DashboardOutboundController extends Controller
     *      ),
     *  )
     */
-    public function performance_hourly_today(string $page)
+    public function performance_hourly_today(string $page, $start_date,$end_date)
     {
-        $data = OutBound::where('owned', 'outbound_' . $page)->whereDate('created_at', Carbon::today()->toDateString())->get()->groupBy(function($date) {
+            $data = OutBound::where('owned', 'outbound_' . $page)->whereDate('call_time', '>=', date($start_date))->whereDate('call_time', '<=', date($end_date))->get()->groupBy(function($date) {
             return Carbon::parse($date->call_time)->format('H');
         });
         return response()->json(['data'=>$data]);
@@ -436,7 +436,7 @@ class DashboardOutboundController extends Controller
 
     /**
     *    @OA\Get(
-    *       path="/api/dashboard/outbound/confirmation-ticket/performance_hourly_today",
+    *       path="/api/dashboard/outbound/confirmation-ticket/performance_hourly_today/{start_date}/{end_date}",
     *       tags={"Dashboard Outbound"},
     *       operationId="performanc_outbounde_hourly_today_confirmation_ticket",
     *       summary="performance hourly today",
