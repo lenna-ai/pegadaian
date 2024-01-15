@@ -46,7 +46,7 @@ class OutBoundTest extends TestCase
         $response = $this->withHeaders([
             'Authorization' => "Bearer {$this->response['data']['access_token']}",
             'Accept'=>'application/json'
-        ])->get('/api/outbound/agency'); // possible page: agency, ask_more, leads
+        ])->get('/api/outbound/agency/desc/2024-01-01/2024-01-15?page=1'); // possible page: agency, ask_more, leads
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
@@ -91,7 +91,7 @@ class OutBoundTest extends TestCase
         $response = $this->withHeaders([
             'Authorization' => "Bearer {$this->response['data']['access_token']}",
             'Accept'=>'application/json'
-        ])->get('/api/outbound/confirmation-ticket');
+        ])->get('/api/outbound/confirmation-ticket/desc/2024-01-01/2024-01-15?page=1');
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
