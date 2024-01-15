@@ -237,7 +237,6 @@ class DashboardController extends Controller
         $users = User::with(['Role','Status'])->orderBy('id', 'DESC')->whereHas('Role', function($userRole){
             $userRole->where('name', 'operator');
         })->get();
-        return $users;
 
         foreach ($users as $key => $user) {
             $login = StatusActivityLog::where([
