@@ -35,7 +35,7 @@ class OperatorTest extends TestCase
     {
         $response = $this->withHeaders([
             'Authorization' => "Bearer {$this->response['data']['access_token']}"
-        ])->get('/api/operator');
+        ])->get('/api/operator/desc/2024-01-01/2024-01-15?page=1');
 
         $response->assertStatus(200);
         $response->assertJsonStructure([

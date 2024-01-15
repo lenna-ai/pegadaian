@@ -13,7 +13,7 @@ use Tests\TestCase;
 
 class HelpDeskTest extends TestCase
 {
-    // php artisan test --filter HelpDeskTest::test_create_helpdesk
+    // php artisan test --filter HelpDeskTest::test_index_helpdesk
     // php artisan test --filter HelpDeskTest::test_create_helpdesk_outlet_branch_code
     // php artisan test --filter HelpDeskTest::test_count_tag
     private $response;
@@ -37,7 +37,7 @@ class HelpDeskTest extends TestCase
         $response = $this->withHeaders([
             'Authorization' => "Bearer {$this->response['data']['access_token']}",
             'Accept'=>'application/json'
-        ])->get('/api/helpdesk');
+        ])->get('/api/helpdesk/desc/2024-01-01/2024-01-15?page=1');
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
