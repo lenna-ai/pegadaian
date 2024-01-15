@@ -574,7 +574,7 @@ class DashboardOutboundController extends Controller
         select
             Count(*)
         from
-            OutBound where date(call_time) >='".date($start_date)."' and date(call_time) <='".date($end_date)."')),2) as percentage")->get();
+            outbound where owned = 'outbound_ask_more' and date(call_time) >='".date($start_date)."' and date(call_time) <='".date($end_date)."')),2) as percentage")->get();
         return response()->json(['data'=>$tags]);
     }
 
@@ -615,7 +615,7 @@ class DashboardOutboundController extends Controller
         select
             Count(*)
         from
-            OutBound where date(call_time) >='".date($start_date)."' and date(call_time) <='".date($end_date)."')),2) as percentage")->get();
+            OutBound where owned = 'outbound_leads' and date(call_time) >='".date($start_date)."' and date(call_time) <='".date($end_date)."')),2) as percentage")->get();
         return response()->json(['data'=>$tags]);
     }
 
@@ -656,7 +656,7 @@ class DashboardOutboundController extends Controller
         select
             Count(*)
         from
-            OutBound where date(call_time) >='".date($start_date)."' and date(call_time) <='".date($end_date)."')),2) as percentage")->get();
+            OutBound where owned = 'outbound_agency' and date(call_time) >='".date($start_date)."' and date(call_time) <='".date($end_date)."')),2) as percentage")->get();
         return response()->json(['data'=>$tags]);
     }
 }
