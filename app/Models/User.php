@@ -67,11 +67,11 @@ class User extends Authenticatable implements JWTSubject
 
     public function Role()
     {
-        return $this->belongsToMany(Role::class, 'user_roles','user_id','role_id');
+        return $this->belongsToMany(Role::class, 'user_roles','user_id','role_id')->orderBy('user_roles.id', 'DESC');
     }
 
     public function Status()
     {
-        return $this->hasOne(StatusActivityLog::class, 'user_id','id');
+        return $this->hasOne(StatusActivityLog::class, 'user_id','id')->orderBy('id', 'DESC');
     }
 }
