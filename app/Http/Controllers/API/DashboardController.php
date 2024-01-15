@@ -298,6 +298,31 @@ class DashboardController extends Controller
             Count(*)
         from
             operators where date(date_to_call) >='".date($start_date)."' and date(date_to_call) <='".date($end_date)."')),2) as percentage")->get();
+
+        $distinctOperator = Operator::distinct()->get(['category']);
+        $data = [];
+
+        foreach ($distinctOperator as $key => $valueDistinctOperator) {
+            $distinctOperator[$valueDistinctOperator->category] = true;
+            unset($distinctOperator[$key]);
+            foreach ($category as $keycategory => $valuecategory) {
+                if ($valueDistinctOperator->category == $valuecategory->category) {
+                    $distinctOperator[$valueDistinctOperator->category] = false;
+                    unset($distinctOperator[$keycategory]);
+                }
+            }
+            if ($distinctOperator[$valueDistinctOperator->category]) {
+                $data[] = $valueDistinctOperator;
+            }
+        }
+
+        foreach ($data as $key => $value) {
+            $category[] = [
+                'category' => $value->category,
+                'count_tag' => 0,
+                'percentage' => 0,
+            ];
+        }
         return response()->json(['data'=>$category]);
     }
 
@@ -330,7 +355,7 @@ class DashboardController extends Controller
     *       ),
     *  )
     */
-    public function count_tag($start_date,$end_date): JsonResponse
+    public function count_tag($start_date,$end_date)
     {
         $tags = Operator::whereDate('date_to_call', '>=', date($start_date))->whereDate('date_to_call', '<=', date($end_date))->groupBy('tag')->selectRaw("tag,
         count(*) as count_tag,
@@ -339,6 +364,31 @@ class DashboardController extends Controller
             Count(*)
         from
             operators where date(date_to_call) >='".date($start_date)."' and date(date_to_call) <='".date($end_date)."')),2) as percentage")->get();
+        $distinctOperator = Operator::distinct()->get(['tag']);
+        $data = [];
+
+        foreach ($distinctOperator as $key => $valueDistinctOperator) {
+            $distinctOperator[$valueDistinctOperator->tag] = true;
+            unset($distinctOperator[$key]);
+            foreach ($tags as $keyTag => $valueTag) {
+                if ($valueDistinctOperator->tag == $valueTag->tag) {
+                    $distinctOperator[$valueDistinctOperator->tag] = false;
+                    unset($distinctOperator[$keyTag]);
+                }
+            }
+            if ($distinctOperator[$valueDistinctOperator->tag]) {
+                $data[] = $valueDistinctOperator;
+            }
+        }
+
+        foreach ($data as $key => $value) {
+            $tags[] = [
+                'tag' => $value->tag,
+                'count_tag' => 0,
+                'percentage' => 0,
+            ];
+        }
+
         return response()->json(['data'=>$tags]);
     }
 }

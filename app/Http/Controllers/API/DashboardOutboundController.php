@@ -493,6 +493,31 @@ class DashboardOutboundController extends Controller
             Count(*)
         from
             outbound_confirmation_ticket where date(call_time) >='".date($start_date)."' and date(call_time) <='".date($end_date)."')),2) as percentage")->get();
+
+        $distinctOutBoundConfirmationTicket = OutBoundConfirmationTicket::distinct()->get(['category']);
+        $data = [];
+
+        foreach ($distinctOutBoundConfirmationTicket as $key => $valueDistinctOutBoundConfirmationTicket) {
+            $distinctOutBoundConfirmationTicket[$valueDistinctOutBoundConfirmationTicket->category] = true;
+            unset($distinctOutBoundConfirmationTicket[$key]);
+            foreach ($category as $keycategory => $valuecategory) {
+                if ($valueDistinctOutBoundConfirmationTicket->category == $valuecategory->category) {
+                    $distinctOutBoundConfirmationTicket[$valueDistinctOutBoundConfirmationTicket->category] = false;
+                    unset($distinctOutBoundConfirmationTicket[$keycategory]);
+                }
+            }
+            if ($distinctOutBoundConfirmationTicket[$valueDistinctOutBoundConfirmationTicket->category]) {
+                $data[] = $valueDistinctOutBoundConfirmationTicket;
+            }
+        }
+
+        foreach ($data as $key => $value) {
+            $category[] = [
+                'category' => $value->category,
+                'count_category' => 0,
+                'percentage' => 0,
+            ];
+        }
         return response()->json(['data'=>$category]);
     }
 
@@ -527,14 +552,39 @@ class DashboardOutboundController extends Controller
     */
     public function count_status($start_date,$end_date): JsonResponse
     {
-        $tags = OutBoundConfirmationTicket::whereDate('call_time', '>=', date($start_date))->whereDate('call_time', '<=', date($end_date))->groupBy('status')->selectRaw("status,
+        $status = OutBoundConfirmationTicket::whereDate('call_time', '>=', date($start_date))->whereDate('call_time', '<=', date($end_date))->groupBy('status')->selectRaw("status,
         count(*) as count_status,
         round((Count(status)* 100.0 / (
         select
             Count(*)
         from
             outbound_confirmation_ticket where date(call_time) >='".date($start_date)."' and date(call_time) <='".date($end_date)."')),2) as percentage")->get();
-        return response()->json(['data'=>$tags]);
+
+        $distinctOutBoundConfirmationTicket = OutBoundConfirmationTicket::distinct()->get(['status']);
+        $data = [];
+
+        foreach ($distinctOutBoundConfirmationTicket as $key => $valueDistinctOutBoundConfirmationTicket) {
+            $distinctOutBoundConfirmationTicket[$valueDistinctOutBoundConfirmationTicket->status] = true;
+            unset($distinctOutBoundConfirmationTicket[$key]);
+            foreach ($status as $keystatus => $valuestatus) {
+                if ($valueDistinctOutBoundConfirmationTicket->status == $valuestatus->status) {
+                    $distinctOutBoundConfirmationTicket[$valueDistinctOutBoundConfirmationTicket->status] = false;
+                    unset($distinctOutBoundConfirmationTicket[$keystatus]);
+                }
+            }
+            if ($distinctOutBoundConfirmationTicket[$valueDistinctOutBoundConfirmationTicket->status]) {
+                $data[] = $valueDistinctOutBoundConfirmationTicket;
+            }
+        }
+
+        foreach ($data as $key => $value) {
+            $status[] = [
+                'status' => $value->status,
+                'count_status' => 0,
+                'percentage' => 0,
+            ];
+        }
+        return response()->json(['data'=>$status]);
     }
 
     /**
@@ -568,14 +618,39 @@ class DashboardOutboundController extends Controller
     */
     public function count_status_mt($start_date,$end_date): JsonResponse
     {
-        $tags = OutBound::whereDate('call_time', '>=', date($start_date))->whereDate('call_time', '<=', date($end_date))->where('owned','outbound_ask_more')->groupBy('status')->selectRaw("status,
+        $status = OutBound::whereDate('call_time', '>=', date($start_date))->whereDate('call_time', '<=', date($end_date))->where('owned','outbound_ask_more')->groupBy('status')->selectRaw("status,
         count(*) as count_status_mt,
         round((Count(status)* 100.0 / (
         select
             Count(*)
         from
             outbound where owned = 'outbound_ask_more' and date(call_time) >='".date($start_date)."' and date(call_time) <='".date($end_date)."')),2) as percentage")->get();
-        return response()->json(['data'=>$tags]);
+
+        $distinctOutBoundConfirmationTicket = OutBoundConfirmationTicket::distinct()->get(['status']);
+        $data = [];
+
+        foreach ($distinctOutBoundConfirmationTicket as $key => $valueDistinctOutBoundConfirmationTicket) {
+            $distinctOutBoundConfirmationTicket[$valueDistinctOutBoundConfirmationTicket->status] = true;
+            unset($distinctOutBoundConfirmationTicket[$key]);
+            foreach ($status as $keystatus => $valuestatus) {
+                if ($valueDistinctOutBoundConfirmationTicket->status == $valuestatus->status) {
+                    $distinctOutBoundConfirmationTicket[$valueDistinctOutBoundConfirmationTicket->status] = false;
+                    unset($distinctOutBoundConfirmationTicket[$keystatus]);
+                }
+            }
+            if ($distinctOutBoundConfirmationTicket[$valueDistinctOutBoundConfirmationTicket->status]) {
+                $data[] = $valueDistinctOutBoundConfirmationTicket;
+            }
+        }
+
+        foreach ($data as $key => $value) {
+            $status[] = [
+                'status' => $value->status,
+                'count_status_mt' => 0,
+                'percentage' => 0,
+            ];
+        }
+        return response()->json(['data'=>$status]);
     }
 
     /**
@@ -609,14 +684,39 @@ class DashboardOutboundController extends Controller
     */
     public function count_status_lead($start_date,$end_date): JsonResponse
     {
-        $tags = OutBound::whereDate('call_time', '>=', date($start_date))->whereDate('call_time', '<=', date($end_date))->where('owned','outbound_leads')->groupBy('status')->selectRaw("status,
+        $status = OutBound::whereDate('call_time', '>=', date($start_date))->whereDate('call_time', '<=', date($end_date))->where('owned','outbound_leads')->groupBy('status')->selectRaw("status,
         count(*) as count_status_lead,
         round((Count(status)* 100.0 / (
         select
             Count(*)
         from
             OutBound where owned = 'outbound_leads' and date(call_time) >='".date($start_date)."' and date(call_time) <='".date($end_date)."')),2) as percentage")->get();
-        return response()->json(['data'=>$tags]);
+
+        $distinctOutBoundConfirmationTicket = OutBoundConfirmationTicket::distinct()->get(['status']);
+        $data = [];
+
+        foreach ($distinctOutBoundConfirmationTicket as $key => $valueDistinctOutBoundConfirmationTicket) {
+            $distinctOutBoundConfirmationTicket[$valueDistinctOutBoundConfirmationTicket->status] = true;
+            unset($distinctOutBoundConfirmationTicket[$key]);
+            foreach ($status as $keystatus => $valuestatus) {
+                if ($valueDistinctOutBoundConfirmationTicket->status == $valuestatus->status) {
+                    $distinctOutBoundConfirmationTicket[$valueDistinctOutBoundConfirmationTicket->status] = false;
+                    unset($distinctOutBoundConfirmationTicket[$keystatus]);
+                }
+            }
+            if ($distinctOutBoundConfirmationTicket[$valueDistinctOutBoundConfirmationTicket->status]) {
+                $data[] = $valueDistinctOutBoundConfirmationTicket;
+            }
+        }
+
+        foreach ($data as $key => $value) {
+            $status[] = [
+                'status' => $value->status,
+                'count_status_lead' => 0,
+                'percentage' => 0,
+            ];
+        }
+        return response()->json(['data'=>$status]);
     }
 
     /**
@@ -650,13 +750,38 @@ class DashboardOutboundController extends Controller
     */
     public function count_status_agency($start_date,$end_date): JsonResponse
     {
-        $tags = OutBound::whereDate('call_time', '>=', date($start_date))->whereDate('call_time', '<=', date($end_date))->where('owned','outbound_agency')->groupBy('status')->selectRaw("status,
+        $status = OutBound::whereDate('call_time', '>=', date($start_date))->whereDate('call_time', '<=', date($end_date))->where('owned','outbound_agency')->groupBy('status')->selectRaw("status,
         count(*) as count_status_agency,
         round((Count(status)* 100.0 / (
         select
             Count(*)
         from
             OutBound where owned = 'outbound_agency' and date(call_time) >='".date($start_date)."' and date(call_time) <='".date($end_date)."')),2) as percentage")->get();
-        return response()->json(['data'=>$tags]);
+
+        $distinctOutBoundConfirmationTicket = OutBoundConfirmationTicket::distinct()->get(['status']);
+        $data = [];
+
+        foreach ($distinctOutBoundConfirmationTicket as $key => $valueDistinctOutBoundConfirmationTicket) {
+            $distinctOutBoundConfirmationTicket[$valueDistinctOutBoundConfirmationTicket->status] = true;
+            unset($distinctOutBoundConfirmationTicket[$key]);
+            foreach ($status as $keystatus => $valuestatus) {
+                if ($valueDistinctOutBoundConfirmationTicket->status == $valuestatus->status) {
+                    $distinctOutBoundConfirmationTicket[$valueDistinctOutBoundConfirmationTicket->status] = false;
+                    unset($distinctOutBoundConfirmationTicket[$keystatus]);
+                }
+            }
+            if ($distinctOutBoundConfirmationTicket[$valueDistinctOutBoundConfirmationTicket->status]) {
+                $data[] = $valueDistinctOutBoundConfirmationTicket;
+            }
+        }
+
+        foreach ($data as $key => $value) {
+            $status[] = [
+                'status' => $value->status,
+                'count_status_agency' => 0,
+                'percentage' => 0,
+            ];
+        }
+        return response()->json(['data'=>$status]);
     }
 }
