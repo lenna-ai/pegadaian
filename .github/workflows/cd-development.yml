@@ -54,7 +54,6 @@ jobs:
       - name: test failed
         if: success() || failure()
         run: |
-          cd /var/www/pegadaian
           ls -la
           docker compose -f docker-compose.yml down
 
