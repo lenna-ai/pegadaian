@@ -50,16 +50,15 @@ jobs:
 
       # - name: test
       #   run: php artisan test
+
       - name: test failed
-        if: success() || failure()
-        script: |
+        run: |
           cd /var/www
           sudo chown -R arifin:www-data pegadaian
           cd /var/www/pegadaian
-          docker-compose down
-        # run: |
-        #   ls -la
-        #   docker-compose down
+          ls -la
+          docker compose down
+        allow_failure: true
 
       - name: Change permission folder and file on instance
         uses: appleboy/ssh-action@master
