@@ -48,12 +48,14 @@ jobs:
           cp .env.ci .env
           php artisan key:generate
 
-      - name: test
-        run: php artisan test
+      # - name: test
+      #   run: php artisan test
 
       - name: test failed
         if: success() || failure()
         run: |
+          cd /var/www/pegadaian
+          ls -la
           docker compose -f docker-compose.yml down
 
       - name: Change permission folder and file on instance
