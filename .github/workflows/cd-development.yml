@@ -52,7 +52,7 @@ jobs:
       #   run: php artisan test
 
       - name: test failed
-        run: |
+        script: |
           cd /var/www
           sudo chown -R arifin:www-data pegadaian
           cd /var/www/pegadaian
