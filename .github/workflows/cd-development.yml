@@ -48,17 +48,14 @@ jobs:
           cp .env.ci .env
           php artisan key:generate
 
-      # - name: test
-      #   run: php artisan test
+      - name: test
+        run: php artisan test
 
       - name: test failed
-        script: |
-          cd /var/www
-          sudo chown -R arifin:www-data pegadaian
-          cd /var/www/pegadaian
+        if: success() || failure()
+        run: |
           ls -la
-          docker compose down
-        allow_failure: true
+          docker compose -f docker-compose.yml down
 
       - name: Change permission folder and file on instance
         uses: appleboy/ssh-action@master
