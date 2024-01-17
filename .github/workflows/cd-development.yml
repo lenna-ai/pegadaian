@@ -55,7 +55,7 @@ jobs:
         if: success() || failure()
         run: |
           ls -la
-          docker compose -f docker-compose.yml down
+          docker compose -f down
 
       - name: Change permission folder and file on instance
         uses: appleboy/ssh-action@master
