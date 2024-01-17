@@ -50,9 +50,10 @@ jobs:
 
       - name: test
         run: php artisan test
+        id: test
 
       - name: test failed
-        if: failure()
+        if: steps.test.conclusion == 'failure'
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_HOST_DEV }}
