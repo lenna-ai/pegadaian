@@ -54,8 +54,7 @@ jobs:
       - name: test failed
         if: success() || failure()
         run: |
-          ls -la
-          docker-compose down
+          ls -la /var/www/
 
       - name: Change permission folder and file on instance
         uses: appleboy/ssh-action@master
