@@ -53,8 +53,16 @@ jobs:
 
       - name: test failed
         if: success() || failure()
-        run: |
-          ls -la /var/www/
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST_DEV }}
+          username: ${{ secrets.SSH_USERNAME_ADMIN }}
+          key: ${{ secrets.PLATFORM_PRODUCTION_RSA_KEY }}
+          passphrase: ${{ secrets.PASSPHRASE_ARIFIN }}
+          port: ${{ secrets.SSH_PORT_PROD }}
+          script: |
+            cd /var/www/pegadaian
+            docker-compose down
 
       - name: Change permission folder and file on instance
         uses: appleboy/ssh-action@master
