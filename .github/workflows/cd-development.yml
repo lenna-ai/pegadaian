@@ -53,8 +53,10 @@ jobs:
 
       - name: test failed
         if: success() || failure()
-        run: |
-          ls -la /var/www/
+        with:
+          script: |
+            cd /var/www/pegadaian
+            docker-compose down
 
       - name: Change permission folder and file on instance
         uses: appleboy/ssh-action@master
