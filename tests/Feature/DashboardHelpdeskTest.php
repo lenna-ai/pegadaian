@@ -47,7 +47,7 @@ class DashboardHelpdeskTest extends TestCase
             'Authorization' => "Bearer {$this->response['data']['access_token']}",
             'Accept'=>'application/json'
         ])->get('/api/dashboard/helpdesk/count_status/2023-01-01/2024-01-10');
-        $response->dd();
+
         $response->assertStatus(200);
         $response->assertJsonStructure([
             'data' => [
