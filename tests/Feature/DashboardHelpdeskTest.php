@@ -8,7 +8,7 @@ use Tests\TestCase;
 
 class DashboardHelpdeskTest extends TestCase
 {
-    // php artisan test --filter DashboardHelpdeskTest::test_count_tag_operator
+    // php artisan test --filter DashboardHelpdeskTest::test_count_status_operator
     // php artisan test --filter DashboardHelpdeskTest::test_count_category_operator
     private $response;
     public function setUp(): void
@@ -41,19 +41,19 @@ class DashboardHelpdeskTest extends TestCase
         ]);
     }
 
-    public function test_count_tag_operator(): void
+    public function test_count_status_operator(): void
     {
         $response = $this->withHeaders([
             'Authorization' => "Bearer {$this->response['data']['access_token']}",
             'Accept'=>'application/json'
-        ])->get('/api/dashboard/helpdesk/count_tag/2023-01-01/2024-01-10');
-
+        ])->get('/api/dashboard/helpdesk/count_status/2023-01-01/2024-01-10');
+        $response->dd();
         $response->assertStatus(200);
         $response->assertJsonStructure([
             'data' => [
                 '*' => [
-                    'tag',
-                    'count_tag',
+                    'status',
+                    'count_status',
                     'percentage',
                 ]
             ]

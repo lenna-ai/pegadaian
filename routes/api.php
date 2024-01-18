@@ -59,7 +59,7 @@ Route::group(['middleware' => 'auth:api'],function (): void {
             Route::get('total_agent/{start_date}/{end_date}', [DashboardHelpdeskController::class, 'total_agent'])->middleware(['can:admin']);
             Route::get('list_helpdesk/{start_date}/{end_date}', [DashboardHelpdeskController::class, 'list_helpdesk'])->middleware(['can:admin']);
             Route::get('count_category/{start_date}/{end_date}', [DashboardHelpdeskController::class, 'count_category'])->middleware(['can:admin']);
-            Route::get('count_tag/{start_date}/{end_date}', [DashboardHelpdeskController::class, 'count_tag'])->middleware(['can:admin']);
+            Route::get('count_status/{start_date}/{end_date}', [DashboardHelpdeskController::class, 'count_status'])->middleware(['can:admin']);
         });
 
         Route::group(['prefix'=>'outbound'],function () {

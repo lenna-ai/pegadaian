@@ -365,11 +365,11 @@ class DashboardHelpdeskController extends Controller
 
     /**
     *    @OA\Get(
-    *       path="/api/dashboard/helpdesk/count_tag/{start_date}/{end_date}",
+    *       path="/api/dashboard/helpdesk/count_status/{start_date}/{end_date}",
     *       tags={"Dashboard"},
-    *       operationId="Dashboard helpdesk count_tag",
-    *       summary="Dashboard helpdesk count_tag",
-    *       description="Dashboard helpdesk count_tag",
+    *       operationId="Dashboard helpdesk count_status",
+    *       summary="Dashboard helpdesk count_status",
+    *       description="Dashboard helpdesk count_status",
     *     @OA\Parameter(
     *         description="Parameter start_date examples",
     *         in="path",
@@ -392,11 +392,11 @@ class DashboardHelpdeskController extends Controller
     *       ),
     *  )
     */
-    public function count_tag($start_date,$end_date): JsonResponse
+    public function count_status($start_date,$end_date): JsonResponse
     {
-        $tags = HelpDesk::whereDate('date_to_call', '>=', date($start_date))->whereDate('date_to_call', '<=', date($end_date))->groupBy('tag')->selectRaw("tag,
-        count(*) as count_tag,
-        round((Count(tag)* 100.0 / (
+        $status = HelpDesk::whereDate('date_to_call', '>=', date($start_date))->whereDate('date_to_call', '<=', date($end_date))->groupBy('status')->selectRaw("status,
+        count(*) as count_status,
+        round((Count(status)* 100.0 / (
         select
             Count(*)
         from
@@ -426,6 +426,6 @@ class DashboardHelpdeskController extends Controller
         //         'percentage' => 0,
         //     ];
         // }
-        return response()->json(['data'=>$tags]);
+        return response()->json(['data'=>$status]);
     }
 }
