@@ -336,30 +336,30 @@ class DashboardHelpdeskController extends Controller
         from
             help_desks where date(date_to_call) >='".date($start_date)."' and date(date_to_call) <='".date($end_date)."')),2) as percentage")->get();
 
-        $distinctOperator = HelpDesk::distinct()->get(['category']);
-        $data = [];
+        // $distinctOperator = HelpDesk::distinct()->get(['category']);
+        // $data = [];
 
-        foreach ($distinctOperator as $key => $valueDistinctOperator) {
-            $distinctOperator[$valueDistinctOperator->category] = true;
-            unset($distinctOperator[$key]);
-            foreach ($category as $keycategory => $valuecategory) {
-                if ($valueDistinctOperator->category == $valuecategory->category) {
-                    $distinctOperator[$valueDistinctOperator->category] = false;
-                    unset($distinctOperator[$keycategory]);
-                }
-            }
-            if ($distinctOperator[$valueDistinctOperator->category]) {
-                $data[] = $valueDistinctOperator;
-            }
-        }
+        // foreach ($distinctOperator as $key => $valueDistinctOperator) {
+        //     $distinctOperator[$valueDistinctOperator->category] = true;
+        //     unset($distinctOperator[$key]);
+        //     foreach ($category as $keycategory => $valuecategory) {
+        //         if ($valueDistinctOperator->category == $valuecategory->category) {
+        //             $distinctOperator[$valueDistinctOperator->category] = false;
+        //             unset($distinctOperator[$keycategory]);
+        //         }
+        //     }
+        //     if ($distinctOperator[$valueDistinctOperator->category]) {
+        //         $data[] = $valueDistinctOperator;
+        //     }
+        // }
 
-        foreach ($data as $key => $value) {
-            $category[] = [
-                'category' => $value->category,
-                'count_category' => 0,
-                'percentage' => 0,
-            ];
-        }
+        // foreach ($data as $key => $value) {
+        //     $category[] = [
+        //         'category' => $value->category,
+        //         'count_category' => 0,
+        //         'percentage' => 0,
+        //     ];
+        // }
         return response()->json(['data'=>$category]);
     }
 
@@ -402,30 +402,30 @@ class DashboardHelpdeskController extends Controller
         from
             help_desks where date(date_to_call) >='".date($start_date)."' and date(date_to_call) <='".date($end_date)."')),2) as percentage")->get();
 
-        $distinctHelpDesk = HelpDesk::distinct()->get(['tag']);
-        $data = [];
+        // $distinctHelpDesk = HelpDesk::distinct()->get(['tag']);
+        // $data = [];
 
-        foreach ($distinctHelpDesk as $key => $valueDistinctHelpDesk) {
-            $distinctHelpDesk[$valueDistinctHelpDesk->tag] = true;
-            unset($distinctHelpDesk[$key]);
-            foreach ($tags as $keyTag => $valueTag) {
-                if ($valueDistinctHelpDesk->tag == $valueTag->tag) {
-                    $distinctHelpDesk[$valueDistinctHelpDesk->tag] = false;
-                    unset($distinctHelpDesk[$keyTag]);
-                }
-            }
-            if ($distinctHelpDesk[$valueDistinctHelpDesk->tag]) {
-                $data[] = $valueDistinctHelpDesk;
-            }
-        }
+        // foreach ($distinctHelpDesk as $key => $valueDistinctHelpDesk) {
+        //     $distinctHelpDesk[$valueDistinctHelpDesk->tag] = true;
+        //     unset($distinctHelpDesk[$key]);
+        //     foreach ($tags as $keyTag => $valueTag) {
+        //         if ($valueDistinctHelpDesk->tag == $valueTag->tag) {
+        //             $distinctHelpDesk[$valueDistinctHelpDesk->tag] = false;
+        //             unset($distinctHelpDesk[$keyTag]);
+        //         }
+        //     }
+        //     if ($distinctHelpDesk[$valueDistinctHelpDesk->tag]) {
+        //         $data[] = $valueDistinctHelpDesk;
+        //     }
+        // }
 
-        foreach ($data as $key => $value) {
-            $tags[] = [
-                'tag' => $value->tag,
-                'count_tag' => 0,
-                'percentage' => 0,
-            ];
-        }
+        // foreach ($data as $key => $value) {
+        //     $tags[] = [
+        //         'tag' => $value->tag,
+        //         'count_tag' => 0,
+        //         'percentage' => 0,
+        //     ];
+        // }
         return response()->json(['data'=>$tags]);
     }
 }
