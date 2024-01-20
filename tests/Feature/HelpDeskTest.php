@@ -281,7 +281,7 @@ class HelpDeskTest extends TestCase
         $response->assertJsonStructure([
             'data' => [
                 '*' => [
-                    'tag',
+                    'status',
                     'count_status',
                     'percentage',
                 ]
