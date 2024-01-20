@@ -1,0 +1,2 @@
+* * * * * cd /var/www/pegadaian && php artisan pulse:check >> /dev/null 2>&1
+

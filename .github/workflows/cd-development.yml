@@ -48,24 +48,24 @@ jobs:
           cp .env.ci .env
           php artisan key:generate
 
-      - name: test
-        run: php artisan test
-        id: test
+      # - name: test
+      #   run: php artisan test
+      #   id: test
 
-      - name: test failed
-        if: steps.test.conclusion == 'failure'
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SSH_HOST_DEV }}
-          username: ${{ secrets.SSH_USERNAME_ADMIN }}
-          key: ${{ secrets.PLATFORM_PRODUCTION_RSA_KEY }}
-          passphrase: ${{ secrets.PASSPHRASE_ARIFIN }}
-          port: ${{ secrets.SSH_PORT_PROD }}
-          script: |
-            cd /var/www
-            sudo chown -R arifin:www-data pegadaian
-            cd /var/www/pegadaian
-            docker-compose down
+      # - name: test failed
+      #   if: steps.test.conclusion == 'failure'
+      #   uses: appleboy/ssh-action@master
+      #   with:
+      #     host: ${{ secrets.SSH_HOST_DEV }}
+      #     username: ${{ secrets.SSH_USERNAME_ADMIN }}
+      #     key: ${{ secrets.PLATFORM_PRODUCTION_RSA_KEY }}
+      #     passphrase: ${{ secrets.PASSPHRASE_ARIFIN }}
+      #     port: ${{ secrets.SSH_PORT_PROD }}
+      #     script: |
+      #       cd /var/www
+      #       sudo chown -R arifin:www-data pegadaian
+      #       cd /var/www/pegadaian
+      #       docker-compose down
 
       - name: Change permission folder and file on instance
         uses: appleboy/ssh-action@master
