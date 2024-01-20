@@ -35,7 +35,7 @@ COPY ./docker/supervisor/supervisord.conf /etc/supervisor/supervisord.conf
 
 COPY ./docker/supervisor/mycronjob.txt /var/spool/cron/crontabs/root
 
-# COPY ./docker/supervisor/entry.bash /usr/sbin
+COPY ./docker/supervisor/entry.bash /usr/sbin
 RUN chmod 777 /usr/sbin/entry.bash
 # Apply cron job
 
