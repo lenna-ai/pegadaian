@@ -273,16 +273,16 @@ class HelpDeskTest extends TestCase
         ]);
     }
 
-    public function test_count_tag(): void
+    public function test_count_status(): void
     {
-        $response = $this->actingAs(User::find($this->responseAdmin->id))->get('/api/dashboard/helpdesk/count_tag/2023-01-01/2024-01-10');
+        $response = $this->actingAs(User::find($this->responseAdmin->id))->get('/api/dashboard/helpdesk/count_status/2023-01-01/2024-01-10');
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
             'data' => [
                 '*' => [
                     'tag',
-                    'count_tag',
+                    'count_status',
                     'percentage',
                 ]
             ]
