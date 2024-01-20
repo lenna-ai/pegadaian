@@ -31,11 +31,11 @@ RUN apk update && apk add --no-cache supervisor
 
 RUN mkdir -p "/etc/supervisor/logs"
 
-COPY ./docker/supervisor/supervisord.conf /etc/supervisor/supervisord.conf
+COPY ./supervisord.conf /etc/supervisor/supervisord.conf
 
-COPY ./docker/supervisor/mycronjob.txt /var/spool/cron/crontabs/root
+COPY ./mycronjob.txt /var/spool/cron/crontabs/root
 
-COPY ./docker/supervisor/entry.bash /usr/sbin
+COPY ./entry.bash /usr/sbin
 RUN chmod 777 /usr/sbin/entry.bash
 # Apply cron job
 
