@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
@@ -158,14 +159,19 @@ class AuthController extends Controller
         }
         //update
         $user = User::with(['Role','Status'])->find(auth()->user()->id);
+        if ($user->token != 'first-user') {
+            JWTAuth::manager()->invalidate(new \Tymon\JWTAuth\Token($user->token), $forceForever = false);
+            StatusHelper::changeStatus($user->id, 'offline');
+        }
         $user->login_at = Carbon::now()->toDateTimeString();
+        $user['token'] = $token;
         $user->save();
         //akhir update
 
 
         $user = Auth::user();
-        $user['token'] = $token;
         $user['role'] = $user->Role;
+        $user['token'] = $token;
         // if($user->Status) $user['status'] = $user->Status->status;
         $user['login_at'] = Carbon::now()->toDateTimeString();
 
@@ -226,7 +232,6 @@ class AuthController extends Controller
     */
     public function logout(): JsonResponse
     {
-
         //update
         $user = User::find(auth()->user()->id);
         $user->logout_at = Carbon::now()->toDateTimeString();
