@@ -160,8 +160,11 @@ class AuthController extends Controller
         //update
         $user = User::with(['Role','Status'])->find(auth()->user()->id);
         if ($user->token != 'first-user') {
-            JWTAuth::manager()->invalidate(new \Tymon\JWTAuth\Token($user->token), $forceForever = false);
-            StatusHelper::changeStatus($user->id, 'offline');
+            try {
+                JWTAuth::manager()->invalidate(new \Tymon\JWTAuth\Token($user->token), $forceForever = false);
+            }finally {
+                StatusHelper::changeStatus($user->id, 'offline');
+            }
         }
         $user->login_at = Carbon::now()->toDateTimeString();
         $user['token'] = $token;
