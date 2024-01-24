@@ -9,16 +9,12 @@ use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Resources\DataMessage\Message;
 use App\Http\Resources\User as ResourcesUser;
-use App\Models\Role;
 use App\Models\User;
 use Carbon\Carbon;
 use Exception;
-use Illuminate\Database\Eloquent\Casts\Json;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -159,13 +155,16 @@ class AuthController extends Controller
         }
         //update
         $user = User::with(['Role','Status'])->find(auth()->user()->id);
-        // if ($user->token != 'first-user') {
-        //     try {
-        //         JWTAuth::manager()->invalidate(new \Tymon\JWTAuth\Token($user->token), $forceForever = false);
-        //     }finally {
-        //         StatusHelper::changeStatus($user->id, 'offline');
-        //     }
-        // }
+        if ($user->token != 'first-user') {
+            try {
+                StatusHelper::changeStatus($user->id, 'offline');
+                JWTAuth::manager()->invalidate(new \Tymon\JWTAuth\Token($user->token), $forceForever = false);
+            } catch (Exception $e) {
+                $user['token'] = $token;
+                $user->save();
+                $this->login($request);
+            }
+        }
         $user->login_at = Carbon::now()->toDateTimeString();
         $user['token'] = $token;
         $user->save();
