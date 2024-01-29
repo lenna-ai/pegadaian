@@ -9,6 +9,7 @@ use App\Http\Controllers\API\HelpDeskController;
 use App\Http\Controllers\API\OperatorController;
 use App\Http\Controllers\API\OutBoundController;
 use App\Http\Controllers\API\UserController;
+use App\Http\Controllers\API\Webhook\WebhookMailController;
 // use App\Http\Controllers\DashboardOutboundController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -146,3 +147,7 @@ Route::group(['middleware' => 'auth:api'],function (): void {
 
     Route::get('dashboard', [DashboardController::class, 'index'])->middleware(['can:admin','throttle:login']);
 });
+Route::get('awd',function(){
+    return ';of';
+});
+Route::post('webhook/email/received', [WebhookMailController::class,'received']);
