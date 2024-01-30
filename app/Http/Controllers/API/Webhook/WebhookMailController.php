@@ -10,6 +10,7 @@ class WebhookMailController extends Controller
 {
     public function received(Request $request)
     {
-        InboundMessage::dispatch($request->all())->onQueue('webhook');
+        InboundMessage::dispatch($request->all())->onQueue('webhook2');
+        return response()->json(null, 200);
     }
 }
