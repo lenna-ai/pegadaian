@@ -317,23 +317,25 @@ class UserController extends Controller
     *      ),
     *  )
     */
-    public function delete(int $id): User
+    // public function delete(int $id): User
+    public function delete(int $id): void
     {
         $this->authorize('delete', User::class);
 
-        try {
-            DB::beginTransaction();
-            ModelsUser::findOrFail($id)->delete();
-            UserRole::where('user_id',$id)->delete();
-            DB::commit();
-        } catch (\Throwable $e) {
-            DB::rollBack();
-            // throw new Exception(response()->json([
-            //     'message'=>$e->getMessage()
-            // ]));
-            throw new HttpException(406,$e->getMessage());
-        }
-        $user = new ModelsUser;
-        return new User($user);
+        // try {
+        //     DB::beginTransaction();
+        //     ModelsUser::findOrFail($id)->delete();
+        //     UserRole::where('user_id',$id)->delete();
+        //     DB::commit();
+        // } catch (\Throwable $e) {
+        //     DB::rollBack();
+        //     // throw new Exception(response()->json([
+        //     //     'message'=>$e->getMessage()
+        //     // ]));
+        //     throw new HttpException(406,$e->getMessage());
+        // }
+        // $user = new ModelsUser;
+        // return new User($user);
+        // return new User();
     }
 }
