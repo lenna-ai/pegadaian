@@ -16,23 +16,61 @@ class RolePermissionSeeder extends Seeder
     public function run(): void
     {
         $data = [
-            //admin
-            // [
-            //     'role_id' => Role::where('name','admin')->first()->id,
-            //     'permission_id' => Permission::where('name','create_user')->first()->id
-            // ],
-            // [
-            //     'role_id' => Role::where('name','admin')->first()->id,
-            //     'permission_id' => Permission::where('name','update_user')->first()->id
-            // ],
-            // [
-            //     'role_id' => Role::where('name','admin')->first()->id,
-            //     'permission_id' => Permission::where('name','read_user')->first()->id
-            // ],
-            // [
-            //     'role_id' => Role::where('name','admin')->first()->id,
-            //     'permission_id' => Permission::where('name','delete_user')->first()->id
-            // ],
+            // super admin
+            [
+                'role_id' => Role::where('name','admin')->first()->id,
+                'permission_id' => Permission::where('name','read_user')->first()->id
+            ],
+            [
+                'role_id' => Role::where('name','admin')->first()->id,
+                'permission_id' => Permission::where('name','dashboard_operator')->first()->id
+            ],
+            [
+                'role_id' => Role::where('name','admin')->first()->id,
+                'permission_id' => Permission::where('name','dashboard_helpdesk')->first()->id
+            ],
+            [
+                'role_id' => Role::where('name','admin')->first()->id,
+                'permission_id' => Permission::where('name','dashboard_marketing')->first()->id
+            ],
+            [
+                'role_id' => Role::where('name','admin')->first()->id,
+                'permission_id' => Permission::where('name','dashboard_outbound')->first()->id
+            ],
+
+            // admin
+            [
+                'role_id' => Role::where('name','super_admin')->first()->id,
+                'permission_id' => Permission::where('name','create_user')->first()->id
+            ],
+            [
+                'role_id' => Role::where('name','super_admin')->first()->id,
+                'permission_id' => Permission::where('name','update_user')->first()->id
+            ],
+            [
+                'role_id' => Role::where('name','super_admin')->first()->id,
+                'permission_id' => Permission::where('name','read_user')->first()->id
+            ],
+            [
+                'role_id' => Role::where('name','super_admin')->first()->id,
+                'permission_id' => Permission::where('name','delete_user')->first()->id
+            ],
+            [
+                'role_id' => Role::where('name','super_admin')->first()->id,
+                'permission_id' => Permission::where('name','dashboard_operator')->first()->id
+            ],
+            [
+                'role_id' => Role::where('name','super_admin')->first()->id,
+                'permission_id' => Permission::where('name','dashboard_helpdesk')->first()->id
+            ],
+            [
+                'role_id' => Role::where('name','super_admin')->first()->id,
+                'permission_id' => Permission::where('name','dashboard_marketing')->first()->id
+            ],
+            [
+                'role_id' => Role::where('name','super_admin')->first()->id,
+                'permission_id' => Permission::where('name','dashboard_outbound')->first()->id
+            ],
 
             // //operator
             // [
@@ -61,18 +99,18 @@ class RolePermissionSeeder extends Seeder
             //     'permission_id' => Permission::where('name','update_helpdesk')->first()->id
             // ],
             //outbound
-            [
-                'role_id' => Role::where('name','outbound')->first()->id,
-                'permission_id' => Permission::where('name','create_outbound')->first()->id
-            ],
-            [
-                'role_id' => Role::where('name','outbound')->first()->id,
-                'permission_id' => Permission::where('name','read_outbound')->first()->id
-            ],
-            [
-                'role_id' => Role::where('name','outbound')->first()->id,
-                'permission_id' => Permission::where('name','update_outbound')->first()->id
-            ],
+            // [
+            //     'role_id' => Role::where('name','outbound')->first()->id,
+            //     'permission_id' => Permission::where('name','create_outbound')->first()->id
+            // ],
+            // [
+            //     'role_id' => Role::where('name','outbound')->first()->id,
+            //     'permission_id' => Permission::where('name','read_outbound')->first()->id
+            // ],
+            // [
+            //     'role_id' => Role::where('name','outbound')->first()->id,
+            //     'permission_id' => Permission::where('name','update_outbound')->first()->id
+            // ],
         ];
 
         foreach ($data as $key => $value) {

@@ -26,9 +26,10 @@ use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+Route::get('/ar', fn()=>'ok')->middleware('auth:api');
 
 Route::post('change-status', [AuthController::class, 'change_status']);
 Route::group(['middleware' => 'api','prefix' => 'auth'],function () {
@@ -43,55 +44,55 @@ Route::group(['middleware' => 'auth:api'],function (): void {
     Route::group(['prefix'=>'dashboard'],function () {
 
         Route::group(['prefix'=>'operator'],function () {
-            Route::get('total_call/{start_date}/{end_date}', [DashboardController::class, 'total_call'])->middleware(['can:admin']);
-            Route::get('average_call_time/{start_date}/{end_date}', [DashboardController::class, 'average_call_time'])->middleware(['can:admin']);
-            Route::get('current_call_session_detail_information/{start_date}/{end_date}', [DashboardController::class, 'current_call_session_detail_information'])->middleware(['can:admin']);
-            Route::get('performance_hourly_today/{start_date}/{end_date}', [DashboardController::class, 'performance_hourly_today'])->middleware(['can:admin']);
-            Route::get('total_agent/{start_date}/{end_date}', [DashboardController::class, 'total_agent'])->middleware(['can:admin']);
-            Route::get('count_category/{start_date}/{end_date}', [DashboardController::class, 'count_category'])->middleware(['can:admin']);
-            Route::get('count_tag/{start_date}/{end_date}', [DashboardController::class, 'count_tag'])->middleware(['can:admin']);
+            Route::get('total_call/{start_date}/{end_date}', [DashboardController::class, 'total_call'])->middleware(['role:admin,super_admin']);
+            Route::get('average_call_time/{start_date}/{end_date}', [DashboardController::class, 'average_call_time'])->middleware(['role:admin,super_admin']);
+            Route::get('current_call_session_detail_information/{start_date}/{end_date}', [DashboardController::class, 'current_call_session_detail_information'])->middleware(['role:admin,super_admin']);
+            Route::get('performance_hourly_today/{start_date}/{end_date}', [DashboardController::class, 'performance_hourly_today'])->middleware(['role:admin,super_admin']);
+            Route::get('total_agent/{start_date}/{end_date}', [DashboardController::class, 'total_agent'])->middleware(['role:admin,super_admin']);
+            Route::get('count_category/{start_date}/{end_date}', [DashboardController::class, 'count_category'])->middleware(['role:admin,super_admin']);
+            Route::get('count_tag/{start_date}/{end_date}', [DashboardController::class, 'count_tag'])->middleware(['role:admin,super_admin']);
         });
 
         Route::group(['prefix'=>'helpdesk'],function () {
-            Route::get('total_call/{start_date}/{end_date}', [DashboardHelpdeskController::class, 'total_call'])->middleware(['can:admin']);
-            Route::get('average_call_time/{start_date}/{end_date}', [DashboardHelpdeskController::class, 'average_call_time'])->middleware(['can:admin']);
-            Route::get('current_call_session_detail_information/{start_date}/{end_date}', [DashboardHelpdeskController::class, 'current_call_session_detail_information'])->middleware(['can:admin']);
-            Route::get('performance_hourly_today/{start_date}/{end_date}', [DashboardHelpdeskController::class, 'performance_hourly_today'])->middleware(['can:admin']);
-            Route::get('total_agent/{start_date}/{end_date}', [DashboardHelpdeskController::class, 'total_agent'])->middleware(['can:admin']);
-            Route::get('list_helpdesk/{start_date}/{end_date}', [DashboardHelpdeskController::class, 'list_helpdesk'])->middleware(['can:admin']);
-            Route::get('count_category/{start_date}/{end_date}', [DashboardHelpdeskController::class, 'count_category'])->middleware(['can:admin']);
-            Route::get('count_status/{start_date}/{end_date}', [DashboardHelpdeskController::class, 'count_status'])->middleware(['can:admin']);
+            Route::get('total_call/{start_date}/{end_date}', [DashboardHelpdeskController::class, 'total_call'])->middleware(['role:admin,super_admin']);
+            Route::get('average_call_time/{start_date}/{end_date}', [DashboardHelpdeskController::class, 'average_call_time'])->middleware(['role:admin,super_admin']);
+            Route::get('current_call_session_detail_information/{start_date}/{end_date}', [DashboardHelpdeskController::class, 'current_call_session_detail_information'])->middleware(['role:admin,super_admin']);
+            Route::get('performance_hourly_today/{start_date}/{end_date}', [DashboardHelpdeskController::class, 'performance_hourly_today'])->middleware(['role:admin,super_admin']);
+            Route::get('total_agent/{start_date}/{end_date}', [DashboardHelpdeskController::class, 'total_agent'])->middleware(['role:admin,super_admin']);
+            Route::get('list_helpdesk/{start_date}/{end_date}', [DashboardHelpdeskController::class, 'list_helpdesk'])->middleware(['role:admin,super_admin']);
+            Route::get('count_category/{start_date}/{end_date}', [DashboardHelpdeskController::class, 'count_category'])->middleware(['role:admin,super_admin']);
+            Route::get('count_status/{start_date}/{end_date}', [DashboardHelpdeskController::class, 'count_status'])->middleware(['role:admin,super_admin']);
         });
 
         Route::group(['prefix'=>'outbound'],function () {
-            Route::get('total_agent/{start_date}/{end_date}', [DashboardOutboundController::class, 'total_agent'])->middleware(['can:admin']);
-            Route::get('count_category/{start_date}/{end_date}', [DashboardOutboundController::class, 'count_category'])->middleware(['can:admin']);
-            Route::get('count_status/{start_date}/{end_date}', [DashboardOutboundController::class, 'count_status'])->middleware(['can:admin']);
-            Route::get('count_status_mt/{start_date}/{end_date}', [DashboardOutboundController::class, 'count_status_mt'])->middleware(['can:admin']);
-            Route::get('count_status_lead/{start_date}/{end_date}', [DashboardOutboundController::class, 'count_status_lead'])->middleware(['can:admin']);
-            Route::get('count_status_agency/{start_date}/{end_date}', [DashboardOutboundController::class, 'count_status_agency'])->middleware(['can:admin']);
+            Route::get('total_agent/{start_date}/{end_date}', [DashboardOutboundController::class, 'total_agent'])->middleware(['role:admin,super_admin']);
+            Route::get('count_category/{start_date}/{end_date}', [DashboardOutboundController::class, 'count_category'])->middleware(['role:admin,super_admin']);
+            Route::get('count_status/{start_date}/{end_date}', [DashboardOutboundController::class, 'count_status'])->middleware(['role:admin,super_admin']);
+            Route::get('count_status_mt/{start_date}/{end_date}', [DashboardOutboundController::class, 'count_status_mt'])->middleware(['role:admin,super_admin']);
+            Route::get('count_status_lead/{start_date}/{end_date}', [DashboardOutboundController::class, 'count_status_lead'])->middleware(['role:admin,super_admin']);
+            Route::get('count_status_agency/{start_date}/{end_date}', [DashboardOutboundController::class, 'count_status_agency'])->middleware(['role:admin,super_admin']);
 
             Route::group(['prefix' => 'confirmation-ticket'], function() {
-                Route::get('total_call/{start_date}/{end_date}', [DashboardOutboundController::class, 'total_call_confirmation_ticket'])->middleware(['can:admin']);
-                Route::get('average_call_time/{start_date}/{end_date}', [DashboardOutboundController::class, 'average_call_time_confirmation_ticket'])->middleware(['can:admin']);
-                Route::get('current_call_session_detail_information/{start_date}/{end_date}', [DashboardOutboundController::class, 'current_call_session_detail_information_confirmation_ticket'])->middleware(['can:admin']);
-                Route::get('performance_hourly_today/{start_date}/{end_date}', [DashboardOutboundController::class, 'performance_hourly_today_confirmation_ticket'])->middleware(['can:admin']);
+                Route::get('total_call/{start_date}/{end_date}', [DashboardOutboundController::class, 'total_call_confirmation_ticket'])->middleware(['role:admin,super_admin']);
+                Route::get('average_call_time/{start_date}/{end_date}', [DashboardOutboundController::class, 'average_call_time_confirmation_ticket'])->middleware(['role:admin,super_admin']);
+                Route::get('current_call_session_detail_information/{start_date}/{end_date}', [DashboardOutboundController::class, 'current_call_session_detail_information_confirmation_ticket'])->middleware(['role:admin,super_admin']);
+                Route::get('performance_hourly_today/{start_date}/{end_date}', [DashboardOutboundController::class, 'performance_hourly_today_confirmation_ticket'])->middleware(['role:admin,super_admin']);
             });
 
             Route::group(['prefix' => '{page}'], function() {
-                Route::get('total_call/{start_date}/{end_date}', [DashboardOutboundController::class, 'total_call'])->middleware(['can:admin']);
-                Route::get('average_call_time/{start_date}/{end_date}', [DashboardOutboundController::class, 'average_call_time'])->middleware(['can:admin']);
-                Route::get('current_call_session_detail_information/{start_date}/{end_date}', [DashboardOutboundController::class, 'current_call_session_detail_information'])->middleware(['can:admin']);
-                Route::get('performance_hourly_today/{start_date}/{end_date}', [DashboardOutboundController::class, 'performance_hourly_today'])->middleware(['can:admin']);
+                Route::get('total_call/{start_date}/{end_date}', [DashboardOutboundController::class, 'total_call'])->middleware(['role:admin,super_admin']);
+                Route::get('average_call_time/{start_date}/{end_date}', [DashboardOutboundController::class, 'average_call_time'])->middleware(['role:admin,super_admin']);
+                Route::get('current_call_session_detail_information/{start_date}/{end_date}', [DashboardOutboundController::class, 'current_call_session_detail_information'])->middleware(['role:admin,super_admin']);
+                Route::get('performance_hourly_today/{start_date}/{end_date}', [DashboardOutboundController::class, 'performance_hourly_today'])->middleware(['role:admin,super_admin']);
             });
         });
     });
 
     Route::group(['prefix' => 'user'],function () {
-        Route::post('/', [UserController::class, 'create'])->middleware(['can:admin']);
-        Route::get('/', [UserController::class, 'index'])->middleware(['can:admin']);
+        Route::post('/', [UserController::class, 'create'])->middleware(['role:admin,super_admin']);
+        Route::get('/', [UserController::class, 'index'])->middleware(['role:admin,super_admin']);
         Route::put('/{id}', [UserController::class, 'update']);
-        Route::delete('/{id}', [UserController::class, 'delete'])->middleware(['can:admin']);
+        Route::delete('/{id}', [UserController::class, 'delete'])->middleware(['role:admin,super_admin']);
     });
 
     Route::group(['prefix' => 'operator'],function () {
@@ -145,9 +146,5 @@ Route::group(['middleware' => 'auth:api'],function (): void {
         });
     });
 
-    Route::get('dashboard', [DashboardController::class, 'index'])->middleware(['can:admin','throttle:login']);
+    Route::get('dashboard', [DashboardController::class, 'index'])->middleware(['role:admin,super_admin','throttle:login']);
 });
-Route::get('awd',function(){
-    return ';of';
-});
-Route::post('webhook/email/received', [WebhookMailController::class,'received']);

@@ -19,11 +19,11 @@ class DatabaseSeeder extends Seeder
             // UserSeeder::class,
             // RoleSeeder::class,
             // PermissionSeeder::class,
-            // RolePermissionSeeder::class,
+            RolePermissionSeeder::class,
             // UserRoleSeeder::class,
             // CategorySeeder::class,
             // TagSeeder::class,
-            StatusTrackSeeder::class
+            // StatusTrackSeeder::class
         ]);
     }
 }

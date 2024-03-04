@@ -14,10 +14,11 @@ class RoleSeeder extends Seeder
     public function run(): void
     {
         $data = [
+            'super_admin',
             // 'admin',
             // 'operator',
             // 'help_desk',
-            'outbound',
+            // 'outbound',
         ];
         foreach ($data as $key => $value) {
             Role::create([

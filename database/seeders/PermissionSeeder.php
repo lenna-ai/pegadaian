@@ -15,6 +15,12 @@ class PermissionSeeder extends Seeder
     {
         $data = [
             //user
+            // 'dashboard_operator',
+            // 'dashboard_helpdesk',
+            // 'dashboard_marketing',
+            // 'dashboard_outbound',
+
+            //user
             // 'create_user',
             // 'update_user',
             // 'read_user',
@@ -33,10 +39,10 @@ class PermissionSeeder extends Seeder
             // 'delete_helpdesk',
 
             //outbound
-            'read_outbound',
-            'create_outbound',
-            'update_outbound',
-            'delete_outbound',
+            // 'read_outbound',
+            // 'create_outbound',
+            // 'update_outbound',
+            // 'delete_outbound',
         ];
         foreach ($data as $key => $value) {
             Permission::create([
